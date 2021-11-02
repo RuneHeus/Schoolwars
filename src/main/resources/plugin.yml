@@ -1,0 +1,8 @@
+name: Schoolwars
+version: '${project.version}'
+main: bazcraft.schoolwars.Schoolwars
+api-version: 1.17
+authors: [ RuneHeus, NoahUyttebroeck ]
+commands:
+  spelers:
+    usage: print een lijst van alle spelers die zich momenteel in de server bevinden
