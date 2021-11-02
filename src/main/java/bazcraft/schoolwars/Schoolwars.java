@@ -4,6 +4,7 @@ import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,7 +18,7 @@ public final class Schoolwars extends JavaPlugin {
 
     public Schoolwars() {
         eventListener = new EventListener(this);
-        gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0, 200, 0));
+        gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
@@ -31,7 +32,7 @@ public final class Schoolwars extends JavaPlugin {
         GameState.setGamestate(GameState.WAITING);
 
         //Doe dit altijd als laatste zodat je gemakkelijk in de console kan zien of er een error bij het opstarten is of niet
-        getLogger().info(getName() + " is enabled!");
+        getLogger().info(ChatColor.GREEN + getName() + " is enabled!");
     }
 
     public EventListener getEventListener() {
