@@ -3,6 +3,7 @@ package bazcraft.schoolwars;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -38,5 +39,13 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerDamage(EntityDamageEvent event){
+        //in de lobby mag men geen damage nemen
+        if(GameState.getCurrentGamestate() == GameState.WAITING){
+            event.setCancelled(true);
+        }
     }
 }
