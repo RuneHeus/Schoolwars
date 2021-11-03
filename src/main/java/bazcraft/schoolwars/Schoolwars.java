@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 
 public final class Schoolwars extends JavaPlugin {
 
@@ -15,6 +16,7 @@ public final class Schoolwars extends JavaPlugin {
     private final CommandManager commandManager;
     private final PlayerCommandManager playerCommandManager;
     private final ConsoleCommandManager consoleCommandManager;
+    private final TeamManager teamManager;
 
     public Schoolwars() {
         eventListener = new EventListener(this);
@@ -22,6 +24,7 @@ public final class Schoolwars extends JavaPlugin {
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
+        teamManager = new TeamManager(this);
     }
 
     @Override
@@ -35,11 +38,28 @@ public final class Schoolwars extends JavaPlugin {
         getLogger().info(ChatColor.GREEN + getName() + " is enabled!");
     }
 
+    @Override
+    public void onDisable() {
+        Team temp = teamManager.getRED().getScoreboard();
+        for (String n : temp.getEntries()) {
+            temp.removeEntry(n);
+        }
+
+        temp = teamManager.getBLUE().getScoreboard();
+        for (String n : temp.getEntries()) {
+            temp.removeEntry(n);
+        }
+    }
+
     public EventListener getEventListener() {
         return eventListener;
     }
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
     }
 }
