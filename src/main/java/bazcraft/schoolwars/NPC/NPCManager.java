@@ -9,11 +9,22 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class NPCManager {
 
-    public void createTaskNPC(Player player, String NPCname){
+    private ArrayList<NPC> npcList = new ArrayList<>();
+
+    public void addNPC(NPC npc){
+        npcList.add(npc);
+    }
+
+    public ArrayList<NPC> getNPCList(){
+        return this.npcList;
+    }
+
+    public void createTaskNPC(Player player, String NPCname, NPCType type){
 
         MinecraftServer server = ((CraftServer)Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) Bukkit.getWorld(player.getWorld().getName())).getHandle();
