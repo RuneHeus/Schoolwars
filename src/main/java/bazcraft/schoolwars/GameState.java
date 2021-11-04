@@ -2,7 +2,6 @@ package bazcraft.schoolwars;
 
 public enum GameState {
     WAITING,
-    STARTING,
     INGAME,
     ENDGAME;
 

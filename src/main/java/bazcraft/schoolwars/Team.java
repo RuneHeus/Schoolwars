@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Team {
 
@@ -29,6 +30,12 @@ public class Team {
 
     public void addSpeler(Player speler) {
         scoreboard.addEntry(speler.getName());
+    }
+
+    public void teleportSpelers() {
+        for (String n : scoreboard.getEntries()) {
+            Bukkit.getPlayer(n).teleport(spawn, PlayerTeleportEvent.TeleportCause.PLUGIN);
+        }
     }
 
     public org.bukkit.scoreboard.Team getScoreboard() {

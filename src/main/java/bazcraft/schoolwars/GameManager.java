@@ -1,5 +1,7 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.tools.CounterRunnable;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,12 +14,21 @@ public class GameManager {
     private ArrayList<Player> ingamePlayers;
     private int maxAantalSpelers;
     private final Location lobby;
+    private final int PLAYERSNEEDEDTOSTART;
+    private CounterRunnable countdownRunnable;
 
     public GameManager(Schoolwars plugin, int maxAantalSpelers, Location lobby) {
         this.plugin = plugin;
         ingamePlayers = new ArrayList<>();
         this.maxAantalSpelers = maxAantalSpelers;
         this.lobby = lobby;
+        PLAYERSNEEDEDTOSTART = 1;
+    }
+
+    public void startGame() {
+        GameState.setGamestate(GameState.INGAME);
+        plugin.getTeamManager().getRED().teleportSpelers();
+        plugin.getTeamManager().getBLUE().teleportSpelers();
     }
 
     public boolean addSpeler(Player speler) {
@@ -25,8 +36,22 @@ public class GameManager {
 
             ingamePlayers.add(speler);
 
-            if (ingamePlayers.size() == maxAantalSpelers) {
-                GameState.setGamestate(GameState.STARTING);
+            if (ingamePlayers.size() == PLAYERSNEEDEDTOSTART) {
+                countdownRunnable = new CounterRunnable(plugin, 60) {
+                    @Override
+                    public void repeat() {
+                        if ((counter > 10 && counter %20==0) || (counter == 10) || counter < 6) {
+                            Bukkit.broadcastMessage("Het spel zal binnen " + counter + " seconden starten");
+                        }
+                    }
+
+                    @Override
+                    public void finish() {
+                        Bukkit.broadcastMessage("Het spel is begonnen");
+                        startGame();
+                    }
+                };
+                countdownRunnable.runTaskTimer(plugin, 0, 20);
             }
 
             sorteerSpelerInTeam(speler);
@@ -63,6 +88,9 @@ public class GameManager {
 
     public void removeSpeler(Player speler) {
         ingamePlayers.remove(speler);
+        if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
+            countdownRunnable.cancel();
+        }
     }
 
     public Location getLobby() {

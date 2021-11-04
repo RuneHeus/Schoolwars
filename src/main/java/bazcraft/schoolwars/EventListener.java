@@ -19,7 +19,7 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         switch (GameState.getCurrentGamestate()) {
-            case WAITING, STARTING:
+            case WAITING:
                 if (plugin.getGameManager().addSpeler(event.getPlayer())) {
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
                     break;
