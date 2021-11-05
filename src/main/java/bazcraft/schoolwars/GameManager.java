@@ -1,5 +1,6 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ public class GameManager {
     private final Location lobby;
     private final int PLAYERSNEEDEDTOSTART;
     private CounterRunnable countdownRunnable;
+    private NPCManager npcManager;
 
     public GameManager(Schoolwars plugin, int maxAantalSpelers, Location lobby) {
         this.plugin = plugin;
@@ -29,6 +31,10 @@ public class GameManager {
         GameState.setGamestate(GameState.INGAME);
         plugin.getTeamManager().getRED().teleportSpelers();
         plugin.getTeamManager().getBLUE().teleportSpelers();
+
+        //Spawn all npc
+        this.npcManager = new NPCManager();
+        npcManager.spawnAllNPC(npcManager.getNpcList());
     }
 
     public boolean addSpeler(Player speler) {
