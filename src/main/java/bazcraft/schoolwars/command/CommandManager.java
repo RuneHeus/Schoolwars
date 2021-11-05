@@ -1,5 +1,9 @@
 package bazcraft.schoolwars.command;
 
+import bazcraft.schoolwars.NPC.CustomNPC;
+import bazcraft.schoolwars.NPC.NPCManager;
+import bazcraft.schoolwars.NPC.NPCTeam;
+import bazcraft.schoolwars.NPC.NPCType;
 import bazcraft.schoolwars.Schoolwars;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +21,7 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Player player = (Player)sender;
         switch (label) {
             case "spelers":
                 String ingame = "";
@@ -30,6 +35,18 @@ public class CommandManager implements CommandExecutor {
                 }
                 sender.sendMessage("ingamespelers: " + ingame + "\nspectators: " + spec);
                 return true;
+
+            case "spawnnpc":
+                CustomNPC npc = new CustomNPC("Testing", NPCType.LEERKRACHTNPC, NPCTeam.BLAUW);
+                plugin.getNpcManager().addNPC(npc);
+                npc.getNpc().spawn(player.getLocation());
+                return true;
+            case "despawnnpc":
+                for(int i = 0; i < plugin.getNpcManager().getNpcList().size(); i++){
+                    plugin.getNpcManager().getNpcList().get(i).getNpc().destroy();
+                }
+                return true;
+
         }
         return false;
     }

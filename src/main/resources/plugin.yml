@@ -5,5 +5,15 @@ api-version: 1.17
 authors: [ RuneHeus, NoahUyttebroeck ]
 depend: [Citizens]
 commands:
+  despawnnpc:
+    aliases:
+      - removenpc
+      - deletenpc
+    usage: /<command>
+  spawnnpc:
+    usage: /<command>
+    aliases:
+      - npc
+      - getnpc
   spelers:
     usage: print een lijst van alle spelers die zich momenteel in de server bevinden

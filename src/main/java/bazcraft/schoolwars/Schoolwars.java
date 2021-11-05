@@ -1,5 +1,6 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
@@ -17,8 +18,10 @@ public final class Schoolwars extends JavaPlugin {
     private final PlayerCommandManager playerCommandManager;
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
+    private final NPCManager npcManager;
 
     public Schoolwars() {
+        this.npcManager = new NPCManager();
         eventListener = new EventListener(this);
         gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
@@ -31,6 +34,8 @@ public final class Schoolwars extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(eventListener, this);
         getCommand("spelers").setExecutor(commandManager);
+        getCommand("spawnnpc").setExecutor(commandManager);
+        getCommand("despawnnpc").setExecutor(commandManager);
 
         GameState.setGamestate(GameState.WAITING);
 
@@ -61,5 +66,9 @@ public final class Schoolwars extends JavaPlugin {
 
     public TeamManager getTeamManager() {
         return teamManager;
+    }
+
+    public NPCManager getNpcManager() {
+        return npcManager;
     }
 }

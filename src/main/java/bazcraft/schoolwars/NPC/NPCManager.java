@@ -13,11 +13,13 @@ public class NPCManager {
     public NPCManager(){
 
         //Hard Coded NPC
+        /*
         CustomNPC leerkrachtNPCBlauw = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.BLAUW);
-        CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.BLAUW);
+        CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.ROOD);
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
+         */
     }
 
     public void spawnNPC(CustomNPC npc){
@@ -55,6 +57,10 @@ public class NPCManager {
         for(CustomNPC npc: customNPC){
             this.spawnNPC(npc);
         }
+    }
+
+    public void addNPC(CustomNPC npc){
+        this.npcList.add(npc);
     }
 
     public ArrayList<CustomNPC> getNpcList(){
