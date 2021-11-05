@@ -1,38 +1,46 @@
 package bazcraft.schoolwars.NPC;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.WorldServer;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class NPCManager {
 
-    private ArrayList<NPC> npcList = new ArrayList<>();
+    private ArrayList<CustomNPC> npcList = new ArrayList<>();
 
-    public void addNPC(NPC npc){
-        npcList.add(npc);
+    public void spawnNPC(NPC npc, NPCType type, NPCTeam team){
+        /*
+        Rood:
+            -leerkracht = 110.5 44.0 -37.5 -91.5 0
+            -sportLeerkracht = 86.5 28.0 -130.5 40 0
+
+        Blauw:
+            -leerkracht = 317.5 44.0 -164.5 90 0
+            -sportLeerkracht = 341.5 28.0 -71.5 -140.0 0
+
+        Speciaale npc = 214.0 28.0 -101.5 0 0
+         */
+
+       switch (type){
+           case LEERKRACHTNPC:
+               Location location;
+               if(team == NPCTeam.BLAUW){
+                   //blauw team
+                   location = new Location(Bukkit.getServer().getWorld("World"), 317.5, 44.0, -164.5, 90, 0);
+               }else{
+                   //rood team
+                   location = new Location(Bukkit.getServer().getWorld("World"), 110.5, 44.0, -37.5, (float) -91.5, 0);
+                   npc.spawn(location);
+                   break;
+               }
+       }
     }
 
-    public ArrayList<NPC> getNPCList(){
-        return this.npcList;
-    }
-
-    public void createTaskNPC(Player player, String NPCname, NPCType type){
-
-        MinecraftServer server = ((CraftServer)Bukkit.getServer()).getServer();
-        WorldServer world = ((CraftWorld) Bukkit.getWorld(player.getWorld().getName())).getHandle();
-        GameProfile gameprofile = new GameProfile(UUID.randomUUID(), NPCname);
-
-        EntityPlayer npc = new EntityPlayer(server, world, gameprofile);
-        Player npcPlayer = npc.getBukkitEntity().getPlayer();
-        npcPlayer.setPlayerListName("");
-        npc.setLocation(110.5, 44, -37.5, (float) -90.5, 0);
+    public void spawnAllNPC(ArrayList<CustomNPC> customNPC){
+        for(CustomNPC npc: customNPC){
+            this.spawnNPC(npc.getNpc(), npc.getType(), npc.getTeam());
+        }
     }
 }
