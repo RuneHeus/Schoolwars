@@ -11,15 +11,13 @@ public class NPCManager {
     private ArrayList<CustomNPC> npcList = new ArrayList<>();
 
     public NPCManager(){
-
         //Hard Coded NPC
-        /*
+
         CustomNPC leerkrachtNPCBlauw = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.BLAUW);
         CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.ROOD);
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
-         */
     }
 
     public void spawnNPC(CustomNPC npc){
@@ -40,16 +38,13 @@ public class NPCManager {
                Location location;
                if(npc.getTeam() == NPCTeam.BLAUW){
                    //blauw team
-                   System.out.println(ChatColor.GREEN + "Test npc blauw");
-                   location = new Location(Bukkit.getServer().getWorld("World"), 317.5, 44.0, -164.5, 90, 0);
-                   npc.getNpc().spawn(location);
+                   location = new Location(Bukkit.getServer().getWorld("world"), 317.5, 44.0, -164.5, 90, 0);
                }else{
                    //rood team
-                   System.out.println(ChatColor.GREEN + "Test npc rood");
-                   location = new Location(Bukkit.getServer().getWorld("World"), 110.5, 44.0, -37.5, (float) -91.5, 0);
-                   npc.getNpc().spawn(location);
-                   break;
+                   location = new Location(Bukkit.getServer().getWorld("world"), 110.5, 44.0, -37.5, (float) -91.5, 0);
                }
+               npc.getNpc().spawn(location);
+               break;
        }
     }
 
@@ -61,6 +56,12 @@ public class NPCManager {
 
     public void addNPC(CustomNPC npc){
         this.npcList.add(npc);
+    }
+
+    public void removeAllNPC(){
+        for(CustomNPC npc: this.npcList){
+            npc.getNpc().despawn();
+        }
     }
 
     public ArrayList<CustomNPC> getNpcList(){

@@ -18,10 +18,8 @@ public final class Schoolwars extends JavaPlugin {
     private final PlayerCommandManager playerCommandManager;
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
-    private final NPCManager npcManager;
 
     public Schoolwars() {
-        this.npcManager = new NPCManager();
         eventListener = new EventListener(this);
         gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
@@ -68,7 +66,4 @@ public final class Schoolwars extends JavaPlugin {
         return teamManager;
     }
 
-    public NPCManager getNpcManager() {
-        return npcManager;
-    }
 }

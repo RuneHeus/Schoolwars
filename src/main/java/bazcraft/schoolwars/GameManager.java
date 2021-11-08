@@ -17,7 +17,6 @@ public class GameManager {
     private final Location lobby;
     private final int PLAYERSNEEDEDTOSTART;
     private CounterRunnable countdownRunnable;
-    private NPCManager npcManager;
 
     public GameManager(Schoolwars plugin, int maxAantalSpelers, Location lobby) {
         this.plugin = plugin;
@@ -33,7 +32,7 @@ public class GameManager {
         plugin.getTeamManager().getBLUE().teleportSpelers();
 
         //Spawn all npc
-        this.npcManager = new NPCManager();
+        NPCManager npcManager = new NPCManager();
         npcManager.spawnAllNPC(npcManager.getNpcList());
     }
 
