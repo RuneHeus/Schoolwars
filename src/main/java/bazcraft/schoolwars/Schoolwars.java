@@ -1,6 +1,7 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.NPC.NPCManager;
+import bazcraft.schoolwars.Vragen.VragenManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
@@ -18,6 +19,7 @@ public final class Schoolwars extends JavaPlugin {
     private final PlayerCommandManager playerCommandManager;
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
+    private final VragenManager vragenManager;
 
     public Schoolwars() {
         eventListener = new EventListener(this);
@@ -26,6 +28,7 @@ public final class Schoolwars extends JavaPlugin {
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
         teamManager = new TeamManager(this);
+        this.vragenManager = new VragenManager();
     }
 
     @Override
@@ -66,4 +69,7 @@ public final class Schoolwars extends JavaPlugin {
         return teamManager;
     }
 
+    public VragenManager getVragenManager() {
+        return vragenManager;
+    }
 }
