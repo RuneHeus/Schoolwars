@@ -76,23 +76,24 @@ public class GameManager {
 
         //Als er meer spelers in rood zijn dan blauw add speler in blauw
         if (rood.getScoreboard().getEntries().size() > blauw.getScoreboard().getEntries().size()) {
-            blauw.addSpeler(speler);
+            plugin.getTeamManager().addPlayer(blauw, speler);
         } else if (rood.getScoreboard().getEntries().size() < blauw.getScoreboard().getEntries().size()){
             //Als er meer spelers in blauw zijn dan rood add speler in rood
-            rood.addSpeler(speler);
+            plugin.getTeamManager().addPlayer(rood, speler);
         } else {
             //Als er evenveel spelers zijn add speler in random team
             int random = rand.nextInt(2);
             if (random > 0) {
-                blauw.addSpeler(speler);
+                plugin.getTeamManager().addPlayer(blauw, speler);
             } else {
-                rood.addSpeler(speler);
+                plugin.getTeamManager().addPlayer(rood, speler);
             }
         }
     }
 
     public void removeSpeler(Player speler) {
         ingamePlayers.remove(speler);
+        plugin.getTeamManager().removePlayer(plugin.getTeamManager().getTeam(speler), speler);
         if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
             countdownRunnable.cancel();
         }

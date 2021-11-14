@@ -54,6 +54,8 @@ public class EventListener implements Listener {
         //in de lobby mag men geen damage nemen
         if(GameState.getCurrentGamestate() == GameState.WAITING){
             event.setCancelled(true);
+        } else {
+            plugin.getTeamManager().getTeam((Player) event.getEntity()).removeHealth(10);
         }
     }
 
