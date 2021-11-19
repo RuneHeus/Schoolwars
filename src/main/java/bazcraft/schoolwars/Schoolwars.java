@@ -20,7 +20,7 @@ public final class Schoolwars extends JavaPlugin {
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
     private final VragenManager vragenManager;
-
+	//Event een test voor git op linux
     public Schoolwars() {
         eventListener = new EventListener(this);
         gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
