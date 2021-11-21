@@ -5,9 +5,13 @@ import bazcraft.schoolwars.Vragen.VragenManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
+import bazcraft.schoolwars.minions.MinionManager;
+import bazcraft.schoolwars.minions.Path;
+import bazcraft.schoolwars.minions.Wall;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Team;
 
@@ -20,6 +24,7 @@ public final class Schoolwars extends JavaPlugin {
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
     private final VragenManager vragenManager;
+    private final MinionManager minionManager;
 	
     public Schoolwars() {
         eventListener = new EventListener(this);
@@ -29,6 +34,28 @@ public final class Schoolwars extends JavaPlugin {
         consoleCommandManager = new ConsoleCommandManager(this);
         teamManager = new TeamManager(this);
         this.vragenManager = new VragenManager();
+
+        //MINIONS
+        World world = Bukkit.getWorld("world");
+        minionManager = new MinionManager(
+                new Path[]{
+                        new Path(
+                                new Wall[]{
+                                        new Wall(new Location(world, -326.5, 64, 166.5)),
+                                        new Wall(new Location(world, -333.5, 64, 178.5)),
+                                        new Wall(new Location(world, -325.5, 64, 189.5)),
+                                        new Wall(new Location(world, -325.5, 64, 198.5))
+                                }),
+                        new Path(
+                                new Wall[]{
+                                        new Wall(new Location(world, -324.5, 69, 144.5)),
+                                        new Wall(new Location(world, -317.5, 69, 147.5)),
+                                        new Wall(new Location(world, -323.5, 63, 125.5)),
+                                        new Wall(new Location(world, -344.5, 63, 139.5)),
+                                        new Wall(new Location(world, -342.5, 89, 123.5))
+                                })
+                }, this
+        );
     }
 
     @Override
