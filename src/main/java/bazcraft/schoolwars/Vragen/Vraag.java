@@ -13,11 +13,15 @@ public class Vraag {
     private String vraag;
     private String antwoord;
     private VraagType type;
+    private boolean blauw;
+    private boolean rood;
 
     public Vraag(String vraag, String antwoord, VraagType type){
         this.vraag = vraag;
         this.antwoord = antwoord;
         this.type = type;
+        this.blauw = false;
+        this.rood = false;
 
         //Vraag boek aanmaken
         this.book = new ItemStack(Material.WRITTEN_BOOK);
@@ -56,5 +60,25 @@ public class Vraag {
 
     public ItemStack getBook(){
         return this.book;
+    }
+
+    public void setBook(ItemStack book) {
+        this.book = book;
+    }
+
+    public boolean isBlauw() {
+        return blauw;
+    }
+
+    public void setBlauw(boolean blauw) {
+        this.blauw = blauw;
+    }
+
+    public boolean isRood() {
+        return rood;
+    }
+
+    public void setRood(boolean rood) {
+        this.rood = rood;
     }
 }

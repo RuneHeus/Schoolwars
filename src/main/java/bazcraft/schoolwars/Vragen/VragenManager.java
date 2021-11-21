@@ -6,16 +6,20 @@ import java.util.ArrayList;
 public class VragenManager {
 
     private ArrayList<Vraag> vragenLijst;
-    private ArrayList<Integer> beantwoordenVragen;
+    private Vraag actieveVraagBlauw;
+    private Vraag actieveVraagRood;
 
     public VragenManager(){
-        this.vragenLijst = new ArrayList<>();
-        this.beantwoordenVragen = new ArrayList<>();
+        this.vragenLijst = new ArrayList<>(){{
+            add(new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.AARDRIJKSKUNDE));
+            add(new Vraag("Hoeveel is 2x2", "4", VraagType.AARDRIJKSKUNDE));
+            add(new Vraag("Wat is de naam van deze game?", "Minecraft", VraagType.AARDRIJKSKUNDE));
+            add(new Vraag("Wat is de naam van onze school?", "BAZandpoort", VraagType.AARDRIJKSKUNDE));
+            add(new Vraag("Wat is de slechteste programmeer taal?", "python", VraagType.AARDRIJKSKUNDE));
+        }};
 
         //TODO momenteel zijn de vragen hardcoded to we een database hebben
-
-        Vraag vraag = new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.AARDRIJKSKUNDE);
-        this.vragenLijst.add(vraag);
+        /*addAllVragen();*/
     }
 
     public ArrayList<Vraag> getVragenLijst(){
@@ -43,5 +47,36 @@ public class VragenManager {
         }catch (SQLException e){
             System.err.println("Not able to connect to Database");
         }
+    }
+
+    public Vraag getVraag(){
+        for(int i = 0; i < this.vragenLijst.size(); i++){
+            if(!this.vragenLijst.get(i).isBlauw()){
+                Vraag vraag = this.vragenLijst.get(i);
+                this.actieveVraagBlauw = vraag;
+                return vraag;
+            }
+        }
+        return null;
+    }
+
+    public void setVragenLijst(ArrayList<Vraag> vragenLijst) {
+        this.vragenLijst = vragenLijst;
+    }
+
+    public Vraag getActieveVraagBlauw() {
+        return actieveVraagBlauw;
+    }
+
+    public void setActieveVraagBlauw(Vraag actieveVraagBlauw) {
+        this.actieveVraagBlauw = actieveVraagBlauw;
+    }
+
+    public Vraag getActieveVraagRood() {
+        return actieveVraagRood;
+    }
+
+    public void setActieveVraagRood(Vraag actieveVraagRood) {
+        this.actieveVraagRood = actieveVraagRood;
     }
 }

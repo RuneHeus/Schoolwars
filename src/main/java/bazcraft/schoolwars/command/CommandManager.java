@@ -5,11 +5,15 @@ import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.NPC.NPCTeam;
 import bazcraft.schoolwars.NPC.NPCType;
 import bazcraft.schoolwars.Schoolwars;
+import net.citizensnpcs.npc.ai.speech.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Locale;
 
 public class CommandManager implements CommandExecutor {
 
@@ -34,6 +38,21 @@ public class CommandManager implements CommandExecutor {
                     }
                 }
                 sender.sendMessage("ingamespelers: " + ingame + "\nspectators: " + spec);
+                return true;
+            case "antwoord":
+                if (args.length > 0){
+                    if(args[0].equals(this.plugin.getVragenManager().getActieveVraagBlauw().getAntwoord().toLowerCase(Locale.ROOT))){
+                        player.sendMessage(ChatColor.GREEN + "Juist antwoord!");
+                        plugin.getVragenManager().getActieveVraagBlauw().setBlauw(true);
+                        if(plugin.getVragenManager().getVragenLijst().indexOf(plugin.getVragenManager().getActieveVraagBlauw())+1 == this.plugin.getVragenManager().getVragenLijst().size()){
+                            player.sendMessage(ChatColor.AQUA + "Game: " + ChatColor.GREEN + "Je hebt alle vragen beantwoord!");
+                        }else{
+                            plugin.getVragenManager().setActieveVraagBlauw(plugin.getVragenManager().getVraag());
+                        }
+                    }else{
+                        player.sendMessage(ChatColor.RED + "Fout antwoord!");
+                    }
+                }
                 return true;
         }
         return false;
