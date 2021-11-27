@@ -1,5 +1,7 @@
-package bazcraft.schoolwars;
+package bazcraft.schoolwars.teams;
 
+import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

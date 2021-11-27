@@ -1,17 +1,17 @@
 package bazcraft.schoolwars.NPC;
 
+import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 public class CustomNPC {
 
     private NPC npc;
     private NPCType type;
-    private NPCTeam team;
+    private Team team;
 
-    public CustomNPC(String npcName, NPCType type, NPCTeam team){
+    public CustomNPC(String npcName, NPCType type, Team team){
         this.type = type;
         this.team = team;
 
@@ -27,7 +27,7 @@ public class CustomNPC {
         return this.type;
     }
 
-    public NPCTeam getTeam(){
+    public Team getTeam(){
         return this.team;
     }
 

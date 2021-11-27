@@ -8,6 +8,7 @@ import bazcraft.schoolwars.command.PlayerCommandManager;
 import bazcraft.schoolwars.minions.MinionManager;
 import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
+import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,6 +26,7 @@ public final class Schoolwars extends JavaPlugin {
     private final TeamManager teamManager;
     private final VragenManager vragenManager;
     private final MinionManager minionManager;
+    private NPCManager npcManager;
 	
     public Schoolwars() {
         eventListener = new EventListener(this);
@@ -69,6 +71,8 @@ public final class Schoolwars extends JavaPlugin {
 
         GameState.setGamestate(GameState.WAITING);
 
+        npcManager = new NPCManager(this);
+
         //Doe dit altijd als laatste zodat je gemakkelijk in de console kan zien of er een error bij het opstarten is of niet
         getLogger().info(ChatColor.GREEN + getName() + " is enabled!");
     }
@@ -104,5 +108,9 @@ public final class Schoolwars extends JavaPlugin {
 
     public MinionManager getMinionManager() {
         return minionManager;
+    }
+
+    public NPCManager getNpcManager() {
+        return npcManager;
     }
 }

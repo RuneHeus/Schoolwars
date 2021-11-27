@@ -1,4 +1,4 @@
-package bazcraft.schoolwars;
+package bazcraft.schoolwars.teams;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -63,7 +63,7 @@ public class Team {
         }
     }
 
-    public BossBar getTeamHealthBar() {
+    protected BossBar getTeamHealthBar() {
         return teamHealthBar;
     }
 

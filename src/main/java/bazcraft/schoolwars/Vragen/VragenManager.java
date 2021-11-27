@@ -1,5 +1,7 @@
 package bazcraft.schoolwars.Vragen;
 
+import org.bukkit.entity.Player;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -78,5 +80,9 @@ public class VragenManager {
 
     public void setActieveVraagRood(Vraag actieveVraagRood) {
         this.actieveVraagRood = actieveVraagRood;
+    }
+
+    public void startVraag(Player player) {
+        //TODO teleporteer speler naar vraag plaats
     }
 }

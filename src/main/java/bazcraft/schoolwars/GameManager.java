@@ -1,6 +1,7 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.NPC.NPCManager;
+import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,8 +33,7 @@ public class GameManager {
         plugin.getTeamManager().getBLUE().teleportSpelers();
 
         //Spawn all npc
-        NPCManager npcManager = new NPCManager();
-        npcManager.spawnAllNPC(npcManager.getNpcList());
+        plugin.getNpcManager().spawnAllNPC(plugin.getNpcManager().getNpcList());
     }
 
     public boolean addSpeler(Player speler) {

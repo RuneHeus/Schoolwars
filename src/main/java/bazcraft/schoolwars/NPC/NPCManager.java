@@ -1,5 +1,7 @@
 package bazcraft.schoolwars.NPC;
 
+import bazcraft.schoolwars.Schoolwars;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,15 +11,29 @@ import java.util.ArrayList;
 public class NPCManager {
 
     private ArrayList<CustomNPC> npcList = new ArrayList<>();
+    private final Schoolwars plugin;
 
-    public NPCManager(){
+    public NPCManager(Schoolwars plugin){
+        this.plugin = plugin;
+
         //Hard Coded NPC
 
-        CustomNPC leerkrachtNPCBlauw = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.BLAUW);
-        CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, NPCTeam.ROOD);
+        CustomNPC leerkrachtNPCBlauw = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getBLUE());
+        CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getRED());
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
+        npcList.add(new CustomNPC("Shop", NPCType.SHOP, plugin.getTeamManager().getRED()));
+        npcList.add(new CustomNPC("Shop", NPCType.SHOP, plugin.getTeamManager().getBLUE()));
+    }
+
+    public CustomNPC getCustomNPC(NPC npc) {
+        for (CustomNPC n : npcList) {
+            if (n.getNpc().equals(npc)) {
+                return n;
+            }
+        }
+        return null;
     }
 
     public void spawnNPC(CustomNPC npc){
@@ -33,18 +49,27 @@ public class NPCManager {
         Speciaale npc = 214.0 28.0 -101.5 0 0
          */
 
+        Location loc = null;
        switch (npc.getType()){
            case LEERKRACHTNPC:
-               Location location;
-               if(npc.getTeam() == NPCTeam.BLAUW){
+               if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
                    //blauw team
-                   location = new Location(Bukkit.getServer().getWorld("world"), 317.5, 44.0, -164.5, 90, 0);
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 317.5, 44.0, -164.5, 90, 0);
                }else{
                    //rood team
-                   location = new Location(Bukkit.getServer().getWorld("world"), 110.5, 44.0, -37.5, (float) -91.5, 0);
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 110.5, 44.0, -37.5, -91.5f, 0);
                }
-               npc.getNpc().spawn(location);
                break;
+           case SHOP:
+               if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 316.5, 44.0, -163.5, 90, 0);
+               } else {
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 119.5, 44.0, -36.5, -91.5f, 0);
+               }
+               break;
+       }
+       if (loc != null) {
+           npc.getNpc().spawn(loc);
        }
     }
 

@@ -1,11 +1,6 @@
 package bazcraft.schoolwars.command;
 
-import bazcraft.schoolwars.NPC.CustomNPC;
-import bazcraft.schoolwars.NPC.NPCManager;
-import bazcraft.schoolwars.NPC.NPCTeam;
-import bazcraft.schoolwars.NPC.NPCType;
 import bazcraft.schoolwars.Schoolwars;
-import net.citizensnpcs.npc.ai.speech.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

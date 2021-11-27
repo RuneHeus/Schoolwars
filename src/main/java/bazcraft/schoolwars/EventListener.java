@@ -1,6 +1,8 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.GUI.VragenGUI;
+import bazcraft.schoolwars.GUI.shop.MainPage;
+import bazcraft.schoolwars.NPC.CustomNPC;
 import bazcraft.schoolwars.Vragen.Vraag;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.npc.ai.speech.Chat;
@@ -70,13 +72,35 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNPCRightClick(NPCRightClickEvent event){
         Player player = event.getClicker();
-        VragenGUI gui = new VragenGUI(player);
-        Inventory inventory = gui.getGui();
-        player.openInventory(inventory);
+        CustomNPC npc = plugin.getNpcManager().getCustomNPC(event.getNPC());
+        if (npc != null) {
+            switch (npc.getType()) {
+                case SHOP:
+                    MainPage mainPage = new MainPage();
+                    player.openInventory(mainPage.getInventory());
+                    break;
+                default:
+                    VragenGUI gui = new VragenGUI(player);
+                    Inventory inventory = gui.getGui();
+                    player.openInventory(inventory);
+
+            }
+        }
     }
 
     @EventHandler
     public void onGuiClick(InventoryClickEvent event){
+        if (event.getClickedInventory() != null) {
+            if (event.getClickedInventory().getHolder() instanceof MainPage) {
+                if (event.getCurrentItem() != null) {
+                    switch (event.getCurrentItem().getType()) {
+                        case PLAYER_HEAD -> plugin.getVragenManager().startVraag((Player)event.getWhoClicked());
+                    }
+                }
+                event.setCancelled(true);
+            }
+        }
+
         //logica Team kleur
         if(plugin.getVragenManager().getActieveVraagBlauw() == null){
             this.plugin.getVragenManager().setActieveVraagBlauw(this.plugin.getVragenManager().getVraag());
