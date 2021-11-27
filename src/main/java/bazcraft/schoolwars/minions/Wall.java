@@ -12,7 +12,7 @@ public class Wall {
 
     public Wall(Location loc) {
         this.loc = loc;
-        activated = false;
+        activated = true;
     }
 
     public void activate() {

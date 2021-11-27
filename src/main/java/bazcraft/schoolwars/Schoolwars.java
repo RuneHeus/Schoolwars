@@ -64,6 +64,7 @@ public final class Schoolwars extends JavaPlugin {
         getCommand("spelers").setExecutor(commandManager);
         getCommand("spawnnpc").setExecutor(commandManager);
         getCommand("despawnnpc").setExecutor(commandManager);
+        getCommand("pad").setExecutor(playerCommandManager);
 
         GameState.setGamestate(GameState.WAITING);
 
@@ -98,5 +99,9 @@ public final class Schoolwars extends JavaPlugin {
 
     public VragenManager getVragenManager() {
         return vragenManager;
+    }
+
+    public MinionManager getMinionManager() {
+        return minionManager;
     }
 }
