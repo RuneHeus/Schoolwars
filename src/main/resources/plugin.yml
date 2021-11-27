@@ -18,3 +18,5 @@ commands:
   spelers:
     usage: print een lijst van alle spelers die zich momenteel in de server bevinden
   pad:
+  antwoord:
+    usage: /<command> <antwoord>

@@ -4,6 +4,7 @@ import bazcraft.schoolwars.GUI.VragenGUI;
 import bazcraft.schoolwars.Vragen.Vraag;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.npc.ai.speech.Chat;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,16 +77,23 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onGuiClick(InventoryClickEvent event){
-        ItemStack book = plugin.getVragenManager().getVragenLijst().get(0).getBook();
+        //logica Team kleur
+        if(plugin.getVragenManager().getActieveVraagBlauw() == null){
+            this.plugin.getVragenManager().setActieveVraagBlauw(this.plugin.getVragenManager().getVraag());
+        }
+        ItemStack book = plugin.getVragenManager().getActieveVraagBlauw().getBook();
         Player player = (Player) event.getWhoClicked();
-        Material clickedItem = Objects.requireNonNull(event.getCurrentItem()).getType();
-        if(event.getView().getTitle().equalsIgnoreCase(ChatColor.AQUA + "Vragen Menu")){
-            if(clickedItem.equals(Material.BOOK)){
-                player.openBook(book);
-            }else if(clickedItem.equals(Material.WRITTEN_BOOK)){
-                player.sendMessage(ChatColor.RED + "Debug: " + ChatColor.GREEN + "Normaal moete nu een antwoord kunnen geven");
+        if(event.getCurrentItem() != null){
+            Material clickedItem = Objects.requireNonNull(event.getCurrentItem()).getType();
+            if(event.getView().getTitle().equalsIgnoreCase(ChatColor.AQUA + "Vragen Menu")){
+                if(clickedItem.equals(Material.BOOK)){
+                    player.openBook(book);
+                }else if(clickedItem.equals(Material.WRITTEN_BOOK)){
+                    player.sendMessage(ChatColor.RED + "Debug: " + ChatColor.GREEN + "Normaal moete nu een antwoord kunnen geven");
+                    //logica commandline openen
+                }
+                event.setCancelled(true);
             }
-            event.setCancelled(true);
         }
     }
 }
