@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Locale;
 
@@ -36,17 +37,7 @@ public class CommandManager implements CommandExecutor {
                 return true;
             case "antwoord":
                 if (args.length > 0){
-                    if(args[0].equals(this.plugin.getVragenManager().getActieveVraagBlauw().getAntwoord().toLowerCase(Locale.ROOT))){
-                        player.sendMessage(ChatColor.GREEN + "Juist antwoord!");
-                        plugin.getVragenManager().getActieveVraagBlauw().setBlauw(true);
-                        if(plugin.getVragenManager().getVragenLijst().indexOf(plugin.getVragenManager().getActieveVraagBlauw())+1 == this.plugin.getVragenManager().getVragenLijst().size()){
-                            player.sendMessage(ChatColor.AQUA + "Game: " + ChatColor.GREEN + "Je hebt alle vragen beantwoord!");
-                        }else{
-                            plugin.getVragenManager().setActieveVraagBlauw(plugin.getVragenManager().getVraag());
-                        }
-                    }else{
-                        player.sendMessage(ChatColor.RED + "Fout antwoord!");
-                    }
+                    this.plugin.getVragenManager().compareAnswer(args, player);
                 }
                 return true;
         }

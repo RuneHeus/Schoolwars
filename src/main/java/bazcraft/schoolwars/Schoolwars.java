@@ -35,7 +35,7 @@ public final class Schoolwars extends JavaPlugin {
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
         teamManager = new TeamManager(this);
-        this.vragenManager = new VragenManager();
+        this.vragenManager = new VragenManager(this.teamManager);
 
         //MINIONS
         World world = Bukkit.getWorld("world");
@@ -88,6 +88,7 @@ public final class Schoolwars extends JavaPlugin {
         for (String n : temp.getEntries()) {
             temp.removeEntry(n);
         }
+
     }
 
     public EventListener getEventListener() {
