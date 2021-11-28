@@ -104,6 +104,7 @@ public class EventListener implements Listener {
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
                         plugin.getVragenManager().startVraag(player);
+
                     }
                 }
                 event.setCancelled(true);

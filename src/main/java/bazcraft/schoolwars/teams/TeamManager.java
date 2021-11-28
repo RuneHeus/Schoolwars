@@ -1,10 +1,6 @@
 package bazcraft.schoolwars.teams;
 
 import bazcraft.schoolwars.Schoolwars;
-import bazcraft.schoolwars.teams.Team;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TeamManager {
@@ -15,14 +11,13 @@ public class TeamManager {
     private final Team RED;
     private final Team BLUE;
 
-    public TeamManager(Schoolwars plugin) {
-
+    public TeamManager(Team red, Team blue, Schoolwars plugin) {
         this.plugin = plugin;
-
         MAXHEALTH = 100;
-        RED = new Team("rood", MAXHEALTH, new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.RED);
-        BLUE = new Team("blauw", MAXHEALTH, new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.BLUE);
-
+        RED = red;
+        BLUE = blue;
+        RED.setHealth(MAXHEALTH);
+        BLUE.setHealth(MAXHEALTH);
     }
 
     public Team getTeam(Player player) {

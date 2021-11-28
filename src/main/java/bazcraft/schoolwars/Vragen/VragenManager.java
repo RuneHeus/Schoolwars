@@ -149,12 +149,19 @@ public class VragenManager{
                     antwoord += " " + args[i];
                 }
             }
-        }else{
-            if(args[0].toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))){
-                player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
-                this.actieveVraagRood.setRood(true);
-                if (this.vragenLijst.indexOf(this.actieveVraagRood)+1 == this.vragenLijst.size()) {
-                    this.alleVragenRoodBeantwoord = true;
+        }
+        if(antwoord.length() > 0){
+            if(team == this.teamManager.getBLUE()){
+                if (antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagBlauw.getAntwoord().toLowerCase(Locale.ROOT))) {
+                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
+                    this.getActieveVraagBlauw().setBlauw(true);
+                    this.plugin.getKlasLokaal().teleportToMainGame(player);
+                    this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
+                    if(this.vragenLijst.indexOf(this.actieveVraagBlauw) + 1 == this.vragenLijst.size()){
+                        this.alleVragenBlauwBeantwoord = true;
+                    }
+                }else{
+                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
                 }
             }else{
                 if(antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))){

@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.teams;
 
+import bazcraft.schoolwars.minions.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,8 +16,10 @@ public class Team {
     private final BossBar teamHealthBar;
     private final BossBar publicHealthBar;
     private final Location spawn;
+    private int minionPoints;
+    private final Path path;
 
-    public Team(String naam, int health, Location spawn, ChatColor color) {
+    public Team(String naam, Location spawn, ChatColor color, Path path) {
 
         org.bukkit.scoreboard.Team temp = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(naam);
         if (temp == null) {
@@ -25,12 +28,14 @@ public class Team {
         scoreboard = temp;
 
         teamHealthBar = Bukkit.createBossBar(color + naam.toUpperCase() + " §e(jij)", BarColor.valueOf(color.name()), BarStyle.SOLID);
-        teamHealthBar.setProgress((health*1.0)/100);
         publicHealthBar = Bukkit.createBossBar(color + naam.toUpperCase(), teamHealthBar.getColor(), teamHealthBar.getStyle());
         this.spawn = spawn;
+        this.path = path;
 
         scoreboard.setAllowFriendlyFire(false);
         scoreboard.setColor(color);
+
+        minionPoints = 0;
 
     }
 
@@ -63,6 +68,14 @@ public class Team {
         }
     }
 
+    public void setHealth(int health) {
+        teamHealthBar.setProgress((health*1.0)/100);
+    }
+
+    public int getHealth() {
+        return ((int) (teamHealthBar.getProgress())*100);
+    }
+
     protected BossBar getTeamHealthBar() {
         return teamHealthBar;
     }
@@ -77,5 +90,17 @@ public class Team {
 
     public Location getSpawn() {
         return spawn;
+    }
+
+    public int getMinionPoints() {
+        return minionPoints;
+    }
+
+    public void setMinionPoints(int minionPoints) {
+        this.minionPoints = minionPoints;
+    }
+
+    public Path getPath() {
+        return path;
     }
 }

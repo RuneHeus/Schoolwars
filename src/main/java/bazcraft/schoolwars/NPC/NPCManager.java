@@ -64,7 +64,7 @@ public class NPCManager {
                break;
            case SHOP:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
-                   loc = new Location(Bukkit.getServer().getWorld("world"), 316.5, 44.0, -163.5, 90, 0);
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 29.5, 40, -92.5, 90, 0);
                } else {
                    loc = new Location(Bukkit.getServer().getWorld("world"), 119.5, 44.0, -36.5, -91.5f, 0);
                }

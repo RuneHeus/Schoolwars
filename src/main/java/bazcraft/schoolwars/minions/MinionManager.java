@@ -12,22 +12,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class MinionManager implements Listener {
 
-    private ArrayList<Minion> minions;
-    private final Path[] paths;
     private final Schoolwars plugin;
+    private final Path[] paths;
 
     public MinionManager(Path[] paths, Schoolwars plugin) {
-        this.paths = paths;
-        minions = new ArrayList<>();
         this.plugin = plugin;
+        this.paths = paths;
+
     }
 
-    public void addMinion(int pathIndex) {
-        Minion minion = new Minion(paths[pathIndex]);
-        minions.add(minion);
+    public void addMinion(Path path) {
+        Minion minion = new Minion(path, plugin);
+        path.getMinions().add(minion);
         moveMinion(minion, 0);
     }
 
@@ -35,20 +35,18 @@ public class MinionManager implements Listener {
         minion.move(targetIndex);
     }
 
-    public void moveMinionsFromPath(int pathIndex) {
-        for (Minion n : minions) {
-            if (n.getPath().equals(paths[pathIndex])) {
-                moveMinion(n, n.getTarget());
-            }
+    public void moveMinionsFromPath(Path path) {
+        for (Minion n : path.getMinions()) {
+            moveMinion(n, n.getTarget());
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onNavigationComplete(NavigationCompleteEvent event) {
         Minion minion = null;
-        for (Minion n : minions) {
-            if (n.getNpc().equals(event.getNPC())) {
-                minion = n;
+        for (Minion m : getMinions()) {
+            if (m.getNpc().equals(event.getNPC())) {
+                minion = m;
                 break;
             }
         }
@@ -65,9 +63,12 @@ public class MinionManager implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNavigationBegin(NavigationBeginEvent event) {
         Minion minion = null;
-        for (Minion n : minions) {
-            if (n.getNpc().equals(event.getNPC())) {
-                minion = n;
+        int minionIndex = 0;
+        Minion[] minions = getMinions();
+        for (int i = 0; i < minions.length; i++) {
+            if (minions[i].getNpc().equals(event.getNPC())) {
+                minion = minions[i];
+                minionIndex = i;
                 break;
             }
         }
@@ -75,8 +76,8 @@ public class MinionManager implements Listener {
         if (wall != null) {
             if (wall.isActivated()) {
                 int count = 0;
-                for (int i = minions.indexOf(minion)-1; i >= 0; i--) {
-                    if (minions.get(i).getPath().equals(minion.getPath()) && minions.get(i).getTarget() == minion.getTarget()) {
+                for (int i = minionIndex-1; i >= 0; i--) {
+                    if (minions[i].getPath().equals(minion.getPath()) && minions[i].getTarget() == minion.getTarget()) {
                         count++;
                     }
                 }
@@ -99,8 +100,12 @@ public class MinionManager implements Listener {
 
 
 
-    public ArrayList<Minion> getMinions() {
-        return minions;
+    public Minion[] getMinions() {
+        ArrayList<Minion> minions = new ArrayList<>();
+        for (Path n : paths) {
+            minions.addAll(n.getMinions());
+        }
+        return minions.toArray(new Minion[0]);
     }
 
     public Path[] getPaths() {
