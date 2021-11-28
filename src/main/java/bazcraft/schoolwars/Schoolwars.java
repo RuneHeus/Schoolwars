@@ -31,17 +31,12 @@ public final class Schoolwars extends JavaPlugin {
     private NPCManager npcManager;
 	
     public Schoolwars() {
+        TeamManager teamManager1;
         eventListener = new EventListener(this);
         gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
-
-        teamManager = new TeamManager(this);
-        this.vragenManager = new VragenManager(this.teamManager, this);
-        this.klasLokaal = new KlasLokaal(this.vragenManager, this);
-
-
         //MINIONS
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(
@@ -68,9 +63,14 @@ public final class Schoolwars extends JavaPlugin {
                 }, this
         );
 
-        teamManager = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.RED,
+        teamManager1 = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.RED,
                 redPath), new Team("blauw", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.BLUE,
                 bluePath), this);
+        teamManager = teamManager1;
+
+        this.vragenManager = new VragenManager(teamManager1, this);
+        this.klasLokaal = new KlasLokaal(this.vragenManager, this);
+
     }
 
     @Override
