@@ -42,12 +42,8 @@ public class PlayerCommandManager implements CommandExecutor {
                                 if (args.length > 1) {
                                     plugin.getMinionManager().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].deactivate(p);
                                     p.sendMessage("Wall deactivated");
-                                    plugin.getMinionManager().moveMinionsFromPath(selectedPathCache.get(p));
+                                    plugin.getMinionManager().moveMinionsFromPath(plugin.getMinionManager().getPaths()[selectedPathCache.get(p)]);
                                 }
-                                return true;
-                            case "addMinion":
-                                plugin.getMinionManager().addMinion(selectedPathCache.get(p));
-                                p.sendMessage("Minion added");
                                 return true;
                         }
                     }

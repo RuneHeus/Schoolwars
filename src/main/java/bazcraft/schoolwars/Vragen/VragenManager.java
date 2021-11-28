@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.Vragen;
 
+import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.ChatColor;
@@ -15,11 +16,11 @@ public class VragenManager {
     private ArrayList<Vraag> vragenLijst;
     private Vraag actieveVraagBlauw;
     private Vraag actieveVraagRood;
-    private TeamManager teamManager;
+    private Schoolwars plugin;
     private boolean alleVragenRoodBeantwoord;
     private boolean alleVragenBlauwBeantwoord;
 
-    public VragenManager(TeamManager teamManager) {
+    public VragenManager(Schoolwars plugin) {
         this.vragenLijst = new ArrayList<>() {{
             add(new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.AARDRIJKSKUNDE));
             add(new Vraag("Hoeveel is 2x2", "4", VraagType.AARDRIJKSKUNDE));
@@ -27,7 +28,7 @@ public class VragenManager {
             add(new Vraag("Wat is de naam van onze school?", "BAZandpoort", VraagType.AARDRIJKSKUNDE));
             add(new Vraag("Wat is de slechteste programmeer taal?", "python", VraagType.AARDRIJKSKUNDE));
         }};
-        this.teamManager = teamManager;
+        this.plugin = plugin;
 
         this.alleVragenBlauwBeantwoord = false;
         this.alleVragenRoodBeantwoord = false;
@@ -72,12 +73,12 @@ public class VragenManager {
 
     public Vraag getVraag(Team team) {
         for (Vraag vraag : this.vragenLijst) {
-            if(team == this.teamManager.getBLUE()){
-                if (!vraag.isBlauw()){
+            if (team == plugin.getTeamManager().getBLUE()) {
+                if (!vraag.isBlauw()) {
                     return vraag;
                 }
-            }else{
-                if(!vraag.isRood()){
+            } else {
+                if (!vraag.isRood()) {
                     return vraag;
                 }
             }
@@ -121,48 +122,44 @@ public class VragenManager {
         this.alleVragenBlauwBeantwoord = alleVragenBlauwBeantwoord;
     }
 
-    public TeamManager getTeamManager() {
-        return teamManager;
-    }
-
-    public void setTeamManager(TeamManager teamManager) {
-        this.teamManager = teamManager;
-    }
     public void startVraag(Player player) {
         //TODO teleporteer speler naar vraag plaats
+
+        //ENKEL OM TE TESTEN
+
     }
 
-    public void compareAnswer(String[]args, Player player){
-        if(this.teamManager.getTeam(player) == this.teamManager.getBLUE()){
+    public void compareAnswer(String[] args, Player player) {
+        if (plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()) {
             if (args[0].toLowerCase(Locale.ROOT).equals(this.actieveVraagBlauw.getAntwoord().toLowerCase(Locale.ROOT))) {
                 player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
                 this.getActieveVraagBlauw().setBlauw(true);
-                if(this.vragenLijst.indexOf(this.actieveVraagBlauw) + 1 == this.vragenLijst.size()){
+                if (this.vragenLijst.indexOf(this.actieveVraagBlauw) + 1 == this.vragenLijst.size()) {
                     this.alleVragenBlauwBeantwoord = true;
                 }
-            }else{
+            } else {
                 player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
             }
-        }else{
-            if(args[0].toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))){
+        } else {
+            if (args[0].toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))) {
                 player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
                 this.actieveVraagRood.setRood(true);
-                if (this.vragenLijst.indexOf(this.actieveVraagRood)+1 == this.vragenLijst.size()) {
+                if (this.vragenLijst.indexOf(this.actieveVraagRood) + 1 == this.vragenLijst.size()) {
                     this.alleVragenRoodBeantwoord = true;
                 }
-            }else{
+            } else {
                 player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
             }
         }
     }
 
-    public ItemStack getVraagBoek(Player player){
+    public ItemStack getVraagBoek(Player player) {
         ItemStack book;
-        if(this.teamManager.getTeam(player) == this.teamManager.getBLUE()){
-            this.setActieveVraagBlauw(this.getVraag(this.teamManager.getTeam(player)));
+        if (plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()) {
+            this.setActieveVraagBlauw(this.getVraag(plugin.getTeamManager().getTeam(player)));
             book = this.getActieveVraagBlauw().getBook();
-        }else{
-            this.setActieveVraagRood(this.getVraag(this.teamManager.getTeam(player)));
+        } else {
+            this.setActieveVraagRood(this.getVraag(plugin.getTeamManager().getTeam(player)));
             book = this.getActieveVraagRood().getBook();
         }
         return book;

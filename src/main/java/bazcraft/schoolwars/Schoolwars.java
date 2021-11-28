@@ -8,13 +8,13 @@ import bazcraft.schoolwars.command.PlayerCommandManager;
 import bazcraft.schoolwars.minions.MinionManager;
 import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
+import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Team;
 
 public final class Schoolwars extends JavaPlugin {
 
@@ -34,30 +34,37 @@ public final class Schoolwars extends JavaPlugin {
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
-        teamManager = new TeamManager(this);
-        this.vragenManager = new VragenManager(this.teamManager);
+        vragenManager = new VragenManager(this);
 
         //MINIONS
         World world = Bukkit.getWorld("world");
+        Path redPath = new Path(
+            new Wall[]{
+                    new Wall(new Location(world, -326.5, 64, 166.5)),
+                    new Wall(new Location(world, -333.5, 64, 178.5)),
+                    new Wall(new Location(world, -325.5, 64, 189.5)),
+                    new Wall(new Location(world, -325.5, 64, 198.5))
+            }
+        );
+        Path bluePath = new Path(
+                new Wall[]{
+                    new Wall(new Location(world, -324.5, 69, 144.5)),
+                    new Wall(new Location(world, -317.5, 69, 147.5)),
+                    new Wall(new Location(world, -323.5, 63, 125.5)),
+                    new Wall(new Location(world, -344.5, 63, 139.5)),
+                    new Wall(new Location(world, -342.5, 89, 123.5))
+                }
+        );
         minionManager = new MinionManager(
                 new Path[]{
-                        new Path(
-                                new Wall[]{
-                                        new Wall(new Location(world, -326.5, 64, 166.5)),
-                                        new Wall(new Location(world, -333.5, 64, 178.5)),
-                                        new Wall(new Location(world, -325.5, 64, 189.5)),
-                                        new Wall(new Location(world, -325.5, 64, 198.5))
-                                }),
-                        new Path(
-                                new Wall[]{
-                                        new Wall(new Location(world, -324.5, 69, 144.5)),
-                                        new Wall(new Location(world, -317.5, 69, 147.5)),
-                                        new Wall(new Location(world, -323.5, 63, 125.5)),
-                                        new Wall(new Location(world, -344.5, 63, 139.5)),
-                                        new Wall(new Location(world, -342.5, 89, 123.5))
-                                })
+                        redPath,
+                        bluePath
                 }, this
         );
+
+        teamManager = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.RED,
+                redPath), new Team("blauw", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.BLUE,
+                bluePath), this);
     }
 
     @Override
@@ -79,7 +86,7 @@ public final class Schoolwars extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Team temp = teamManager.getRED().getScoreboard();
+        org.bukkit.scoreboard.Team temp = teamManager.getRED().getScoreboard();
         for (String n : temp.getEntries()) {
             temp.removeEntry(n);
         }

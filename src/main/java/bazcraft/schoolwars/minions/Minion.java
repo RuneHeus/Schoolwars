@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.minions;
 
+import bazcraft.schoolwars.Schoolwars;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
@@ -10,12 +11,14 @@ public class Minion {
     private NPC npc;
     private Path path;
     private int target;
+    private final Schoolwars plugin;
 
-    public Minion(Path pad) {
+    public Minion(Path pad, Schoolwars plugin) {
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, "minion");
         npc.setProtected(true);
 
         this.path = pad;
+        this.plugin = plugin;
         target = 0;
         npc.getNavigator().getDefaultParameters().useNewPathfinder(true);
         npc.getNavigator().getDefaultParameters().range(200);

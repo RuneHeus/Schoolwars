@@ -4,6 +4,7 @@ import bazcraft.schoolwars.GUI.VragenGUI;
 import bazcraft.schoolwars.GUI.shop.MainPage;
 import bazcraft.schoolwars.NPC.CustomNPC;
 import bazcraft.schoolwars.Vragen.Vraag;
+import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.npc.ai.speech.Chat;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -95,7 +96,13 @@ public class EventListener implements Listener {
             if (event.getClickedInventory().getHolder() instanceof MainPage) {
                 if (event.getCurrentItem() != null) {
                     switch (event.getCurrentItem().getType()) {
-                        case PLAYER_HEAD -> plugin.getVragenManager().startVraag(player);
+                        case PLAYER_HEAD:
+                            Team team = plugin.getTeamManager().getTeam(player);
+                            if(team.getMinionPoints() > 0) {
+                                team.setMinionPoints(team.getMinionPoints()-1);
+                                plugin.getVragenManager().startVraag(player);
+                            }
+                            break;
                     }
                 }
                 event.setCancelled(true);
