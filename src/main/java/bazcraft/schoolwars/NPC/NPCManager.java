@@ -10,16 +10,18 @@ import java.util.ArrayList;
 
 public class NPCManager {
 
-    private ArrayList<CustomNPC> npcList = new ArrayList<>();
+    private ArrayList<CustomNPC> npcList;
+    private ArrayList<CustomNPC> geselecteerdeNPC;
     private final Schoolwars plugin;
 
     public NPCManager(Schoolwars plugin){
         this.plugin = plugin;
-
+        this.npcList = new ArrayList<>();
+        this.geselecteerdeNPC = new ArrayList<>();
         //Hard Coded NPC
 
-        CustomNPC leerkrachtNPCBlauw = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getBLUE());
-        CustomNPC leerkrachtNPCRood = new CustomNPC("Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getRED());
+        CustomNPC leerkrachtNPCBlauw = new CustomNPC(ChatColor.BLUE + "Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getBLUE());
+        CustomNPC leerkrachtNPCRood = new CustomNPC(ChatColor.RED + "Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getRED());
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
@@ -87,6 +89,22 @@ public class NPCManager {
         for(CustomNPC npc: this.npcList){
             npc.getNpc().despawn();
         }
+    }
+
+    public void setNpcList(ArrayList<CustomNPC> npcList) {
+        this.npcList = npcList;
+    }
+
+    public ArrayList<CustomNPC> getGeselecteerdeNPC() {
+        return geselecteerdeNPC;
+    }
+
+    public void addGeselecteerdeNPC(CustomNPC npc) {
+        this.geselecteerdeNPC.add(npc);
+    }
+
+    public void removeGeselecteerdeNPC(CustomNPC npc){
+        this.geselecteerdeNPC.remove(npc);
     }
 
     public ArrayList<CustomNPC> getNpcList(){

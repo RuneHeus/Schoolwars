@@ -1,6 +1,7 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.NPC.NPCManager;
+import bazcraft.schoolwars.Vragen.KlasLokaal;
 import bazcraft.schoolwars.Vragen.VragenManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
@@ -25,6 +26,7 @@ public final class Schoolwars extends JavaPlugin {
     private final ConsoleCommandManager consoleCommandManager;
     private final TeamManager teamManager;
     private final VragenManager vragenManager;
+    private final KlasLokaal klasLokaal;
     private final MinionManager minionManager;
     private NPCManager npcManager;
 	
@@ -35,7 +37,8 @@ public final class Schoolwars extends JavaPlugin {
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
         teamManager = new TeamManager(this);
-        this.vragenManager = new VragenManager(this.teamManager);
+        this.vragenManager = new VragenManager(this.teamManager, this);
+        this.klasLokaal = new KlasLokaal(this.vragenManager, this);
 
         //MINIONS
         World world = Bukkit.getWorld("world");
@@ -113,5 +116,9 @@ public final class Schoolwars extends JavaPlugin {
 
     public NPCManager getNpcManager() {
         return npcManager;
+    }
+
+    public KlasLokaal getKlasLokaal() {
+        return klasLokaal;
     }
 }
