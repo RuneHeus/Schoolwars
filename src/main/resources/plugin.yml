@@ -20,4 +20,4 @@ commands:
   pad:
   antwoord:
     usage: /<command> <antwoord>
-  start:
+  fstart:
