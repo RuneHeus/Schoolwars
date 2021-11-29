@@ -11,11 +11,14 @@ import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
+import bazcraft.schoolwars.tools.CounterRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public final class Schoolwars extends JavaPlugin {
 
@@ -63,8 +66,8 @@ public final class Schoolwars extends JavaPlugin {
                 }, this
         );
 
-        teamManager1 = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.RED,
-                redPath), new Team("blauw", new Location(Bukkit.getWorld("world"), 0, 0, 0), ChatColor.BLUE,
+        teamManager1 = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 37.5, 40.2, -91.5, -90f, 0f), ChatColor.RED,
+                redPath), new Team("blauw", new Location(Bukkit.getWorld("world"), 390.5, 40.2, -110.5, 90f, 0f), ChatColor.BLUE,
                 bluePath), this);
         teamManager = teamManager1;
 
