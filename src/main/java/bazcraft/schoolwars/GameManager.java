@@ -106,4 +106,9 @@ public class GameManager {
     public ArrayList<Player> getIngamePlayers() {
         return ingamePlayers;
     }
+
+    public void forceStart() {
+        countdownRunnable.cancel();
+        startGame();
+    }
 }

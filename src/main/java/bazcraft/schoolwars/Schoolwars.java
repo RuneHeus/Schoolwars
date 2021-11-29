@@ -84,6 +84,7 @@ public final class Schoolwars extends JavaPlugin {
         getCommand("despawnnpc").setExecutor(commandManager);
         getCommand("pad").setExecutor(playerCommandManager);
         getCommand("antwoord").setExecutor(commandManager);
+        getCommand("start").setExecutor(playerCommandManager);
 
         GameState.setGamestate(GameState.WAITING);
 

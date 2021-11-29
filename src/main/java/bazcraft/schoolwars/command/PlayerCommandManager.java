@@ -48,6 +48,9 @@ public class PlayerCommandManager implements CommandExecutor {
                         }
                     }
                     break;
+                case "start":
+                    plugin.getGameManager().forceStart();
+                    break;
             }
         } else {
             sender.sendMessage("Enkel spelers kunnen deze command uitvoeren!");
