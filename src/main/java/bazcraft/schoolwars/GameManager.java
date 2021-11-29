@@ -6,6 +6,8 @@ import bazcraft.schoolwars.tools.CounterRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,6 +36,12 @@ public class GameManager {
 
         //Spawn all npc
         plugin.getNpcManager().spawnAllNPC(plugin.getNpcManager().getNpcList());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.broadcastMessage("§aVEEEEEEECHT!");
+            }
+        }.runTaskLater(plugin, 6000);
     }
 
     public boolean addSpeler(Player speler) {
