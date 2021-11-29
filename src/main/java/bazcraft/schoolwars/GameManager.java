@@ -1,5 +1,6 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.Events.SpecialEvent;
 import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
@@ -39,9 +40,9 @@ public class GameManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.broadcastMessage("§aVEEEEEEECHT!");
+                new SpecialEvent().run();
             }
-        }.runTaskLater(plugin, 6000);
+        }.runTaskLater(plugin, 100);
     }
 
     public boolean addSpeler(Player speler) {
