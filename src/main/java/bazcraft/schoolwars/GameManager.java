@@ -40,7 +40,7 @@ public class GameManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                new SpecialEvent().run();
+                new SpecialEvent(plugin).run();
             }
         }.runTaskLater(plugin, 100);
     }
