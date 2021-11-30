@@ -23,41 +23,41 @@ public class SpecialEvent extends BukkitRunnable{
        this.playersOnTheHill = new ArrayList<>();
     }
 
-    public  void start(){
-        new BukkitRunnable(){
+    public  void start() {
+        new BukkitRunnable() {
 
             @Override
             public void run() {
-                for(Player player: Bukkit.getOnlinePlayers()){
-                    if(puntenBlauw == 100){
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
-                        this.cancel();
-                    }else if(puntenRood == 100){
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
-                        this.cancel();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Location location = player.getLocation();
+                    if ((location.getBlockX() >= 211) && (location.getBlockX() <= 216) && (location.getBlockZ() >= -104) && (location.getBlockZ() <= -100)) {
+                        playersOnTheHill.add(player);
                     }else{
-                        Location location = player.getLocation();
-                        if((location.getBlockX() >= 211) && (location.getBlockX() <= 216) && (location.getBlockZ() >= -104) && (location.getBlockZ() <= -100) && (location.getBlockY() == 28)){
-                            playersOnTheHill.add(player);
-                            if(isTwoTeamOnHill(playersOnTheHill)){
-                                Bukkit.broadcastMessage("Er staan 2 team op de hill");
-                            }else{
-                                if(plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()){
-                                    puntenBlauw++;
-                                    Bukkit.broadcastMessage("Blauw heeft " + puntenBlauw + " punten");
-                                }else{
-                                    puntenRood++;
-                                    Bukkit.broadcastMessage("Rood heeft " + puntenRood + " punten");
-                                }
-                            }
+                        playersOnTheHill.remove(player);
+                    }
+                }
+                if(playersOnTheHill.size() != 0){
+                    if (isTwoTeamOnHill()){
+                        Bukkit.broadcastMessage("Er staan 2 team op de hill");
+                    }else{
+                        if (plugin.getTeamManager().getTeam(playersOnTheHill.get(0)) == plugin.getTeamManager().getBLUE()){
+                            puntenBlauw++;
+                            Bukkit.broadcastMessage("Blauw heeft " + puntenBlauw + " punten");
                         }else{
-                            playersOnTheHill.remove(player);
+                            puntenRood++;
+                            Bukkit.broadcastMessage("Rood heeft " + puntenRood + " punten");
                         }
                     }
                 }
+                if (puntenBlauw == 100) {
+                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
+                    this.cancel();
+                } else if (puntenRood == 100) {
+                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
+                    this.cancel();
+                }
             }
-
-        }.runTaskTimer(Schoolwars.getPlugin(Schoolwars.class), 0, 5);
+        }.runTaskTimer(Schoolwars.getPlugin(Schoolwars.class), 0,5);
     }
 
     public  void end(){
@@ -76,20 +76,17 @@ public class SpecialEvent extends BukkitRunnable{
         end();
     }
 
-    private boolean isTwoTeamOnHill(ArrayList<Player> playersOnTheHill){
+    private boolean isTwoTeamOnHill(){
         int aantalBlauw = 0;
         int aantalRood = 0;
-        if(playersOnTheHill.size() <= 1){
-            return false;
-        }else{
-            for(Player player: playersOnTheHill){
-                if(plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()){
-                    aantalBlauw++;
-                }else{
-                    aantalRood++;
-                }
+        for(Player player: playersOnTheHill){
+            if(plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()){
+                aantalBlauw++;
+            }else{
+                aantalRood++;
             }
-            return aantalBlauw > 0 && aantalRood > 0;
         }
+        return aantalBlauw > 0 && aantalRood > 0;
+
     }
 }
