@@ -44,19 +44,44 @@ public final class Schoolwars extends JavaPlugin {
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(
             new Wall[]{
-                    new Wall(new Location(world, -326.5, 64, 166.5)),
-                    new Wall(new Location(world, -333.5, 64, 178.5)),
-                    new Wall(new Location(world, -325.5, 64, 189.5)),
-                    new Wall(new Location(world, -325.5, 64, 198.5))
+                    new Wall(new Location(world, 32.5, 34, -92.5)),
+                    new Wall(new Location(world, 58.5, 31, -91.5)),
+                    new Wall(new Location(world, 84.5, 28, -89.5)),
+                    new Wall(new Location(world, 100.5, 28, -96.5)),
+                    new Wall(new Location(world, 111.5, 28, -108.5)),
+                    new Wall(new Location(world, 130.5, 28, -101.5)),
+                    new Wall(new Location(world, 149.5, 28, -102.5)),
+                    new Wall(new Location(world, 164.5, 28, -112.5)),
+                    new Wall(new Location(world, 195.5, 28, -112.5)),
+                    new Wall(new Location(world, 232.5, 28, -89.5)),
+                    new Wall(new Location(world, 262.5, 28, -90.5)),
+                    new Wall(new Location(world, 278.5, 28, -99.5)),
+                    new Wall(new Location(world, 297.5, 28, -100.5)),
+                    new Wall(new Location(world, 316.5, 28, -93.5)),
+                    new Wall(new Location(world, 343.5, 28, -112.5)),
+                    new Wall(new Location(world, 370.5, 31, -110.5)),
+                    new Wall(new Location(world, 395.5, 34, -109.5)),
             }
         );
         Path bluePath = new Path(
                 new Wall[]{
-                    new Wall(new Location(world, -324.5, 69, 144.5)),
-                    new Wall(new Location(world, -317.5, 69, 147.5)),
-                    new Wall(new Location(world, -323.5, 63, 125.5)),
-                    new Wall(new Location(world, -344.5, 63, 139.5)),
-                    new Wall(new Location(world, -342.5, 89, 123.5))
+                        new Wall(new Location(world, 395.5, 34, -109.5)),
+                        new Wall(new Location(world, 370.5, 31, -110.5)),
+                        new Wall(new Location(world, 343.5, 28, -112.5)),
+                        new Wall(new Location(world, 316.5, 28, -93.5)),
+                        new Wall(new Location(world, 297.5, 28, -100.5)),
+                        new Wall(new Location(world, 278.5, 28, -99.5)),
+                        new Wall(new Location(world, 262, 28, -90)),
+                        new Wall(new Location(world, 232.5, 28, -89.5)),
+                        new Wall(new Location(world, 195.5, 28, -112.5)),
+                        new Wall(new Location(world, 164.5, 28, -112.5)),
+                        new Wall(new Location(world, 149.5, 28, -102.5)),
+                        new Wall(new Location(world, 130.5, 28, -101.5)),
+                        new Wall(new Location(world, 111.5, 28, -108.5)),
+                        new Wall(new Location(world, 100.5, 28, -96.5)),
+                        new Wall(new Location(world, 84.5, 28, -89.5)),
+                        new Wall(new Location(world, 58.5, 31, -91.5)),
+                        new Wall(new Location(world, 32.5, 34, -92.5))
                 }
         );
         minionManager = new MinionManager(
@@ -79,6 +104,7 @@ public final class Schoolwars extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(eventListener, this);
+        getServer().getPluginManager().registerEvents(minionManager, this);
         getCommand("spelers").setExecutor(commandManager);
         getCommand("spawnnpc").setExecutor(commandManager);
         getCommand("despawnnpc").setExecutor(commandManager);

@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class MinionManager implements Listener {
 
@@ -29,6 +28,11 @@ public class MinionManager implements Listener {
         Minion minion = new Minion(path, plugin);
         path.getMinions().add(minion);
         moveMinion(minion, 0);
+    }
+
+    public void removeMinion(Minion minion) {
+        minion.getNpc().destroy();
+        minion.getPath().getMinions().remove(minion);
     }
 
     public void moveMinion(Minion minion, int targetIndex) {

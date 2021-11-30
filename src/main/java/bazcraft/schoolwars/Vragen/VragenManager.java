@@ -153,25 +153,13 @@ public class VragenManager{
         if(antwoord.length() > 0){
             if(team == this.teamManager.getBLUE()){
                 if (antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagBlauw.getAntwoord().toLowerCase(Locale.ROOT))) {
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
-                    this.getActieveVraagBlauw().setBlauw(true);
-                    this.plugin.getKlasLokaal().teleportToMainGame(player);
-                    this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
-                    if(this.vragenLijst.indexOf(this.actieveVraagBlauw) + 1 == this.vragenLijst.size()){
-                        this.alleVragenBlauwBeantwoord = true;
-                    }
+                    juist(player, false);
                 }else{
                     player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
                 }
             }else{
                 if(antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))){
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
-                    this.actieveVraagRood.setRood(true);
-                    this.plugin.getKlasLokaal().teleportToMainGame(player);
-                    this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
-                    if (this.vragenLijst.indexOf(this.actieveVraagRood)+1 == this.vragenLijst.size()) {
-                        this.alleVragenRoodBeantwoord = true;
-                    }
+                    juist(player, true);
                 }else{
                     player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
                 }
@@ -179,6 +167,27 @@ public class VragenManager{
         }else{
             player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Je moet een antwoord geven!");
         }
+    }
+
+    private void juist(Player player, boolean rood) {
+        player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
+        if (rood) {
+            this.actieveVraagRood.setRood(true);
+            if (this.vragenLijst.indexOf(this.actieveVraagRood)+1 == this.vragenLijst.size()) {
+                this.alleVragenRoodBeantwoord = true;
+            }
+        } else {
+            this.actieveVraagBlauw.setBlauw(true);
+            if (this.vragenLijst.indexOf(this.actieveVraagBlauw)+1 == this.vragenLijst.size()) {
+                this.alleVragenBlauwBeantwoord = true;
+            }
+        }
+        this.plugin.getKlasLokaal().teleportToMainGame(player);
+        this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
+
+        //spawn minion
+        plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(player).getPath());
+
     }
 
     public ItemStack getVraagBoek(Player player){

@@ -1,6 +1,7 @@
 package bazcraft.schoolwars.teams;
 
 import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.minions.Path;
 import org.bukkit.entity.Player;
 
 public class TeamManager {
@@ -57,5 +58,14 @@ public class TeamManager {
 
     public Team getBLUE() {
         return BLUE;
+    }
+
+    public Team getTeam(Path path) {
+        if (RED.getPath() == path) {
+            return RED;
+        } else if (BLUE.getPath() == path) {
+            return BLUE;
+        }
+        return null;
     }
 }
