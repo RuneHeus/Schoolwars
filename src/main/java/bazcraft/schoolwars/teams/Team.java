@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.teams;
 
+import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.minions.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -64,7 +65,7 @@ public class Team {
             teamHealthBar.setProgress(remainingHealth);
         }
         if (teamHealthBar.getProgress() == 0) {
-            //TODO END GAME
+            Schoolwars.getPlugin(Schoolwars.class).getGameManager().endGame(this);
         }
     }
 

@@ -4,6 +4,7 @@ import bazcraft.schoolwars.Events.SpecialEvent;
 import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -119,5 +120,25 @@ public class GameManager {
     public void forceStart() {
         countdownRunnable.cancel();
         startGame();
+    }
+
+    public void endGame(Team loser) {
+        GameState.setGamestate(GameState.ENDGAME);
+        CitizensAPI.getNPCRegistry().deregisterAll();
+        Team winner = plugin.getTeamManager().getRED();
+        if (winner == loser) {
+            winner = plugin.getTeamManager().getBLUE();
+        }
+        Bukkit.broadcastMessage("Team " + winner.getPublicHealthBar().getTitle() + " is gewonnen!");
+        Bukkit.getScheduler().cancelTasks(plugin);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player n : Bukkit.getOnlinePlayers()) {
+                    n.kickPlayer("GameOver");
+                }
+                plugin.getServer().reload();
+            }
+        }.runTaskLater(plugin, 200);
     }
 }
