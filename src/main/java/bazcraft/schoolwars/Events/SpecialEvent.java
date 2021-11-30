@@ -1,13 +1,11 @@
 package bazcraft.schoolwars.Events;
 
 import bazcraft.schoolwars.Schoolwars;
-import net.citizensnpcs.npc.ai.speech.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 
@@ -25,13 +23,15 @@ public class SpecialEvent extends BukkitRunnable{
 
     public  void start() {
         new BukkitRunnable() {
-
+            int counter = 0;
             @Override
             public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
+                for (Player player : Bukkit.getOnlinePlayers()){
                     Location location = player.getLocation();
-                    if ((location.getBlockX() >= 211) && (location.getBlockX() <= 216) && (location.getBlockZ() >= -104) && (location.getBlockZ() <= -100)) {
-                        playersOnTheHill.add(player);
+                    if ((location.getBlockX() >= 211) && (location.getBlockX() <= 216) && (location.getBlockZ() >= -104) && (location.getBlockZ() <= -100)){
+                        if(!playersOnTheHill.contains(player)){
+                            playersOnTheHill.add(player);
+                        }
                     }else{
                         playersOnTheHill.remove(player);
                     }
@@ -54,6 +54,11 @@ public class SpecialEvent extends BukkitRunnable{
                     this.cancel();
                 } else if (puntenRood == 100) {
                     Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
+                    this.cancel();
+                }
+                counter++;
+                if(counter == 1200){
+                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Het evenement is gedaan! Niemand Heeft gewonnen");
                     this.cancel();
                 }
             }

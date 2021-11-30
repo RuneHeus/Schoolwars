@@ -1,5 +1,6 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.Kit.KitManager;
 import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.Vragen.KlasLokaal;
 import bazcraft.schoolwars.Vragen.VragenManager;
@@ -32,6 +33,7 @@ public final class Schoolwars extends JavaPlugin {
     private final KlasLokaal klasLokaal;
     private final MinionManager minionManager;
     private NPCManager npcManager;
+    private KitManager kitManager;
 	
     public Schoolwars() {
         TeamManager teamManager1;
@@ -40,6 +42,7 @@ public final class Schoolwars extends JavaPlugin {
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
+        kitManager = new KitManager();
         //MINIONS
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(
@@ -160,5 +163,9 @@ public final class Schoolwars extends JavaPlugin {
 
     public KlasLokaal getKlasLokaal() {
         return klasLokaal;
+    }
+
+    public KitManager getKitManager(){
+        return this.kitManager;
     }
 }

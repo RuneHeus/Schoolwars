@@ -1,7 +1,9 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.GUI.KitGUI;
 import bazcraft.schoolwars.GUI.VragenGUI;
 import bazcraft.schoolwars.GUI.shop.MainPage;
+import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.NPC.CustomNPC;
 import bazcraft.schoolwars.Vragen.Vraag;
 import bazcraft.schoolwars.teams.Team;
@@ -17,13 +19,12 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,6 +44,7 @@ public class EventListener implements Listener {
             case WAITING:
                 if (plugin.getGameManager().addSpeler(event.getPlayer())) {
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
+                    event.getPlayer().getInventory().addItem(new ItemStack(Material.BOW));
                     break;
                 }
             case INGAME, ENDGAME:
@@ -53,7 +55,8 @@ public class EventListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event){
+        event.getPlayer().getInventory().remove(Material.BOW);
         plugin.getGameManager().removeSpeler(event.getPlayer());
     }
 
@@ -68,6 +71,11 @@ public class EventListener implements Listener {
         if(GameState.getCurrentGamestate() == GameState.WAITING){
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event){
+        event.setCancelled(true);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -128,6 +136,33 @@ public class EventListener implements Listener {
                     }
                 }
                 event.setCancelled(true);
+            }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Kit Menu")){
+                if(GameState.getCurrentGamestate() == GameState.WAITING){
+                    if(clickedItem.equals(Material.STONE_SWORD)){
+                        plugin.getKitManager().addPlayerWithKit(player, KitTypes.WARRIOR);
+                        player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Je hebt de " + ChatColor.RED + "Warrior" + ChatColor.AQUA + " kit gekozen");
+                    }else if(clickedItem.equals(Material.BOW)){
+                        plugin.getKitManager().addPlayerWithKit(player, KitTypes.ARCHER);
+                        player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Je hebt de " + ChatColor.GREEN + "Archer" + ChatColor.AQUA + " kit gekozen");
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(GameState.getCurrentGamestate() == GameState.WAITING){
+            if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
+                if(event.getItem() != null){
+                    if(Objects.requireNonNull(event.getItem()).getType() == Material.BOW){
+                        KitGUI kitGUI = new KitGUI(player);
+                        Inventory inventory = kitGUI.getGui();
+                        player.openInventory(inventory);
+                    }
+                }
             }
         }
     }

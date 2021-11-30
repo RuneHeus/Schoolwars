@@ -35,6 +35,8 @@ public class GameManager {
         GameState.setGamestate(GameState.INGAME);
         plugin.getTeamManager().getRED().teleportSpelers();
         plugin.getTeamManager().getBLUE().teleportSpelers();
+        plugin.getKitManager().removeKitSelector();
+        plugin.getKitManager().giveAllPlayerKit();
 
         //Spawn all npc
         plugin.getNpcManager().spawnAllNPC(plugin.getNpcManager().getNpcList());
@@ -43,7 +45,7 @@ public class GameManager {
             public void run() {
                 new SpecialEvent(plugin).run();
             }
-        }.runTaskLater(plugin, 100);
+        }.runTaskLater(plugin, 6000);
     }
 
     public boolean addSpeler(Player speler) {
