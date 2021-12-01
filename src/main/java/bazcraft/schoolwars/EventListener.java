@@ -28,6 +28,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -57,6 +58,8 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event){
         event.getPlayer().getInventory().remove(Material.BOW);
+        plugin.getKitManager().removeAllItemsFromPlayer(event.getPlayer());
+        event.getPlayer().sendMessage("Remove all items");
         plugin.getGameManager().removeSpeler(event.getPlayer());
     }
 

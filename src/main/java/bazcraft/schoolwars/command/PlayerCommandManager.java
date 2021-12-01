@@ -51,6 +51,8 @@ public class PlayerCommandManager implements CommandExecutor {
                 case "fstart":
                     plugin.getGameManager().forceStart();
                     return true;
+                case "endgame":
+                    plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());
             }
         } else {
             sender.sendMessage("Enkel spelers kunnen deze command uitvoeren!");

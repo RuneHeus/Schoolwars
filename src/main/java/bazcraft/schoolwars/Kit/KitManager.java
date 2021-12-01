@@ -1,8 +1,11 @@
 package bazcraft.schoolwars.Kit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,19 +37,19 @@ public class KitManager {
              KitTypes types = entry.getValue();
              if(types == KitTypes.WARRIOR){
                  this.AllkitList.givePlayerWarriorKit(player);
-             }else{
+             }else if(types == KitTypes.ARCHER) {
                  this.AllkitList.givePlayerArcherKit(player);
              }
          }
     }
 
-    public void removeKitSelector(){
-        for(Player player: this.playerKitList.keySet()){
-            player.getInventory().remove(Material.BOW);
+    public void removeAllItemsFromPlayer(Player player){
+        for(ItemStack item: player.getInventory().getContents()){
+            player.getInventory().remove(item);
         }
-    }
-
-    public void removeKitSet(){
-
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
     }
 }

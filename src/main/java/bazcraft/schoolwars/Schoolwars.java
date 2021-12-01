@@ -114,6 +114,7 @@ public final class Schoolwars extends JavaPlugin {
         getCommand("pad").setExecutor(playerCommandManager);
         getCommand("antwoord").setExecutor(commandManager);
         getCommand("fstart").setExecutor(playerCommandManager);
+        getCommand("endgame").setExecutor(playerCommandManager);
 
         GameState.setGamestate(GameState.WAITING);
 

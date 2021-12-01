@@ -8,9 +8,12 @@ import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,7 +38,9 @@ public class GameManager {
         GameState.setGamestate(GameState.INGAME);
         plugin.getTeamManager().getRED().teleportSpelers();
         plugin.getTeamManager().getBLUE().teleportSpelers();
-        plugin.getKitManager().removeKitSelector();
+        for(Player player: Bukkit.getOnlinePlayers()){
+            plugin.getKitManager().removeAllItemsFromPlayer(player);
+        }
         plugin.getKitManager().giveAllPlayerKit();
 
         //Spawn all npc
@@ -137,6 +142,7 @@ public class GameManager {
             @Override
             public void run() {
                 for (Player n : Bukkit.getOnlinePlayers()) {
+                    plugin.getKitManager().removeAllItemsFromPlayer(n);
                     n.kickPlayer("GameOver");
                 }
                 plugin.getServer().reload();

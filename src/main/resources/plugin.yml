@@ -21,3 +21,4 @@ commands:
   antwoord:
     usage: /<command> <antwoord>
   fstart:
+  endgame:
