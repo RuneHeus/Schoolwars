@@ -33,7 +33,7 @@ public final class Schoolwars extends JavaPlugin {
     private final KlasLokaal klasLokaal;
     private final MinionManager minionManager;
     private NPCManager npcManager;
-    private KitManager kitManager;
+    private final KitManager kitManager;
 	
     public Schoolwars() {
         TeamManager teamManager1;

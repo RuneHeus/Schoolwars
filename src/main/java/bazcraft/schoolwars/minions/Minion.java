@@ -35,7 +35,11 @@ public class Minion {
             Location loc = path.getWalls()[target].getLoc();
             npc.getNavigator().setTarget(loc);
         } else {
-            plugin.getTeamManager().getTeam(path).removeHealth(5);
+            if(plugin.getTeamManager().getRED() == plugin.getTeamManager().getTeam(path)) {
+                plugin.getTeamManager().getBLUE().removeHealth(5);
+            } else {
+                plugin.getTeamManager().getRED().removeHealth(5);
+            }
             plugin.getMinionManager().removeMinion(this);
         }
     }
