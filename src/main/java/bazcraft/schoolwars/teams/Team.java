@@ -43,7 +43,6 @@ public class Team {
     public void addSpeler(Player speler) {
         scoreboard.addEntry(speler.getName());
         teamHealthBar.addPlayer(speler);
-        speler.setBedSpawnLocation(spawn);
     }
 
     public void removeSpeler(Player speler) {
