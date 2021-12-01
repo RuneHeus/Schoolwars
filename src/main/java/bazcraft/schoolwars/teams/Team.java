@@ -43,6 +43,7 @@ public class Team {
     public void addSpeler(Player speler) {
         scoreboard.addEntry(speler.getName());
         teamHealthBar.addPlayer(speler);
+        speler.setBedSpawnLocation(spawn);
     }
 
     public void removeSpeler(Player speler) {
@@ -61,8 +62,10 @@ public class Team {
         double remainingHealth = teamHealthBar.getProgress()-convertedDamage;
         if (remainingHealth < 0) {
             teamHealthBar.setProgress(0);
+            publicHealthBar.setProgress(0);
         } else {
             teamHealthBar.setProgress(remainingHealth);
+            publicHealthBar.setProgress(remainingHealth);
         }
         if (teamHealthBar.getProgress() == 0) {
             Schoolwars.getPlugin(Schoolwars.class).getGameManager().endGame(this);

@@ -31,6 +31,7 @@ public class MinionManager implements Listener {
     }
 
     public void removeMinion(Minion minion) {
+        minion.getNpc().getEntity().remove();
         minion.getNpc().destroy();
         minion.getPath().getMinions().remove(minion);
     }
