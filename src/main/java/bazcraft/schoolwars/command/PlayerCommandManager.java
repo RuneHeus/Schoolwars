@@ -52,7 +52,7 @@ public class PlayerCommandManager implements CommandExecutor {
                     plugin.getGameManager().forceStart();
                     return true;
                 case "endgame":
-                    plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());
+                    plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());return true;
             }
         } else {
             sender.sendMessage("Enkel spelers kunnen deze command uitvoeren!");

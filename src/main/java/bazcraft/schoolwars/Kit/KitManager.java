@@ -44,12 +44,6 @@ public class KitManager {
     }
 
     public void removeAllItemsFromPlayer(Player player){
-        for(ItemStack item: player.getInventory().getContents()){
-            player.getInventory().remove(item);
-        }
-        player.getInventory().setHelmet(null);
-        player.getInventory().setChestplate(null);
-        player.getInventory().setLeggings(null);
-        player.getInventory().setBoots(null);
+        player.getInventory().clear();
     }
 }

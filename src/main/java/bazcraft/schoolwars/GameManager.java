@@ -1,19 +1,16 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.Events.SpecialEvent;
-import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -145,8 +142,15 @@ public class GameManager {
                     plugin.getKitManager().removeAllItemsFromPlayer(n);
                     n.kickPlayer("GameOver");
                 }
+                removeAllDroppedArrows();
                 plugin.getServer().reload();
             }
         }.runTaskLater(plugin, 200);
+    }
+
+    public void removeAllDroppedArrows(){
+        for (Arrow arrow : Bukkit.getWorld("world").getEntitiesByClass(Arrow.class)) {
+            arrow.remove();
+        }
     }
 }

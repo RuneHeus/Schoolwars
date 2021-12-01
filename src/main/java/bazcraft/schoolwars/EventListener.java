@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -178,4 +179,17 @@ public class EventListener implements Listener {
             event.setRespawnLocation(team.getSpawn());
         }
     }
+/*
+    @EventHandler
+    public void onPlayerShoot(EntityShootBowEvent event){
+        Player player = (Player) event.getEntity();
+        player.getInventory().addItem(new ItemStack(Material.ARROW));
+    }
+
+    @EventHandler
+    public void onItemPickUp(PlayerPickupArrowEvent event){
+        event.setCancelled(true);
+    }
+
+*/
 }

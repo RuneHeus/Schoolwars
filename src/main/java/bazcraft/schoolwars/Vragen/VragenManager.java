@@ -26,7 +26,6 @@ public class VragenManager{
     public VragenManager(TeamManager teamManager, Schoolwars plugin) {
         this.plugin = plugin;
         this.vragenLijst = new ArrayList<>() {{
-            add(new Vraag("Wat is de voledige naam van de maker van deze plugin?", "Rune Heus", VraagType.NEDERLANDS));
             add(new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.AARDRIJKSKUNDE));
             add(new Vraag("Hoeveel is 2x2", "4", VraagType.AARDRIJKSKUNDE));
             add(new Vraag("Wat is de naam van deze game?", "Minecraft", VraagType.AARDRIJKSKUNDE));

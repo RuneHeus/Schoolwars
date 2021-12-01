@@ -19,17 +19,29 @@ public class KitGUI {
         this.guiItems = new ItemStack[]{new ItemStack(Material.STONE_SWORD), new ItemStack(Material.BOW)};
         this.gui = Bukkit.createInventory(player, 9, ChatColor.RED + "Kit Menu");
 
-        //Stone sword
+        //Warrior kit
         ItemMeta stoneSwordMeta = guiItems[0].getItemMeta();
         stoneSwordMeta.setDisplayName(ChatColor.AQUA + "Warrior Kit");
         ArrayList<String> swordLore = new ArrayList<>();
-        swordLore.add(ChatColor.GREEN + "Head: Leather Cap");
-        swordLore.add(ChatColor.GREEN + "Body: Leather Tunic");
-        swordLore.add(ChatColor.GREEN + "Legs: Leather Pants");
-        swordLore.add(ChatColor.GREEN + "Boots: Leather Boots");
+        swordLore.add(ChatColor.GREEN + "Head: Chainmail Cap");
+        swordLore.add(ChatColor.GREEN + "Body: Chainmail Tunic");
+        swordLore.add(ChatColor.GREEN + "Legs: Chainmail Pants");
+        swordLore.add(ChatColor.GREEN + "Boots: Chainmail Boots");
         swordLore.add(ChatColor.GREEN + "Weapon: Stone Sword");
         stoneSwordMeta.setLore(swordLore);
         guiItems[0].setItemMeta(stoneSwordMeta);
+        //Archer kit
+        ItemMeta bowMeta = guiItems[1].getItemMeta();
+        bowMeta.setDisplayName(ChatColor.AQUA + "Archer Kit");
+        ArrayList<String> bowLore = new ArrayList<>();
+        bowLore.add(ChatColor.GREEN + "Head: Leather Cap");
+        bowLore.add(ChatColor.GREEN + "Body: Leather Tunic");
+        bowLore.add(ChatColor.GREEN + "Legs: Leather Pants");
+        bowLore.add(ChatColor.GREEN + "Boots: Leather Boots");
+        bowLore.add(ChatColor.GREEN + "Weapon: Wooden Sword");
+        bowLore.add(ChatColor.GREEN + "Weapon: Bow");
+        bowMeta.setLore(bowLore);
+        guiItems[1].setItemMeta(bowMeta);
         this.gui.setContents(guiItems);
     }
 
