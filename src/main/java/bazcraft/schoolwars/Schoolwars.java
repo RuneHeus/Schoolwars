@@ -1,5 +1,6 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.Events.EventListener;
 import bazcraft.schoolwars.Kit.KitManager;
 import bazcraft.schoolwars.NPC.NPCManager;
 import bazcraft.schoolwars.Vragen.KlasLokaal;
@@ -12,14 +13,11 @@ import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
-import bazcraft.schoolwars.tools.CounterRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public final class Schoolwars extends JavaPlugin {
 

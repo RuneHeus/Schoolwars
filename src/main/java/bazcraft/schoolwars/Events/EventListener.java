@@ -1,10 +1,12 @@
-package bazcraft.schoolwars;
+package bazcraft.schoolwars.Events;
 
 import bazcraft.schoolwars.GUI.KitGUI;
 import bazcraft.schoolwars.GUI.VragenGUI;
 import bazcraft.schoolwars.GUI.shop.MainPage;
+import bazcraft.schoolwars.GameState;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.NPC.CustomNPC;
+import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.Vragen.Vraag;
 import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -179,17 +181,9 @@ public class EventListener implements Listener {
             event.setRespawnLocation(team.getSpawn());
         }
     }
-/*
-    @EventHandler
-    public void onPlayerShoot(EntityShootBowEvent event){
-        Player player = (Player) event.getEntity();
-        player.getInventory().addItem(new ItemStack(Material.ARROW));
-    }
 
     @EventHandler
-    public void onItemPickUp(PlayerPickupArrowEvent event){
+    public void onItemPickUp(PlayerPickupArrowEvent event) {
         event.setCancelled(true);
     }
-
-*/
 }

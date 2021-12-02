@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -28,6 +29,7 @@ public class KitGUI {
         swordLore.add(ChatColor.GREEN + "Legs: Chainmail Pants");
         swordLore.add(ChatColor.GREEN + "Boots: Chainmail Boots");
         swordLore.add(ChatColor.GREEN + "Weapon: Stone Sword");
+        stoneSwordMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         stoneSwordMeta.setLore(swordLore);
         guiItems[0].setItemMeta(stoneSwordMeta);
         //Archer kit
