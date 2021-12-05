@@ -3,8 +3,23 @@ package bazcraft.schoolwars.minions;
 import bazcraft.schoolwars.Schoolwars;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.nms.v1_17_R1.entity.VillagerController;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLiving;
+import net.minecraft.world.entity.npc.EntityVillager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftVillager;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Villager;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class Minion {
 
@@ -26,6 +41,11 @@ public class Minion {
         npc.getNavigator().getDefaultParameters().pathDistanceMargin(0);
         npc.spawn(pad.getWalls()[0].getLoc());
         npc.getEntity().setSilent(true);
+
+        npc.getEntity().setPersistent(true);
+
+        ((CraftVillager)npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 1, true, false),
+                true);
     }
 
 
