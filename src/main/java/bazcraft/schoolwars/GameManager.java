@@ -6,6 +6,7 @@ import bazcraft.schoolwars.tools.CounterRunnable;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,9 +36,11 @@ public class GameManager {
         GameState.setGamestate(GameState.INGAME);
         plugin.getTeamManager().getRED().teleportSpelers();
         plugin.getTeamManager().getBLUE().teleportSpelers();
+
         for(Player player: Bukkit.getOnlinePlayers()){
-            plugin.getKitManager().removeAllItemsFromPlayer(player);
+            player.getInventory().clear();
         }
+
         plugin.getKitManager().giveAllPlayerKit();
 
         //Spawn all npc
@@ -60,13 +63,18 @@ public class GameManager {
                     @Override
                     public void repeat() {
                         if ((counter > 10 && counter %20==0) || (counter == 10) || counter < 6) {
-                            Bukkit.broadcastMessage("Het spel zal binnen " + counter + " seconden starten");
+                            Bukkit.broadcastMessage(Schoolwars.prefix + " Het spel zal binnen " + counter + " seconden starten");
+                        }
+                        if (counter < 6) {
+                            for (Player n : Bukkit.getOnlinePlayers()) {
+                                n.playSound(n.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 1);
+                            }
                         }
                     }
 
                     @Override
                     public void finish() {
-                        Bukkit.broadcastMessage("Het spel is begonnen");
+                        Bukkit.broadcastMessage(Schoolwars.prefix + " Het spel is begonnen");
                         startGame();
                     }
                 };
@@ -133,7 +141,7 @@ public class GameManager {
         if (winner == loser) {
             winner = plugin.getTeamManager().getBLUE();
         }
-        Bukkit.broadcastMessage("Team " + winner.getPublicHealthBar().getTitle() + " is gewonnen!");
+        Bukkit.broadcastMessage(Schoolwars.prefix + " Team " + winner.getPublicHealthBar().getTitle() + " is gewonnen!");
         Bukkit.getScheduler().cancelTasks(plugin);
         new BukkitRunnable() {
             @Override

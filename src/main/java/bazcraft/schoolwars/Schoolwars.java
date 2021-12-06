@@ -13,6 +13,7 @@ import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,6 +33,8 @@ public final class Schoolwars extends JavaPlugin {
     private final MinionManager minionManager;
     private NPCManager npcManager;
     private final KitManager kitManager;
+
+    public static final String prefix = "§0[§2Schoolwars§0]§r";
 	
     public Schoolwars() {
         TeamManager teamManager1;
@@ -40,7 +43,7 @@ public final class Schoolwars extends JavaPlugin {
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
-        kitManager = new KitManager();
+        kitManager = new KitManager(this);
         //MINIONS
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(

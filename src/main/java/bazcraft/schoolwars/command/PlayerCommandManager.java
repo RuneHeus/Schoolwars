@@ -29,19 +29,19 @@ public class PlayerCommandManager implements CommandExecutor {
                             case "select":
                                 if (args.length > 1) {
                                     selectedPathCache.put(p, Integer.parseInt(args[1]));
-                                    p.sendMessage("Selected path " + args[1]);
+                                    p.sendMessage(Schoolwars.prefix + " Selected path " + args[1]);
                                 }
                                 return true;
                             case "activatewall":
                                 if (args.length > 1) {
                                     plugin.getMinionManager().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].activate();
-                                    p.sendMessage("Wall activated");
+                                    p.sendMessage(Schoolwars.prefix + " Wall activated");
                                 }
                                 return true;
                             case "deactivatewall":
                                 if (args.length > 1) {
                                     plugin.getMinionManager().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].deactivate(p);
-                                    p.sendMessage("Wall deactivated");
+                                    p.sendMessage(Schoolwars.prefix + " Wall deactivated");
                                     plugin.getMinionManager().moveMinionsFromPath(plugin.getMinionManager().getPaths()[selectedPathCache.get(p)]);
                                 }
                                 return true;
@@ -55,7 +55,7 @@ public class PlayerCommandManager implements CommandExecutor {
                     plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());return true;
             }
         } else {
-            sender.sendMessage("Enkel spelers kunnen deze command uitvoeren!");
+            sender.sendMessage(Schoolwars.prefix + " Enkel spelers kunnen deze command uitvoeren!");
         }
         return false;
     }

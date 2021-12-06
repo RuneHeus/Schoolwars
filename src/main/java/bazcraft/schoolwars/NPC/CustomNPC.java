@@ -1,22 +1,23 @@
 package bazcraft.schoolwars.NPC;
 
 import bazcraft.schoolwars.teams.Team;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.EntityType;
 
 public class CustomNPC {
 
     private NPC npc;
     private NPCType type;
     private Team team;
+    private String name;
 
     public CustomNPC(String npcName, NPCType type, Team team){
         this.type = type;
         this.team = team;
+        name = npcName;
+    }
 
-        //Create NPC with NPCType
-        this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
+    public void setNpc(NPC npc) {
+        this.npc = npc;
     }
 
     public NPC getNpc(){
@@ -31,4 +32,7 @@ public class CustomNPC {
         return this.team;
     }
 
+    public String getName() {
+        return name;
+    }
 }

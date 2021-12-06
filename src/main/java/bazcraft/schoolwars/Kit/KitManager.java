@@ -1,30 +1,29 @@
 package bazcraft.schoolwars.Kit;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import bazcraft.schoolwars.Schoolwars;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class KitManager {
 
     private HashMap<Player, KitTypes> playerKitList;
     private PlayerKit AllkitList;
+    private Schoolwars plugin;
 
-    public KitManager(){
+    public KitManager(Schoolwars plugin){
         this.playerKitList = new HashMap<>();
         this.AllkitList = new PlayerKit();
+        this.plugin = plugin;
     }
 
     public void addPlayerWithKit(Player player, KitTypes type){
-        if(this.playerKitList.containsKey(player)){
-            this.playerKitList.replace(player, type);
-        }else{
-            this.playerKitList.put(player, type);
-        }
+        //Hashmap override value als key al bestaat
+        this.playerKitList.put(player, type);
+    }
+
+    public boolean hasKit(Player player) {
+        return playerKitList.containsKey(player);
     }
 
     public HashMap<Player, KitTypes> getPlayerKitList(){
@@ -32,13 +31,14 @@ public class KitManager {
     }
 
     public void giveAllPlayerKit(){
-         for(Map.Entry<Player, KitTypes> entry: this.playerKitList.entrySet()){
-             Player player = entry.getKey();
-             KitTypes types = entry.getValue();
+         for(Player n : plugin.getGameManager().getIngamePlayers()){
+             KitTypes types = playerKitList.get(n);
              if(types == KitTypes.WARRIOR){
-                 this.AllkitList.givePlayerWarriorKit(player);
+                 this.AllkitList.givePlayerWarriorKit(n);
              }else if(types == KitTypes.ARCHER) {
-                 this.AllkitList.givePlayerArcherKit(player);
+                 this.AllkitList.givePlayerArcherKit(n);
+             } else {
+                 AllkitList.givePlayerWarriorKit(n);
              }
          }
     }

@@ -154,22 +154,22 @@ public class VragenManager{
                 if (antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagBlauw.getAntwoord().toLowerCase(Locale.ROOT))) {
                     juist(player, false);
                 }else{
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
+                    player.sendMessage(Schoolwars.prefix + ChatColor.RED + " Antwoord is niet juist!");
                 }
             }else{
                 if(antwoord.toLowerCase(Locale.ROOT).equals(this.actieveVraagRood.getAntwoord().toLowerCase(Locale.ROOT))){
                     juist(player, true);
                 }else{
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Antwoord is niet juist!");
+                    player.sendMessage(Schoolwars.prefix +  ChatColor.RED + " Antwoord is niet juist!");
                 }
             }
         }else{
-            player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Je moet een antwoord geven!");
+            player.sendMessage(Schoolwars.prefix +  ChatColor.RED + " Je moet een antwoord geven!");
         }
     }
 
     private void juist(Player player, boolean rood) {
-        player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Juist antwoord!");
+        player.sendMessage(Schoolwars.prefix +  ChatColor.AQUA + " Juist antwoord!");
         if (rood) {
             this.actieveVraagRood.setRood(true);
             if (this.vragenLijst.indexOf(this.actieveVraagRood)+1 == this.vragenLijst.size()) {

@@ -1,36 +1,33 @@
 package bazcraft.schoolwars.Events;
 
 import bazcraft.schoolwars.GUI.KitGUI;
+import bazcraft.schoolwars.GUI.Scoreboard;
 import bazcraft.schoolwars.GUI.VragenGUI;
 import bazcraft.schoolwars.GUI.shop.MainPage;
 import bazcraft.schoolwars.GameState;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.NPC.CustomNPC;
 import bazcraft.schoolwars.Schoolwars;
-import bazcraft.schoolwars.Vragen.Vraag;
 import bazcraft.schoolwars.teams.Team;
+import com.google.common.collect.Iterables;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.npc.ai.speech.Chat;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.apache.commons.lang.ObjectUtils;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -48,6 +45,8 @@ public class EventListener implements Listener {
                 if (plugin.getGameManager().addSpeler(event.getPlayer())) {
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
                     event.getPlayer().getInventory().addItem(new ItemStack(Material.BOW));
+
+                    new Scoreboard(plugin, event.getPlayer()).createBoard();
                     break;
                 }
             case INGAME, ENDGAME:
@@ -183,5 +182,26 @@ public class EventListener implements Listener {
     @EventHandler
     public void onItemPickUp(PlayerPickupArrowEvent event) {
         event.setCancelled(true);
+    }
+
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCitizensEnable(CitizensEnableEvent event) {
+
+        for (CustomNPC n : plugin.getNpcManager().getNpcList()) {
+
+            for (NPC m : CitizensAPI.getNPCRegistry()) {
+                if (n.getName().equals(m.getName())) {
+                    n.setNpc(m);
+                    break;
+                }
+            }
+
+            if (n.getNpc() == null) {
+                CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, n.getName());
+            }
+
+        }
+
     }
 }
