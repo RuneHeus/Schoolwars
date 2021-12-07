@@ -108,7 +108,7 @@ public class EventListener implements Listener {
                 MainPage gui = (MainPage) event.getClickedInventory().getHolder();
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
-                        if (team.getMinionPoints() > 1) {
+                        if (team.getMinionPoints() > 0) {
                             if(!team.isBeantwoordenVragenS()){
                                 plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
                                 plugin.getVragenManager().startVraag(player);
