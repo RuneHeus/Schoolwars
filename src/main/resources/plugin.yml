@@ -23,7 +23,5 @@ commands:
     usage: Start het spel direct
   endgame:
     usage: stopt het spel direct
-  antwoordSpeciaal:
-    usage: /<command> <antwoord> voor een speciale vraag
-  antwoordNormaal:
-    usage: /<command> <antwoord> voor een normale vraag
+  antwoord:
+    usage: /<command> <antwoord>

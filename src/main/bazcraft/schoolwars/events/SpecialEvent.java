@@ -50,15 +50,15 @@ public class SpecialEvent extends BukkitRunnable{
                     }
                 }
                 if (puntenBlauw == 100) {
-                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
+                    Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
                     this.cancel();
                 } else if (puntenRood == 100) {
-                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
+                    Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
                     this.cancel();
                 }
                 counter++;
                 if(counter == 1200){
-                    Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Het evenement is gedaan! Niemand Heeft gewonnen");
+                    Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.RED + "Het evenement is gedaan! Niemand Heeft gewonnen");
                     this.cancel();
                 }
             }
@@ -71,7 +71,7 @@ public class SpecialEvent extends BukkitRunnable{
 
     @Override
     public void run(){
-        Bukkit.broadcastMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Het speciaal evenement gaat beginnen!");
+        Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.AQUA + "Het speciaal evenement gaat beginnen!");
         start();
     }
 

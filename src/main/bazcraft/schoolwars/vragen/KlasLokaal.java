@@ -32,8 +32,8 @@ public class KlasLokaal {
     }
 
     public void teleportToMainGame(Player player, CustomNPC npc){
-        Team team = this.plugin.getTeamManager().getTeam(player);
         player.teleport(this.getPlayersInClassRoom().get(player));
+        removePlayerInClassRoom(player);
         assert npc != null;
         if(npc.getTeam() == this.plugin.getTeamManager().getBLUE()){
             npc.getNpc().teleport(new Location(Bukkit.getServer().getWorld("world"), 317.5, 44.0, -164.5, 90, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
@@ -42,19 +42,18 @@ public class KlasLokaal {
         }
     }
 
-    public void teleportToClassRoom(Player player) {
+    public void teleportToClassRoom(Player player){
         Team team = plugin.getTeamManager().getTeam(player);
         CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(player);
         if (team == plugin.getTeamManager().getBLUE()){
-            player.teleport(this.locatieBlauwSpeler);
+            player.teleport(locatieBlauwSpeler);
             assert npc != null;
-            npc.getNpc().teleport(this.locatieBlauwNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            npc.getNpc().teleport(locatieBlauwNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }else if(team == plugin.getTeamManager().getRED()){
-            player.teleport(this.locatieRoodSpeler);
+            player.teleport(locatieRoodSpeler);
             assert npc != null;
-            npc.getNpc().teleport(this.locatieRoodNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            npc.getNpc().teleport(locatieRoodNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
-        this.plugin.getNpcManager().removeGeselecteerdeNPC(player);
     }
 
     public HashMap<Player, Location> getPlayersInClassRoom() {
@@ -67,53 +66,5 @@ public class KlasLokaal {
 
     public void addPlayersInClassRoom(Player player) {
         this.playersInClassRoom.put(player, player.getLocation());
-    }
-
-    public VragenManager getVragenManager() {
-        return vragenManager;
-    }
-
-    public void setVragenManager(VragenManager vragenManager) {
-        this.vragenManager = vragenManager;
-    }
-
-    public CustomNPC getLeerkracht() {
-        return leerkracht;
-    }
-
-    public void setLeerkracht(CustomNPC leerkracht) {
-        this.leerkracht = leerkracht;
-    }
-
-    public Location getLocatieBlauwSpeler() {
-        return locatieBlauwSpeler;
-    }
-
-    public void setLocatieBlauwSpeler(Location locatieBlauwSpeler) {
-        this.locatieBlauwSpeler = locatieBlauwSpeler;
-    }
-
-    public Location getLocatieRoodSpeler() {
-        return locatieRoodSpeler;
-    }
-
-    public void setLocatieRoodSpeler(Location locatieRoodSpeler) {
-        this.locatieRoodSpeler = locatieRoodSpeler;
-    }
-
-    public Location getLocatieBlauwNpc() {
-        return locatieBlauwNpc;
-    }
-
-    public void setLocatieBlauwNpc(Location locatieBlauwNpc) {
-        this.locatieBlauwNpc = locatieBlauwNpc;
-    }
-
-    public Location getLocatieRoodNpc() {
-        return locatieRoodNpc;
-    }
-
-    public void setLocatieRoodNpc(Location locatieRoodNpc) {
-        this.locatieRoodNpc = locatieRoodNpc;
     }
 }

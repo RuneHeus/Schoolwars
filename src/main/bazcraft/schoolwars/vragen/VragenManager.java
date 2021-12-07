@@ -1,14 +1,12 @@
 package bazcraft.schoolwars.vragen;
 import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.Schoolwars;
-import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class VragenManager{
 
@@ -59,10 +57,6 @@ public class VragenManager{
         }
     }
 
-    public void setVragenLijst(ArrayList<Vraag> vragenLijst) {
-        this.vragenLijst = vragenLijst;
-    }
-
     public Schoolwars getPlugin() {
         return plugin;
     }
@@ -73,10 +67,6 @@ public class VragenManager{
 
     public TeamManager getTeamManager() {
         return teamManager;
-    }
-
-    public void setTeamManager(TeamManager teamManager) {
-        this.teamManager = teamManager;
     }
 
     public void startVraag(Player player){

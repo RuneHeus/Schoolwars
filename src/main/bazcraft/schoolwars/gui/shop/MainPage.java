@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.gui.shop;
 
+import bazcraft.schoolwars.npc.CustomNPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -11,9 +12,11 @@ import static bazcraft.schoolwars.tools.ItemUtils.createItem;
 public class MainPage implements InventoryHolder{
 
     private final Inventory inv;
+    private CustomNPC npc;
 
-    public MainPage() {
+    public MainPage(CustomNPC npc) {
         inv = Bukkit.createInventory(this, 27, "SHOP");
+        this.npc = npc;
         init();
     }
 
@@ -26,6 +29,10 @@ public class MainPage implements InventoryHolder{
         }
 
         inv.setItem(13, createItem("§aMinionPoint", Material.PLAYER_HEAD));
+    }
+
+    public CustomNPC getNpc() {
+        return npc;
     }
 
     @Override

@@ -22,12 +22,8 @@ public class NPCManager {
         this.npcList = new ArrayList<>();
         this.geselecteerdeNPC = new HashMap<>();
         //Hard Coded NPC
-
-        CustomNPC leerkrachtNPCBlauw = new CustomNPC(ChatColor.BLUE + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getBLUE(), plugin);
-        CustomNPC leerkrachtNPCRood = new CustomNPC(ChatColor.RED + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getRED(), plugin);
-
-        npcList.add(leerkrachtNPCBlauw);
-        npcList.add(leerkrachtNPCRood);
+        npcList.add(new CustomNPC(ChatColor.BLUE + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getBLUE(), plugin));
+        npcList.add(new CustomNPC(ChatColor.RED + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getRED(), plugin));
         npcList.add(new CustomNPC("§cShop", VraagType.SPECIAAL, plugin.getTeamManager().getRED(), plugin));
         npcList.add(new CustomNPC("§9Shop", VraagType.SPECIAAL, plugin.getTeamManager().getBLUE(), plugin));
     }

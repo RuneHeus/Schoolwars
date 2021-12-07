@@ -58,24 +58,32 @@ public class PlayerCommandManager implements CommandExecutor {
                     plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());return true;
                 case "antwoord":
                     CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(p);
-
-                    if (args.length > 0){
-                        String antwoord = "";
-                        for(String n: args){
-                            antwoord += n + " ";
-                        }
-                        antwoord = antwoord.substring(0, antwoord.length()-2);
-                        boolean juist = plugin.getVragenManager().compareAnswer(antwoord, npc.getActieveVraag());
-                        if(juist){
-                            p.sendMessage(Schoolwars.prefix + " " + ChatColor.GREEN + "Juist antwoord!");
-                            if(npc.getType() == VraagType.NORMAAL){
-                                plugin.getKlasLokaal().teleportToMainGame(p, npc);
+                    if(npc != null){
+                        if (args.length > 0){
+                            String antwoord = "";
+                            for(String n: args){
+                                antwoord += n + " ";
+                            }
+                            antwoord = antwoord.substring(0, antwoord.length()-1);
+                            boolean juist = plugin.getVragenManager().compareAnswer(antwoord, npc.getActieveVraag());
+                            if(juist){
+                                p.sendMessage(Schoolwars.prefix + " " + ChatColor.GREEN + "Juist antwoord!");
+                                npc.getActieveVraag().getTeamsBeantwoord().put(npc.getTeam(), true);
+                                npc.setNieuweVraag();
+                                if(npc.getType() == VraagType.NORMAAL){
+                                    plugin.getKlasLokaal().teleportToMainGame(p, npc);
+                                }
+                                plugin.getNpcManager().removeGeselecteerdeNPC(p);
+                            }else{
+                                p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }
                         }else{
-                            p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
+                            p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Je moet een antwoord geven!");
                         }
+                        return true;
+                    }else{
+                        p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Je hebt geen vraag geselecteerd!");
                     }
-                    return true;
             }
         } else {
             sender.sendMessage(Schoolwars.prefix + " Enkel spelers kunnen deze command uitvoeren!");

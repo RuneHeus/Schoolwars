@@ -6,7 +6,6 @@ import bazcraft.schoolwars.gui.VragenGUI;
 import bazcraft.schoolwars.gui.shop.MainPage;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.npc.CustomNPC;
-import bazcraft.schoolwars.npc.NPCType;
 import bazcraft.schoolwars.vragen.Vraag;
 import bazcraft.schoolwars.vragen.VraagType;
 import bazcraft.schoolwars.teams.Team;
@@ -86,29 +85,35 @@ public class EventListener implements Listener {
         Player player = event.getClicker();
         CustomNPC npc = plugin.getNpcManager().getCustomNPC(event.getNPC());
         if (npc != null) {
-            if (npc.getType() == VraagType.SPECIAAL){
-                MainPage mainPage = new MainPage();
-                player.openInventory(mainPage.getInventory());
-            } else {
-                if (plugin.getTeamManager().getTeam(player) == npc.getTeam()){
+            if(plugin.getTeamManager().getTeam(player) == npc.getTeam()){
+                if (npc.getType() == VraagType.SPECIAAL){
+                    MainPage mainPage = new MainPage(npc);
+                    player.openInventory(mainPage.getInventory());
+                } else {
                     VragenGUI gui = new VragenGUI(npc);
                     player.openInventory(gui.getInventory());
-                } else {
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Dit is niet jouw leerkracht!");
                 }
+            }else{
+                player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Dit is niet jouw leerkracht!");
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onGuiClick(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
         Team team = plugin.getTeamManager().getTeam(player);
         if (event.getClickedInventory() != null) {
             if (event.getClickedInventory().getHolder() instanceof MainPage) {
+                MainPage gui = (MainPage) event.getClickedInventory().getHolder();
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
-                        plugin.getVragenManager().startVraag(player);
+                        if(!team.isBeantwoordenVragenS()){
+                            plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
+                            plugin.getVragenManager().startVraag(player);
+                        }else{
+                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
+                        }
                     }
                 }
                 event.setCancelled(true);
@@ -116,26 +121,19 @@ public class EventListener implements Listener {
                 VragenGUI gui = (VragenGUI) event.getClickedInventory().getHolder();
                 if(event.getCurrentItem() != null){
                     if(event.getCurrentItem().getType() == Material.BOOK){
-                        boolean alleVragenBeantwoord = true;
-                        for(Vraag vraag: plugin.getVragenManager().getVragenLijst()){
-                            if(vraag.getType() == VraagType.NORMAAL && !vraag.getTeamsBeantwoord().get(team)){
-                                alleVragenBeantwoord = false;
-                                break;
-                            }
-                        }
-                        if(alleVragenBeantwoord){
-                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle vragen zijn al beantwoord!");
-                        }else{
+                        if(!team.isBeantwoordenVragenN()){
                             if(plugin.getKlasLokaal().getPlayersInClassRoom().containsKey(player)){
                                 plugin.getVragenManager().startVraag(player);
                             }else{
                                 plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
-                                Bukkit.broadcastMessage(gui.getNpc().getName() + " Kaka op een stok is lekker en gezond");
                                 plugin.getKlasLokaal().addPlayersInClassRoom(player);
                                 plugin.getKlasLokaal().teleportToClassRoom(player);
                             }
+                        }else{
+                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle vragen zijn al opgelost!");
                         }
                     }
+                    event.setCancelled(true);
                 }
             }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Kit Menu")){
                 if(GameState.getCurrentGamestate() == GameState.WAITING){
@@ -181,11 +179,10 @@ public class EventListener implements Listener {
         event.setCancelled(true);
     }
 
-
     @EventHandler(ignoreCancelled = true)
     public void onCitizensEnable(CitizensEnableEvent event) {
 
-        for (CustomNPC n : plugin.getNpcManager().getNpcList()) {
+        for (CustomNPC n : plugin.getNpcManager().getNpcList()){
 
             for (NPC m : CitizensAPI.getNPCRegistry()) {
                 if (n.getName().equals(m.getName())) {

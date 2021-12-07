@@ -19,8 +19,8 @@ public class Team {
     private final Location spawn;
     private int minionPoints;
     private final Path path;
-    private int beantwoordenVragenN; //N = normale vragen
-    private int beantwoordenVragenS; //S = speciale vragen
+    private boolean beantwoordenVragenN; //N = normale vragen
+    private boolean beantwoordenVragenS; //S = speciale vragen
 
     public Team(String naam, Location spawn, ChatColor color, Path path) {
 
@@ -106,19 +106,19 @@ public class Team {
         return path;
     }
 
-    public int getBeantwoordenVragenN() {
+    public boolean isBeantwoordenVragenN() {
         return beantwoordenVragenN;
     }
 
-    public void setBeantwoordenVragenN(int beantwoordenVragenN) {
-        this.beantwoordenVragenN = beantwoordenVragenN;
-    }
-
-    public int getBeantwoordenVragenS() {
+    public boolean isBeantwoordenVragenS() {
         return beantwoordenVragenS;
     }
 
-    public void setBeantwoordenVragenS(int beantwoordenVragenS) {
+    public void setBeantwoordenVragenS(boolean beantwoordenVragenS) {
         this.beantwoordenVragenS = beantwoordenVragenS;
+    }
+
+    public void setBeantwoordenVragenN(boolean beantwoordenVragenN) {
+        this.beantwoordenVragenN = beantwoordenVragenN;
     }
 }
