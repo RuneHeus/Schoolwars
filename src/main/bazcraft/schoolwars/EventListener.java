@@ -108,11 +108,15 @@ public class EventListener implements Listener {
                 MainPage gui = (MainPage) event.getClickedInventory().getHolder();
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
-                        if(!team.isBeantwoordenVragenS()){
-                            plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
-                            plugin.getVragenManager().startVraag(player);
-                        }else{
-                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
+                        if (team.getMinionPoints() > 1) {
+                            if(!team.isBeantwoordenVragenS()){
+                                plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
+                                plugin.getVragenManager().startVraag(player);
+                            }else{
+                                player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
+                            }
+                        } else {
+                            player.sendMessage(Schoolwars.prefix + " §cJe team heeft niet genoeg minionpoints");
                         }
                     }
                 }

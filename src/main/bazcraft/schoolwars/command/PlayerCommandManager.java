@@ -2,6 +2,7 @@ package bazcraft.schoolwars.command;
 
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.npc.CustomNPC;
+import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.vragen.VraagType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -70,11 +71,21 @@ public class PlayerCommandManager implements CommandExecutor {
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.GREEN + "Juist antwoord!");
                                 npc.getActieveVraag().getTeamsBeantwoord().put(npc.getTeam(), true);
                                 npc.setNieuweVraag();
+
+                                Team team = plugin.getTeamManager().getTeam(p);
+
                                 if(npc.getType() == VraagType.NORMAAL){
                                     plugin.getKlasLokaal().teleportToMainGame(p, npc);
+                                    plugin.getMinionManager().addMinion(team.getPath());
+                                } else if (npc.getType() == VraagType.SPECIAAL) {
+                                    for (int i = 0; i < team.getMinionPoints(); i++) {
+                                        plugin.getMinionManager().addMinion(team.getPath());
+                                    }
                                 }
                                 plugin.getNpcManager().removeGeselecteerdeNPC(p);
-                                plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(p).getPath());
+
+
+                                team.setMinionPoints(0);
                             }else{
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }
