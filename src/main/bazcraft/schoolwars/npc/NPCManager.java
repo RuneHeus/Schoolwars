@@ -62,9 +62,9 @@ public class NPCManager {
                break;
            case SPECIAAL:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
-                   loc = new Location(Bukkit.getServer().getWorld("world"), 29.5, 40, -92.5, 90, 0);
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 398.5, 34, -109.5, 90, 0);
                } else {
-                   loc = new Location(Bukkit.getServer().getWorld("world"), 119.5, 44.0, -36.5, -91.5f, 0);
+                   loc = new Location(Bukkit.getServer().getWorld("world"), 29.5, 34, -92.5, -90, 0);
                }
                break;
        }

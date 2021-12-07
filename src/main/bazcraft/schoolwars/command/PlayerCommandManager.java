@@ -74,6 +74,7 @@ public class PlayerCommandManager implements CommandExecutor {
                                     plugin.getKlasLokaal().teleportToMainGame(p, npc);
                                 }
                                 plugin.getNpcManager().removeGeselecteerdeNPC(p);
+                                plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(p).getPath());
                             }else{
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }
