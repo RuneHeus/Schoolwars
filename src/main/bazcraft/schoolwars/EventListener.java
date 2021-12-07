@@ -6,6 +6,10 @@ import bazcraft.schoolwars.gui.VragenGUI;
 import bazcraft.schoolwars.gui.shop.MainPage;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.npc.CustomNPC;
+import bazcraft.schoolwars.npc.NPCType;
+import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.vragen.Vraag;
+import bazcraft.schoolwars.vragen.VraagType;
 import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
@@ -82,21 +86,19 @@ public class EventListener implements Listener {
     public void onNPCRightClick(NPCRightClickEvent event){
         Player player = event.getClicker();
         CustomNPC npc = plugin.getNpcManager().getCustomNPC(event.getNPC());
-        this.plugin.getNpcManager().addGeselecteerdeNPC(npc);
         if (npc != null) {
-            switch (npc.getType()) {
-                case SHOP:
-                    MainPage mainPage = new MainPage();
-                    player.openInventory(mainPage.getInventory());
-                    break;
-                default:
-                    if(plugin.getTeamManager().getTeam(player) == npc.getTeam()){
-                        VragenGUI gui = new VragenGUI(player);
-                        Inventory inventory = gui.getGui();
-                        player.openInventory(inventory);
-                    }else{
-                        player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Dit is niet jouw leerkracht!");
-                    }
+            this.plugin.getNpcManager().addGeselecteerdeNPC(player,npc);
+            if (npc.getType() == NPCType.SHOP) {
+                MainPage mainPage = new MainPage();
+                player.openInventory(mainPage.getInventory());
+            } else {
+                if (plugin.getTeamManager().getTeam(player) == npc.getTeam()) {
+                    VragenGUI gui = new VragenGUI(player);
+                    Inventory inventory = gui.getGui();
+                    player.openInventory(inventory);
+                } else {
+                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Dit is niet jouw leerkracht!");
+                }
             }
         }
     }
@@ -105,12 +107,29 @@ public class EventListener implements Listener {
     public void onGuiClick(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
         Team team = plugin.getTeamManager().getTeam(player);
+        boolean startVraagOke = true;
         if (event.getClickedInventory() != null) {
             if (event.getClickedInventory().getHolder() instanceof MainPage) {
                 if (event.getCurrentItem() != null) {
-                    if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
-                        plugin.getVragenManager().startVraag(player);
-
+                    if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
+                        if(team == plugin.getTeamManager().getBLUE()){
+                            if(this.plugin.getVragenManager().getActieveVraagBlauw() != null){
+                                if(this.plugin.getVragenManager().getActieveVraagBlauw().getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
+                                    startVraagOke = false;
+                                }
+                            }
+                        }else{
+                            if(this.plugin.getVragenManager().getActieveVraagRood() != null){
+                                if(this.plugin.getVragenManager().getActieveVraagRood().getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
+                                    startVraagOke = false;
+                                }
+                            }
+                        }
+                        if(startVraagOke){
+                            plugin.getVragenManager().startVraag(player);
+                        }
                     }
                 }
                 event.setCancelled(true);
@@ -126,9 +145,12 @@ public class EventListener implements Listener {
                     }else if(team == plugin.getTeamManager().getRED() && this.plugin.getVragenManager().isAlleVragenRoodBeantwoord()){
                         player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Je hebt alle vragen opgelost!");
                     }else{
+                        if(this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                            plugin.getVragenManager().startVraag(player);
+                        }
                         //check where player is
                         if(this.plugin.getKlasLokaal().getPlayersInClassRoom().containsKey(player)){
-                            player.openBook(plugin.getVragenManager().getVraagBoek(player));
+                            plugin.getVragenManager().startVraag(player);
                         }else{
                             this.plugin.getKlasLokaal().addPlayersInClassRoom(player);
                             this.plugin.getKlasLokaal().teleportToClassRoom(player);
@@ -136,6 +158,7 @@ public class EventListener implements Listener {
                     }
                 }
                 event.setCancelled(true);
+
             }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Kit Menu")){
                 if(GameState.getCurrentGamestate() == GameState.WAITING){
                     if(clickedItem.equals(Material.STONE_SWORD)){

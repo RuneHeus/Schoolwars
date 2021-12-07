@@ -5,19 +5,21 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NPCManager {
 
     private ArrayList<CustomNPC> npcList;
-    private ArrayList<CustomNPC> geselecteerdeNPC;
+    private HashMap<Player, CustomNPC> geselecteerdeNPC;
     private final Schoolwars plugin;
 
     public NPCManager(Schoolwars plugin){
         this.plugin = plugin;
         this.npcList = new ArrayList<>();
-        this.geselecteerdeNPC = new ArrayList<>();
+        this.geselecteerdeNPC = new HashMap<>();
         //Hard Coded NPC
 
         CustomNPC leerkrachtNPCBlauw = new CustomNPC(ChatColor.BLUE + "Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getBLUE());
@@ -25,8 +27,13 @@ public class NPCManager {
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
+<<<<<<< Updated upstream
         npcList.add(new CustomNPC("§cShop", NPCType.SHOP, plugin.getTeamManager().getRED()));
         npcList.add(new CustomNPC("§9Shop", NPCType.SHOP, plugin.getTeamManager().getBLUE()));
+=======
+        npcList.add(new CustomNPC("Shop", NPCType.SPECIALNPC, plugin.getTeamManager().getRED()));
+        npcList.add(new CustomNPC("Shop", NPCType.SPECIALNPC, plugin.getTeamManager().getBLUE()));
+>>>>>>> Stashed changes
     }
 
     public CustomNPC getCustomNPC(NPC npc) {
@@ -50,8 +57,7 @@ public class NPCManager {
 
         Speciaale npc = 214.0 28.0 -101.5 0 0
          */
-
-        Location loc = null;
+       Location loc = null;
        switch (npc.getType()){
            case LEERKRACHTNPC:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
@@ -62,7 +68,7 @@ public class NPCManager {
                    loc = new Location(Bukkit.getServer().getWorld("world"), 110.5, 44.0, -37.5, -91.5f, 0);
                }
                break;
-           case SHOP:
+           case SPECIALNPC:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
                    loc = new Location(Bukkit.getServer().getWorld("world"), 29.5, 40, -92.5, 90, 0);
                } else {
@@ -95,16 +101,16 @@ public class NPCManager {
         this.npcList = npcList;
     }
 
-    public ArrayList<CustomNPC> getGeselecteerdeNPC() {
+    public HashMap<Player, CustomNPC> getGeselecteerdeNPC() {
         return geselecteerdeNPC;
     }
 
-    public void addGeselecteerdeNPC(CustomNPC npc) {
-        this.geselecteerdeNPC.add(npc);
+    public void addGeselecteerdeNPC(Player player, CustomNPC npc) {
+        this.geselecteerdeNPC.put(player, npc);
     }
 
-    public void removeGeselecteerdeNPC(CustomNPC npc){
-        this.geselecteerdeNPC.remove(npc);
+    public void removeGeselecteerdeNPC(Player player){
+        this.geselecteerdeNPC.remove(player);
     }
 
     public ArrayList<CustomNPC> getNpcList(){
