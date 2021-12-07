@@ -27,13 +27,8 @@ public class NPCManager {
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
-<<<<<<< Updated upstream
         npcList.add(new CustomNPC("§cShop", NPCType.SHOP, plugin.getTeamManager().getRED()));
         npcList.add(new CustomNPC("§9Shop", NPCType.SHOP, plugin.getTeamManager().getBLUE()));
-=======
-        npcList.add(new CustomNPC("Shop", NPCType.SPECIALNPC, plugin.getTeamManager().getRED()));
-        npcList.add(new CustomNPC("Shop", NPCType.SPECIALNPC, plugin.getTeamManager().getBLUE()));
->>>>>>> Stashed changes
     }
 
     public CustomNPC getCustomNPC(NPC npc) {

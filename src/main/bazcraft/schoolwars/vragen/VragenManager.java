@@ -1,6 +1,6 @@
 package bazcraft.schoolwars.vragen;
 
-import bazcraft.schoolwars.NPC.NPCType;
+import bazcraft.schoolwars.npc.NPCType;
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
