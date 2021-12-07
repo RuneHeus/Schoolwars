@@ -58,6 +58,7 @@ public class PlayerCommandManager implements CommandExecutor {
                 case "endgame":
                     plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());return true;
                 case "antwoord":
+                    Team team = plugin.getTeamManager().getTeam(p);
                     CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(p);
                     if(npc != null){
                         if (args.length > 0){
@@ -72,8 +73,6 @@ public class PlayerCommandManager implements CommandExecutor {
                                 npc.getActieveVraag().getTeamsBeantwoord().put(npc.getTeam(), true);
                                 npc.setNieuweVraag();
 
-                                Team team = plugin.getTeamManager().getTeam(p);
-
                                 if(npc.getType() == VraagType.NORMAAL){
                                     plugin.getKlasLokaal().teleportToMainGame(p, npc);
                                     plugin.getMinionManager().addMinion(team.getPath());
@@ -82,10 +81,16 @@ public class PlayerCommandManager implements CommandExecutor {
                                         plugin.getMinionManager().addMinion(team.getPath());
                                     }
                                 }
-                                plugin.getNpcManager().removeGeselecteerdeNPC(p);
-
-
                                 team.setMinionPoints(0);
+
+                                for(Player playerInNpc: plugin.getNpcManager().getGeselecteerdeNPC().keySet()){
+                                    if(plugin.getTeamManager().getTeam(playerInNpc).equals(team)){
+                                        if(plugin.getNpcManager().getGeselecteerdeNPC().get(playerInNpc).getNpc().getUniqueId().equals(npc.getNpc().getUniqueId())){
+                                            plugin.getNpcManager().removeGeselecteerdeNPC(playerInNpc);
+                                        }
+                                    }
+                                }
+                                plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(p).getPath());
                             }else{
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }

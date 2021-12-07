@@ -102,7 +102,7 @@ public class NPCManager {
     }
 
     public void removeGeselecteerdeNPC(Player player){
-        this.geselecteerdeNPC.remove(player);
+        geselecteerdeNPC.remove(player);
     }
 
     public ArrayList<CustomNPC> getNpcList(){
