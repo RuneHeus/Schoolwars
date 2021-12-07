@@ -1,17 +1,17 @@
 package bazcraft.schoolwars.Vragen;
 
+import bazcraft.schoolwars.NPC.NPCType;
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 public class VragenManager{
 
@@ -26,11 +26,15 @@ public class VragenManager{
     public VragenManager(TeamManager teamManager, Schoolwars plugin) {
         this.plugin = plugin;
         this.vragenLijst = new ArrayList<>() {{
-            add(new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.AARDRIJKSKUNDE));
-            add(new Vraag("Hoeveel is 2x2", "4", VraagType.AARDRIJKSKUNDE));
-            add(new Vraag("Wat is de naam van deze game?", "Minecraft", VraagType.AARDRIJKSKUNDE));
-            add(new Vraag("Wat is de naam van onze school?", "BAZandpoort", VraagType.AARDRIJKSKUNDE));
-            add(new Vraag("Wat is de slechteste programmeer taal?", "python", VraagType.AARDRIJKSKUNDE));
+            add(new Vraag("Wat is de naam van de programmeertaal waarin deze plugin is geschreven?", "java", VraagType.NORMAAL));
+            add(new Vraag("Hoeveel is 2x2", "4", VraagType.NORMAAL));
+            add(new Vraag("Wat is de naam van deze game?", "Minecraft", VraagType.NORMAAL));
+            add(new Vraag("Wat is de naam van onze school?", "BAZandpoort", VraagType.NORMAAL));
+            add(new Vraag("In welk jaar begon de 2de wereld oorlog", "1939", VraagType.NORMAAL));
+            add(new Vraag("Hoeveel bits kunnen er in een byte", "8", VraagType.SPECIAAL));
+            add(new Vraag("Wat is de online naam van Mr.Wijns", "Gerritje69", VraagType.SPECIAAL));
+            add(new Vraag("Welke programmeer taal wordt gebruikt om met een databank te communiceren?", "sql", VraagType.SPECIAAL));
+            add(new Vraag("Is HTML een programmeer taal?(ja/nee)", "nee", VraagType.SPECIAAL));
         }};
         this.teamManager = teamManager;
 
@@ -52,21 +56,11 @@ public class VragenManager{
             ResultSet result = statement.executeQuery("SELECT * FROM tblvragen"); //momentele query
 
             while (result.next()) {
-                VraagType type = null;
-                switch (result.getString("type")) {
-                    case "wiskunde":
-                        type = VraagType.WISKUNDE;
-                        break;
-                    case "frans":
-                        type = VraagType.FRANS;
-                        break;
-                    case "aardrijkskunde":
-                        type = VraagType.AARDRIJKSKUNDE;
-                        break;
-                    case "geschiedenis":
-                        type = VraagType.GESCHIEDENIS;
-                        break;
-                }
+                VraagType type = switch (result.getString("type")) {
+                    case "normaal" -> VraagType.NORMAAL;
+                    case "speciaal" -> VraagType.SPECIAAL;
+                    default -> null;
+                };
                 Vraag vraag = new Vraag(result.getString("vraag"), result.getString("antwoord"), type);
                 this.vragenLijst.add(vraag);
             }
@@ -75,19 +69,70 @@ public class VragenManager{
         }
     }
 
-    public Vraag getVraag(Team team) {
-        for (Vraag vraag : this.vragenLijst) {
-            if(team == this.teamManager.getBLUE()){
-                if (!vraag.isBlauw()){
-                    return vraag;
+    public Vraag getVraag(Player player){
+        Team team = plugin.getTeamManager().getTeam(player);
+        boolean vraagOpgelost = true;
+
+        if(team == plugin.getTeamManager().getBLUE()){
+            if(this.actieveVraagBlauw != null){
+                if(this.getActieveVraagBlauw().isBlauw()){
+                    vraagOpgelost = false;
+                }else if(this.actieveVraagBlauw.getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
                 }
             }else{
-                if(!vraag.isRood()){
-                    return vraag;
+                vraagOpgelost = false;
+            }
+        }else{
+            if(this.actieveVraagRood != null){
+                if(this.getActieveVraagRood().isRood()){
+                    vraagOpgelost = false;
+                }else if(this.actieveVraagRood.getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
+                }{
+
                 }
+            }else{
+                vraagOpgelost = false;
             }
         }
-        return null;
+
+        if(!vraagOpgelost){
+            Random rand = new Random();
+            boolean goedVraag = false;
+            Vraag vraag = null;
+            VraagType type;
+
+            if(plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+                type = VraagType.SPECIAAL;
+            }else{
+                type = VraagType.NORMAAL;
+            }
+            do{
+                int randomVraag = rand.nextInt(this.vragenLijst.size());
+
+                vraag = this.getVragenLijst().get(randomVraag);
+                if(vraag.getType() == type){
+                    if(team == plugin.getTeamManager().getRED()){
+                        if(!vraag.isRood()){
+                            goedVraag = true;
+                        }
+                    }else{
+                        if(!vraag.isBlauw()){
+                            goedVraag = true;
+                        }
+                    }
+                }
+            }while(!goedVraag);
+
+            return vraag;
+        }else{
+            if(team == plugin.getTeamManager().getBLUE()){
+                return this.actieveVraagBlauw;
+            }else{
+                return this.actieveVraagRood;
+            }
+        }
     }
 
     public void setVragenLijst(ArrayList<Vraag> vragenLijst) {
@@ -133,8 +178,9 @@ public class VragenManager{
     public void setTeamManager(TeamManager teamManager) {
         this.teamManager = teamManager;
     }
-    public void startVraag(Player player) {
-        //TODO teleporteer speler naar vraag plaats
+
+    public void startVraag(Player player){
+        player.openBook(this.getVraagBoek(player));
     }
 
     public void compareAnswer(String[]args, Player player){
@@ -181,8 +227,13 @@ public class VragenManager{
                 this.alleVragenBlauwBeantwoord = true;
             }
         }
-        this.plugin.getKlasLokaal().teleportToMainGame(player);
-        this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
+        if(this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
+
+        }else{
+            this.plugin.getKlasLokaal().teleportToMainGame(player);
+            this.plugin.getKlasLokaal().removePlayerInClassRoom(player);
+        }
+
 
         //spawn minion
         plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(player).getPath());
@@ -192,10 +243,10 @@ public class VragenManager{
     public ItemStack getVraagBoek(Player player){
         ItemStack book;
         if(this.teamManager.getTeam(player) == this.teamManager.getBLUE()){
-            this.setActieveVraagBlauw(this.getVraag(this.teamManager.getTeam(player)));
+            this.setActieveVraagBlauw(this.getVraag(player));
             book = this.getActieveVraagBlauw().getBook();
         }else{
-            this.setActieveVraagRood(this.getVraag(this.teamManager.getTeam(player)));
+            this.setActieveVraagRood(this.getVraag(player));
             book = this.getActieveVraagRood().getBook();
         }
         return book;
