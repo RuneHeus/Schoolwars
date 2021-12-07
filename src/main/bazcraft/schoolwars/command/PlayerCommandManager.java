@@ -90,7 +90,6 @@ public class PlayerCommandManager implements CommandExecutor {
                                         }
                                     }
                                 }
-                                plugin.getMinionManager().addMinion(plugin.getTeamManager().getTeam(p).getPath());
                             }else{
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }
