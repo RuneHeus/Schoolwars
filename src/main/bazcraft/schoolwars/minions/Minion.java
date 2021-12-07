@@ -44,9 +44,9 @@ public class Minion {
             npc.getNavigator().setTarget(loc);
         } else {
             if(plugin.getTeamManager().getRED() == plugin.getTeamManager().getTeam(path)) {
-                plugin.getTeamManager().getBLUE().removeHealth(5);
+                plugin.getTeamManager().getBLUE().removeHealth(20);
             } else {
-                plugin.getTeamManager().getRED().removeHealth(5);
+                plugin.getTeamManager().getRED().removeHealth(20);
             }
             plugin.getMinionManager().removeMinion(this);
         }
