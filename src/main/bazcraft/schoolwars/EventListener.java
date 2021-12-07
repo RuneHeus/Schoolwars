@@ -7,8 +7,6 @@ import bazcraft.schoolwars.gui.shop.MainPage;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.npc.NPCType;
-import bazcraft.schoolwars.Schoolwars;
-import bazcraft.schoolwars.vragen.Vraag;
 import bazcraft.schoolwars.vragen.VraagType;
 import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.CitizensAPI;

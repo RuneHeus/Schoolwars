@@ -1,5 +1,4 @@
 package bazcraft.schoolwars.vragen;
-
 import bazcraft.schoolwars.npc.NPCType;
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
@@ -10,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
@@ -17,8 +17,8 @@ public class VragenManager{
 
     private Schoolwars plugin;
     private ArrayList<Vraag> vragenLijst;
-    private Vraag actieveVraagBlauw;
-    private Vraag actieveVraagRood;
+    private ArrayList<Vraag> actieveVraagBlauw;
+    private ArrayList<Vraag> actieveVraagRood;
     private TeamManager teamManager;
     private boolean alleVragenRoodBeantwoord;
     private boolean alleVragenBlauwBeantwoord;
@@ -71,68 +71,20 @@ public class VragenManager{
 
     public Vraag getVraag(Player player){
         Team team = plugin.getTeamManager().getTeam(player);
-        boolean vraagOpgelost = true;
+        CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(player);
 
-        if(team == plugin.getTeamManager().getBLUE()){
-            if(this.actieveVraagBlauw != null){
-                if(this.getActieveVraagBlauw().isBlauw()){
-                    vraagOpgelost = false;
-                }else if(this.actieveVraagBlauw.getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
-                }
-            }else{
-                vraagOpgelost = false;
-            }
-        }else{
-            if(this.actieveVraagRood != null){
-                if(this.getActieveVraagRood().isRood()){
-                    vraagOpgelost = false;
-                }else if(this.actieveVraagRood.getType() == VraagType.NORMAAL && this.plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
-                    player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.RED + "Er is al een vraag actief!");
-                }{
-
-                }
-            }else{
-                vraagOpgelost = false;
-            }
-        }
-
-        if(!vraagOpgelost){
-            Random rand = new Random();
-            boolean goedVraag = false;
-            Vraag vraag = null;
-            VraagType type;
-
-            if(plugin.getNpcManager().getGeselecteerdeNPC().get(player).getType() == NPCType.SPECIALNPC){
-                type = VraagType.SPECIAAL;
-            }else{
-                type = VraagType.NORMAAL;
-            }
-            do{
-                int randomVraag = rand.nextInt(this.vragenLijst.size());
-
-                vraag = this.getVragenLijst().get(randomVraag);
-                if(vraag.getType() == type){
-                    if(team == plugin.getTeamManager().getRED()){
-                        if(!vraag.isRood()){
-                            goedVraag = true;
-                        }
-                    }else{
-                        if(!vraag.isBlauw()){
-                            goedVraag = true;
-                        }
-                    }
-                }
-            }while(!goedVraag);
-
-            return vraag;
-        }else{
+        if(npc.getType() == NPCType.SPECIALNPC){
             if(team == plugin.getTeamManager().getBLUE()){
-                return this.actieveVraagBlauw;
+                if(actieveVraagBlauw.){
+
+                }
             }else{
-                return this.actieveVraagRood;
+
             }
+        }else{
+
         }
+
     }
 
     public void setVragenLijst(ArrayList<Vraag> vragenLijst) {
