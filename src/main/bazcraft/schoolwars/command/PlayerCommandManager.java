@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
 public class PlayerCommandManager implements CommandExecutor {
@@ -82,14 +83,19 @@ public class PlayerCommandManager implements CommandExecutor {
                                     }
                                 }
                                 team.setMinionPoints(0);
-
-                                for(Player playerInNpc: plugin.getNpcManager().getGeselecteerdeNPC().keySet()){
-                                    if(plugin.getTeamManager().getTeam(playerInNpc).equals(team)){
-                                        if(plugin.getNpcManager().getGeselecteerdeNPC().get(playerInNpc).getNpc().getUniqueId().equals(npc.getNpc().getUniqueId())){
-                                            plugin.getNpcManager().removeGeselecteerdeNPC(playerInNpc);
+                                HashMap<Player, CustomNPC> temp = plugin.getNpcManager().getGeselecteerdeNPC();
+                                try{
+                                    for(Player playerInNpc: temp.keySet()){
+                                        if(plugin.getTeamManager().getTeam(playerInNpc).equals(team)){
+                                            if(plugin.getNpcManager().getGeselecteerdeNPC().get(playerInNpc).getNpc().getUniqueId().equals(npc.getNpc().getUniqueId())){
+                                                plugin.getNpcManager().removeGeselecteerdeNPC(playerInNpc);
+                                            }
                                         }
                                     }
+                                }catch (ConcurrentModificationException e){
+
                                 }
+
                             }else{
                                 p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
                             }
