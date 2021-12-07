@@ -101,7 +101,7 @@ public class NPCManager {
         return geselecteerdeNPC;
     }
 
-    public void addGeselecteerdeNPC(Player player, CustomNPC npc) {
+    public void addGeselecteerdeNPC(Player player, CustomNPC npc){
         this.geselecteerdeNPC.put(player, npc);
     }
 

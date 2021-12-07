@@ -113,7 +113,7 @@ public class EventListener implements Listener {
                 }
                 event.setCancelled(true);
             }else if(event.getClickedInventory().getHolder() instanceof VragenGUI){
-                VragenGUI gui = (VragenGUI) event.getClickedInventory();
+                VragenGUI gui = (VragenGUI) event.getClickedInventory().getHolder();
                 if(event.getCurrentItem() != null){
                     if(event.getCurrentItem().getType() == Material.BOOK){
                         boolean alleVragenBeantwoord = true;
@@ -129,7 +129,8 @@ public class EventListener implements Listener {
                             if(plugin.getKlasLokaal().getPlayersInClassRoom().containsKey(player)){
                                 plugin.getVragenManager().startVraag(player);
                             }else{
-                                this.plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
+                                plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
+                                Bukkit.broadcastMessage(gui.getNpc().getName() + " Kaka op een stok is lekker en gezond");
                                 plugin.getKlasLokaal().addPlayersInClassRoom(player);
                                 plugin.getKlasLokaal().teleportToClassRoom(player);
                             }
