@@ -1,8 +1,7 @@
 package bazcraft.schoolwars.npc;
 
 public enum NPCType {
-    SPORTNPC,
-    LEERKRACHTNPC,
-    SPECIALNPC,
+    LEERKRACHTNPC, //normaal
+    SPECIALNPC, //speciaal
     SHOP
 }

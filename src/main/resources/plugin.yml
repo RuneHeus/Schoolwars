@@ -18,7 +18,12 @@ commands:
   spelers:
     usage: print een lijst van alle spelers die zich momenteel in de server bevinden
   pad:
-  antwoord:
-    usage: /<command> <antwoord>
+    usage: geen idee
   fstart:
+    usage: Start het spel direct
   endgame:
+    usage: stopt het spel direct
+  antwoordSpeciaal:
+    usage: /<command> <antwoord> voor een speciale vraag
+  antwoordNormaal:
+    usage: /<command> <antwoord> voor een normale vraag

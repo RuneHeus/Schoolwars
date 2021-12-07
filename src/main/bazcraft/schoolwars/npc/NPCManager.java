@@ -1,6 +1,7 @@
 package bazcraft.schoolwars.npc;
 
 import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.vragen.VraagType;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,13 +23,13 @@ public class NPCManager {
         this.geselecteerdeNPC = new HashMap<>();
         //Hard Coded NPC
 
-        CustomNPC leerkrachtNPCBlauw = new CustomNPC(ChatColor.BLUE + "Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getBLUE());
-        CustomNPC leerkrachtNPCRood = new CustomNPC(ChatColor.RED + "Leerkracht", NPCType.LEERKRACHTNPC, plugin.getTeamManager().getRED());
+        CustomNPC leerkrachtNPCBlauw = new CustomNPC(ChatColor.BLUE + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getBLUE(), plugin);
+        CustomNPC leerkrachtNPCRood = new CustomNPC(ChatColor.RED + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getRED(), plugin);
 
         npcList.add(leerkrachtNPCBlauw);
         npcList.add(leerkrachtNPCRood);
-        npcList.add(new CustomNPC("§cShop", NPCType.SHOP, plugin.getTeamManager().getRED()));
-        npcList.add(new CustomNPC("§9Shop", NPCType.SHOP, plugin.getTeamManager().getBLUE()));
+        npcList.add(new CustomNPC("§cShop", VraagType.SPECIAAL, plugin.getTeamManager().getRED(), plugin));
+        npcList.add(new CustomNPC("§9Shop", VraagType.SPECIAAL, plugin.getTeamManager().getBLUE(), plugin));
     }
 
     public CustomNPC getCustomNPC(NPC npc) {
@@ -54,7 +55,7 @@ public class NPCManager {
          */
        Location loc = null;
        switch (npc.getType()){
-           case LEERKRACHTNPC:
+           case NORMAAL:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
                    //blauw team
                    loc = new Location(Bukkit.getServer().getWorld("world"), 317.5, 44.0, -164.5, 90, 0);
@@ -63,7 +64,7 @@ public class NPCManager {
                    loc = new Location(Bukkit.getServer().getWorld("world"), 110.5, 44.0, -37.5, -91.5f, 0);
                }
                break;
-           case SPECIALNPC:
+           case SPECIAAL:
                if(npc.getTeam().getPublicHealthBar().getTitle().equals(ChatColor.BLUE + "BLAUW")){
                    loc = new Location(Bukkit.getServer().getWorld("world"), 29.5, 40, -92.5, 90, 0);
                } else {

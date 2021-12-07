@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 
 import static bazcraft.schoolwars.tools.ItemUtils.createItem;
 
-public class MainPage implements InventoryHolder {
+public class MainPage implements InventoryHolder{
 
     private final Inventory inv;
 

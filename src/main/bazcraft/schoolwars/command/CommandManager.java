@@ -31,11 +31,6 @@ public class CommandManager implements CommandExecutor {
                 }
                 sender.sendMessage("ingamespelers: " + ingame + "\nspectators: " + spec);
                 return true;
-            case "antwoord":
-                if (args.length > 0){
-                    this.plugin.getVragenManager().compareAnswer(args, player);
-                }
-                return true;
         }
         return false;
     }

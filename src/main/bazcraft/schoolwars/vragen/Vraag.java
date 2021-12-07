@@ -1,27 +1,33 @@
 package bazcraft.schoolwars.vragen;
 
+import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.teams.Team;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Vraag {
 
+    private Schoolwars plugin;
     private ItemStack book;
     private String vraag;
     private String antwoord;
     private VraagType type;
-    private boolean blauw;
-    private boolean rood;
+    private final HashMap<Team, Boolean> teamsBeantwoord;
 
-    public Vraag(String vraag, String antwoord, VraagType type){
+    public Vraag(String vraag, String antwoord, VraagType type, Schoolwars plugin){
         this.vraag = vraag;
         this.antwoord = antwoord;
         this.type = type;
-        this.blauw = false;
-        this.rood = false;
+        this.plugin = plugin;
+        teamsBeantwoord = new HashMap<>(){{
+            put(plugin.getTeamManager().getBLUE(), false);
+            put(plugin.getTeamManager().getRED(), false);
+        }};
 
         //Vraag boek aanmaken
         this.book = new ItemStack(Material.WRITTEN_BOOK);
@@ -66,19 +72,7 @@ public class Vraag {
         this.book = book;
     }
 
-    public boolean isBlauw() {
-        return blauw;
-    }
-
-    public void setBlauw(boolean blauw) {
-        this.blauw = blauw;
-    }
-
-    public boolean isRood() {
-        return rood;
-    }
-
-    public void setRood(boolean rood) {
-        this.rood = rood;
+    public HashMap<Team, Boolean> getTeamsBeantwoord(){
+        return teamsBeantwoord;
     }
 }

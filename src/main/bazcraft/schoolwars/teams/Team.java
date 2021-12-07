@@ -19,6 +19,8 @@ public class Team {
     private final Location spawn;
     private int minionPoints;
     private final Path path;
+    private int beantwoordenVragenN; //N = normale vragen
+    private int beantwoordenVragenS; //S = speciale vragen
 
     public Team(String naam, Location spawn, ChatColor color, Path path) {
 
@@ -35,9 +37,6 @@ public class Team {
 
         scoreboard.setAllowFriendlyFire(false);
         scoreboard.setColor(color);
-
-        minionPoints = 0;
-
     }
 
     public void addSpeler(Player speler) {
@@ -105,5 +104,21 @@ public class Team {
 
     public Path getPath() {
         return path;
+    }
+
+    public int getBeantwoordenVragenN() {
+        return beantwoordenVragenN;
+    }
+
+    public void setBeantwoordenVragenN(int beantwoordenVragenN) {
+        this.beantwoordenVragenN = beantwoordenVragenN;
+    }
+
+    public int getBeantwoordenVragenS() {
+        return beantwoordenVragenS;
+    }
+
+    public void setBeantwoordenVragenS(int beantwoordenVragenS) {
+        this.beantwoordenVragenS = beantwoordenVragenS;
     }
 }

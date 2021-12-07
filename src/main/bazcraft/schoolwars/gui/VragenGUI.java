@@ -1,36 +1,43 @@
 package bazcraft.schoolwars.gui;
 
+import bazcraft.schoolwars.npc.CustomNPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class VragenGUI {
+public class VragenGUI implements InventoryHolder{
 
     private Inventory gui;
-    private ItemStack vraagBoek = new ItemStack(Material.BOOK);
-    private ItemStack[] menuITems;
+    private final CustomNPC npc;
 
-    public VragenGUI(Player player){
-        this.menuITems = new ItemStack[]{this.vraagBoek};
-        this.gui = Bukkit.createInventory(player, 9, ChatColor.AQUA + "Vragen Menu");
+    public VragenGUI(CustomNPC npc){
+        gui = Bukkit.createInventory(this, 9, ChatColor.AQUA + "Vragen Menu");
+        this.npc = npc;
 
         //ItemMeta vraag Boek
-        ItemMeta vraagBoekMeta = this.vraagBoek.getItemMeta();
+        ItemStack vraagBoek = new ItemStack(Material.BOOK);
+        ItemMeta vraagBoekMeta = vraagBoek.getItemMeta();
         vraagBoekMeta.setDisplayName(ChatColor.GREEN + "Vraag");
         ArrayList<String> vraagBoekLore = new ArrayList<>();
         vraagBoekLore.add(ChatColor.AQUA + "Klik voor een vraag te krijgen.");
         vraagBoekMeta.setLore(vraagBoekLore);
-        this.vraagBoek.setItemMeta(vraagBoekMeta);
-        this.gui.setContents(this.menuITems);
+        vraagBoek.setItemMeta(vraagBoekMeta);
+        gui.addItem(vraagBoek);
     }
 
-    public Inventory getGui(){
-        return this.gui;
+    public CustomNPC getNpc() {
+        return npc;
+    }
+
+    @Override
+    public Inventory getInventory() {
+        return gui;
     }
 }

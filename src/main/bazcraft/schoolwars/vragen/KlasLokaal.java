@@ -31,10 +31,8 @@ public class KlasLokaal {
         this.playersInClassRoom = new HashMap<>();
     }
 
-    public void teleportToMainGame(Player player){
+    public void teleportToMainGame(Player player, CustomNPC npc){
         Team team = this.plugin.getTeamManager().getTeam(player);
-        CustomNPC npc = null;
-        npc = this.plugin.getNpcManager().getGeselecteerdeNPC().get(player);
         player.teleport(this.getPlayersInClassRoom().get(player));
         assert npc != null;
         if(npc.getTeam() == this.plugin.getTeamManager().getBLUE()){
@@ -46,16 +44,15 @@ public class KlasLokaal {
 
     public void teleportToClassRoom(Player player) {
         Team team = plugin.getTeamManager().getTeam(player);
-        CustomNPC npc = null;
-        npc = this.plugin.getNpcManager().getGeselecteerdeNPC().get(player);
+        CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(player);
         if (team == plugin.getTeamManager().getBLUE()){
             player.teleport(this.locatieBlauwSpeler);
             assert npc != null;
-            npc.getNpc().teleport(this.locatieBlauwNpc, PlayerTeleportEvent.TeleportCause.UNKNOWN);
+            npc.getNpc().teleport(this.locatieBlauwNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }else if(team == plugin.getTeamManager().getRED()){
             player.teleport(this.locatieRoodSpeler);
             assert npc != null;
-            npc.getNpc().teleport(this.locatieRoodNpc, PlayerTeleportEvent.TeleportCause.UNKNOWN);
+            npc.getNpc().teleport(this.locatieRoodNpc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
         this.plugin.getNpcManager().removeGeselecteerdeNPC(player);
     }
