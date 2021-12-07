@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.NPC;
+package bazcraft.schoolwars.npc;
 
 public enum NPCType {
     SPORTNPC,

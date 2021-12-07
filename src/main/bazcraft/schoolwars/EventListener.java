@@ -1,21 +1,17 @@
-package bazcraft.schoolwars.Events;
+package bazcraft.schoolwars;
 
-import bazcraft.schoolwars.GUI.KitGUI;
-import bazcraft.schoolwars.GUI.Scoreboard;
-import bazcraft.schoolwars.GUI.VragenGUI;
-import bazcraft.schoolwars.GUI.shop.MainPage;
-import bazcraft.schoolwars.GameState;
+import bazcraft.schoolwars.gui.KitGUI;
+import bazcraft.schoolwars.gui.Scoreboard;
+import bazcraft.schoolwars.gui.VragenGUI;
+import bazcraft.schoolwars.gui.shop.MainPage;
 import bazcraft.schoolwars.Kit.KitTypes;
-import bazcraft.schoolwars.NPC.CustomNPC;
-import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.teams.Team;
-import com.google.common.collect.Iterables;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

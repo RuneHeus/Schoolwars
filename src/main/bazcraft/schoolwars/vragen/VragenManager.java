@@ -1,11 +1,9 @@
-package bazcraft.schoolwars.Vragen;
+package bazcraft.schoolwars.vragen;
 
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,6 +1,6 @@
 package bazcraft.schoolwars;
 
-import bazcraft.schoolwars.Events.SpecialEvent;
+import bazcraft.schoolwars.events.SpecialEvent;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import net.citizensnpcs.api.CitizensAPI;
@@ -10,7 +10,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Random;

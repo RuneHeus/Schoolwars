@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.GUI;
+package bazcraft.schoolwars.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

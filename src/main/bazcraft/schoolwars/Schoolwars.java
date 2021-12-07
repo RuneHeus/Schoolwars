@@ -1,10 +1,9 @@
 package bazcraft.schoolwars;
 
-import bazcraft.schoolwars.Events.EventListener;
 import bazcraft.schoolwars.Kit.KitManager;
-import bazcraft.schoolwars.NPC.NPCManager;
-import bazcraft.schoolwars.Vragen.KlasLokaal;
-import bazcraft.schoolwars.Vragen.VragenManager;
+import bazcraft.schoolwars.npc.NPCManager;
+import bazcraft.schoolwars.vragen.KlasLokaal;
+import bazcraft.schoolwars.vragen.VragenManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
@@ -13,7 +12,6 @@ import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.teams.TeamManager;
-import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

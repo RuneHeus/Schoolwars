@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.Vragen;
+package bazcraft.schoolwars.vragen;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.Vragen;
+package bazcraft.schoolwars.vragen;
 
 public enum VraagType {
     WISKUNDE,

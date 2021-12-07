@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.GUI.shop;
+package bazcraft.schoolwars.gui.shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

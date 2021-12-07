@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.NPC;
+package bazcraft.schoolwars.npc;
 
 import bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.npc.NPC;

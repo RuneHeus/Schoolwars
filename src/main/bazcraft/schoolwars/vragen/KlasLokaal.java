@@ -1,6 +1,6 @@
-package bazcraft.schoolwars.Vragen;
+package bazcraft.schoolwars.vragen;
 
-import bazcraft.schoolwars.NPC.CustomNPC;
+import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
 import org.bukkit.Bukkit;

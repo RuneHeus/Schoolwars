@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.GUI;
+package bazcraft.schoolwars.gui;
 
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
