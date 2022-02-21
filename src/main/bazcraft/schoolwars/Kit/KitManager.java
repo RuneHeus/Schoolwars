@@ -33,12 +33,13 @@ public class KitManager {
     public void giveAllPlayerKit(){
          for(Player n : plugin.getGameManager().getIngamePlayers()){
              KitTypes types = playerKitList.get(n);
+             this.AllkitList.givePlayerLeatherArmour(n, plugin.getTeamManager().getTeam(n), plugin.getTeamManager().getBLUE());
              if(types == KitTypes.WARRIOR){
-                 this.AllkitList.givePlayerWarriorKit(n);
+                 this.AllkitList.givePlayerWarriorWeapon(n, plugin.getTeamManager().getTeam(n));
              }else if(types == KitTypes.ARCHER) {
-                 this.AllkitList.givePlayerArcherKit(n);
+                 this.AllkitList.givePlayerArcherWeapon(n, plugin.getTeamManager().getTeam(n), plugin.getTeamManager().getBLUE());
              } else {
-                 AllkitList.givePlayerWarriorKit(n);
+                 AllkitList.givePlayerWarriorWeapon(n, plugin.getTeamManager().getTeam(n));
              }
          }
     }

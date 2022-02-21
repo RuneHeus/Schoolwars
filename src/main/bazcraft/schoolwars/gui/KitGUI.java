@@ -24,11 +24,11 @@ public class KitGUI {
         ItemMeta stoneSwordMeta = guiItems[0].getItemMeta();
         stoneSwordMeta.setDisplayName(ChatColor.AQUA + "Warrior Kit");
         ArrayList<String> swordLore = new ArrayList<>();
-        swordLore.add(ChatColor.GREEN + "Head: Chainmail Cap");
-        swordLore.add(ChatColor.GREEN + "Body: Chainmail Tunic");
-        swordLore.add(ChatColor.GREEN + "Legs: Chainmail Pants");
-        swordLore.add(ChatColor.GREEN + "Boots: Chainmail Boots");
-        swordLore.add(ChatColor.GREEN + "Weapon: Stone Sword");
+        swordLore.add(ChatColor.GREEN + "Head: Leather Cap");
+        swordLore.add(ChatColor.GREEN + "Body: Leather Tunic");
+        swordLore.add(ChatColor.GREEN + "Legs: Leather Pants");
+        swordLore.add(ChatColor.GREEN + "Boots: Leather Boots");
+        swordLore.add(ChatColor.GREEN + "Weapon: Leather Sword");
         stoneSwordMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         stoneSwordMeta.setLore(swordLore);
         guiItems[0].setItemMeta(stoneSwordMeta);
