@@ -185,7 +185,6 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCitizensEnable(CitizensEnableEvent event) {
-
         for (CustomNPC n : plugin.getNpcManager().getNpcList()){
 
             for (NPC m : CitizensAPI.getNPCRegistry()) {
@@ -196,10 +195,8 @@ public class EventListener implements Listener {
             }
 
             if (n.getNpc() == null) {
-                CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, n.getName());
+                n.setNpc(CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, n.getName()));
             }
-
         }
-
     }
 }

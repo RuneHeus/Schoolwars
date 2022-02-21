@@ -1,6 +1,6 @@
 name: Schoolwars
 version: '${project.version}'
-main: bazcraft.schoolwars.Schoolwars
+main: main.bazcraft.schoolwars.Schoolwars
 api-version: 1.17
 authors: [ RuneHeus, NoahUyttebroeck ]
 depend: [Citizens]
