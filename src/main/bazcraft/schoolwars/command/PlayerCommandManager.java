@@ -1,0 +1,115 @@
+package main.bazcraft.schoolwars.command;
+
+import main.bazcraft.schoolwars.Schoolwars;
+import main.bazcraft.schoolwars.npc.CustomNPC;
+import main.bazcraft.schoolwars.teams.Team;
+import main.bazcraft.schoolwars.vragen.VraagType;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+
+public class PlayerCommandManager implements CommandExecutor {
+
+    private final Schoolwars plugin;
+    private HashMap<Player, Integer> selectedPathCache;
+
+    public PlayerCommandManager(Schoolwars plugin) {
+        this.plugin = plugin;
+        selectedPathCache = new HashMap<>();
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
+            switch (cmd.getName()) {
+                case "pad":
+                    if (args.length > 0) {
+                        switch (args[0]) {
+                            case "select":
+                                if (args.length > 1) {
+                                    selectedPathCache.put(p, Integer.parseInt(args[1]));
+                                    p.sendMessage(Schoolwars.prefix + " Selected path " + args[1]);
+                                }
+                                return true;
+                            case "activatewall":
+                                if (args.length > 1) {
+                                    plugin.getMinionManager().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].activate();
+                                    p.sendMessage(Schoolwars.prefix + " Wall activated");
+                                }
+                                return true;
+                            case "deactivatewall":
+                                if (args.length > 1) {
+                                    plugin.getMinionManager().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].deactivate(p);
+                                    p.sendMessage(Schoolwars.prefix + " Wall deactivated");
+                                    plugin.getMinionManager().moveMinionsFromPath(plugin.getMinionManager().getPaths()[selectedPathCache.get(p)]);
+                                }
+                                return true;
+                        }
+                    }
+                    break;
+                case "fstart":
+                    plugin.getGameManager().forceStart();
+                    return true;
+                case "endgame":
+                    plugin.getGameManager().endGame(plugin.getTeamManager().getBLUE());return true;
+                case "antwoord":
+                    Team team = plugin.getTeamManager().getTeam(p);
+                    CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(p);
+                    if(npc != null){
+                        if (args.length > 0){
+                            String antwoord = "";
+                            for(String n: args){
+                                antwoord += n + " ";
+                            }
+                            antwoord = antwoord.substring(0, antwoord.length()-1);
+                            boolean juist = plugin.getVragenManager().compareAnswer(antwoord, npc.getActieveVraag());
+                            if(juist){
+                                p.sendMessage(Schoolwars.prefix + " " + ChatColor.GREEN + "Juist antwoord!");
+                                npc.getActieveVraag().getTeamsBeantwoord().put(npc.getTeam(), true);
+                                npc.setNieuweVraag();
+
+                                if(npc.getType() == VraagType.NORMAAL){
+                                    plugin.getKlasLokaal().teleportToMainGame(p, npc);
+                                    plugin.getMinionManager().addMinion(team.getPath());
+                                } else if (npc.getType() == VraagType.SPECIAAL) {
+                                    for (int i = 0; i < team.getMinionPoints(); i++) {
+                                        plugin.getMinionManager().addMinion(team.getPath());
+                                    }
+                                }
+                                team.setMinionPoints(0);
+                                HashMap<Player, CustomNPC> temp = plugin.getNpcManager().getGeselecteerdeNPC();
+                                try{
+                                    for(Player playerInNpc: temp.keySet()){
+                                        if(plugin.getTeamManager().getTeam(playerInNpc).equals(team)){
+                                            if(plugin.getNpcManager().getGeselecteerdeNPC().get(playerInNpc).getNpc().getUniqueId().equals(npc.getNpc().getUniqueId())){
+                                                plugin.getNpcManager().removeGeselecteerdeNPC(playerInNpc);
+                                            }
+                                        }
+                                    }
+                                }catch (ConcurrentModificationException e){
+
+                                }
+
+                            }else{
+                                p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Fout antoord!");
+                            }
+                        }else{
+                            p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Je moet een antwoord geven!");
+                        }
+                        return true;
+                    }else{
+                        p.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Je hebt geen vraag geselecteerd!");
+                    }
+            }
+        } else {
+            sender.sendMessage(Schoolwars.prefix + " Enkel spelers kunnen deze command uitvoeren!");
+        }
+        return false;
+    }
+}
