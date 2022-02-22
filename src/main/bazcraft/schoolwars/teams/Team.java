@@ -5,11 +5,14 @@ import main.bazcraft.schoolwars.minions.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.util.Objects;
 
 public class Team {
 
@@ -24,7 +27,7 @@ public class Team {
 
     public Team(String naam, Location spawn, ChatColor color, Path path) {
 
-        org.bukkit.scoreboard.Team temp = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(naam);
+        org.bukkit.scoreboard.Team temp = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard().getTeam(naam);
         if (temp == null) {
             temp = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(naam);
         }
@@ -100,6 +103,10 @@ public class Team {
 
     public void setMinionPoints(int minionPoints) {
         this.minionPoints = minionPoints;
+    }
+
+    public void addMinionPoints(int amount) {
+        minionPoints += amount;
     }
 
     public Path getPath() {

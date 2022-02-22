@@ -37,7 +37,7 @@ public final class Schoolwars extends JavaPlugin {
     public Schoolwars() {
         TeamManager teamManager1;
         eventListener = new EventListener(this);
-        gameManager = new GameManager(this, 12, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
+        gameManager = new GameManager(this, 8, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);

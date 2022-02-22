@@ -6,7 +6,6 @@ import main.bazcraft.schoolwars.gui.VragenGUI;
 import main.bazcraft.schoolwars.gui.shop.MainPage;
 import main.bazcraft.schoolwars.Kit.KitTypes;
 import main.bazcraft.schoolwars.npc.CustomNPC;
-import main.bazcraft.schoolwars.vragen.Vraag;
 import main.bazcraft.schoolwars.vragen.VraagType;
 import main.bazcraft.schoolwars.teams.Team;
 import net.citizensnpcs.api.CitizensAPI;
@@ -24,13 +23,16 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
+
+import static main.bazcraft.schoolwars.tools.ItemUtils.createItem;
 
 public class EventListener implements Listener {
 
     private final Schoolwars plugin;
+
+    private final String KITSELECTOR = "§d§lkitselector";
 
     public EventListener(Schoolwars plugin) {
         this.plugin = plugin;
@@ -42,7 +44,7 @@ public class EventListener implements Listener {
             case WAITING:
                 if (plugin.getGameManager().addSpeler(event.getPlayer())) {
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
-                    event.getPlayer().getInventory().addItem(new ItemStack(Material.BOW));
+                    event.getPlayer().getInventory().addItem(createItem(KITSELECTOR, Material.BOW));
 
                     new Scoreboard(plugin, event.getPlayer()).createBoard();
                     break;
@@ -160,7 +162,7 @@ public class EventListener implements Listener {
         if(GameState.getCurrentGamestate() == GameState.WAITING){
             if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
                 if(event.getItem() != null){
-                    if(Objects.requireNonNull(event.getItem()).getType() == Material.BOW){
+                    if(Objects.requireNonNull(event.getItem()).getType() == Material.BOW && event.getItem().getItemMeta().getDisplayName().equals(KITSELECTOR)){
                         KitGUI kitGUI = new KitGUI(player);
                         Inventory inventory = kitGUI.getGui();
                         player.openInventory(inventory);

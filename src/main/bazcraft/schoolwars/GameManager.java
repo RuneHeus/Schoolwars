@@ -28,7 +28,7 @@ public class GameManager {
         ingamePlayers = new ArrayList<>();
         this.maxAantalSpelers = maxAantalSpelers;
         this.lobby = lobby;
-        PLAYERSNEEDEDTOSTART = 1;
+        PLAYERSNEEDEDTOSTART = 2;
     }
 
     public void startGame() {
