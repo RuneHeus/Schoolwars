@@ -53,6 +53,10 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>everything</id>
+            <url>https://repo.citizensnpcs.co/</url>
+        </repository>
     </repositories>
 
     <dependencies>
