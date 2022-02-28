@@ -11,17 +11,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class KitGUI {
-
-    private Inventory gui;
-    private ItemStack[] guiItems;
+public class KitGUI extends InventoryGui{
 
     public KitGUI(Player player){
-        this.guiItems = new ItemStack[]{new ItemStack(Material.STONE_SWORD), new ItemStack(Material.BOW)};
-        this.gui = Bukkit.createInventory(player, 9, ChatColor.RED + "Kit Menu");
-
+        super(Bukkit.createInventory(player, 9, ChatColor.RED + "Kit Menu"),new ItemStack[]{new ItemStack(Material.STONE_SWORD), new ItemStack(Material.BOW)});
         //Warrior kit
-        ItemMeta stoneSwordMeta = guiItems[0].getItemMeta();
+        ItemMeta stoneSwordMeta = itemStacks[0].getItemMeta();
         stoneSwordMeta.setDisplayName(ChatColor.AQUA + "Warrior Kit");
         ArrayList<String> swordLore = new ArrayList<>();
         swordLore.add(ChatColor.GREEN + "Head: Leather Cap");
@@ -31,9 +26,9 @@ public class KitGUI {
         swordLore.add(ChatColor.GREEN + "Weapon: Leather Sword");
         stoneSwordMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         stoneSwordMeta.setLore(swordLore);
-        guiItems[0].setItemMeta(stoneSwordMeta);
+        itemStacks[0].setItemMeta(stoneSwordMeta);
         //Archer kit
-        ItemMeta bowMeta = guiItems[1].getItemMeta();
+        ItemMeta bowMeta = itemStacks[1].getItemMeta();
         bowMeta.setDisplayName(ChatColor.AQUA + "Archer Kit");
         ArrayList<String> bowLore = new ArrayList<>();
         bowLore.add(ChatColor.GREEN + "Head: Leather Cap");
@@ -43,11 +38,7 @@ public class KitGUI {
         bowLore.add(ChatColor.GREEN + "Weapon: Wooden Sword");
         bowLore.add(ChatColor.GREEN + "Weapon: Bow");
         bowMeta.setLore(bowLore);
-        guiItems[1].setItemMeta(bowMeta);
-        this.gui.setContents(guiItems);
-    }
-
-    public Inventory getGui(){
-        return this.gui;
+        itemStacks[1].setItemMeta(bowMeta);
+        inv.setContents(itemStacks);
     }
 }

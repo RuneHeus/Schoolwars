@@ -1,6 +1,7 @@
 package main.bazcraft.schoolwars;
 
 import main.bazcraft.schoolwars.gui.KitGUI;
+import main.bazcraft.schoolwars.gui.LeaveUi;
 import main.bazcraft.schoolwars.gui.Scoreboard;
 import main.bazcraft.schoolwars.gui.VragenGUI;
 import main.bazcraft.schoolwars.gui.shop.MainPage;
@@ -13,6 +14,7 @@ import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +25,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.Objects;
 
@@ -92,7 +95,7 @@ public class EventListener implements Listener {
                     MainPage mainPage = new MainPage(npc);
                     player.openInventory(mainPage.getInventory());
                 } else {
-                    VragenGUI gui = new VragenGUI(npc);
+                    VragenGUI gui = new VragenGUI(event.getClicker(), npc);
                     player.openInventory(gui.getInventory());
                 }
             }else{
@@ -102,11 +105,12 @@ public class EventListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onGuiClick(InventoryClickEvent event){
+    public void onGuiClick(InventoryClickEvent event) throws ClassNotFoundException {
         Player player = (Player) event.getWhoClicked();
         Team team = plugin.getTeamManager().getTeam(player);
         if (event.getClickedInventory() != null) {
-            if (event.getClickedInventory().getHolder() instanceof MainPage) {
+            InventoryHolder holder = event.getClickedInventory().getHolder();
+            if (holder instanceof MainPage) {
                 MainPage gui = (MainPage) event.getClickedInventory().getHolder();
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
@@ -123,8 +127,8 @@ public class EventListener implements Listener {
                     }
                 }
                 event.setCancelled(true);
-            }else if(event.getClickedInventory().getHolder() instanceof VragenGUI){
-                VragenGUI gui = (VragenGUI) event.getClickedInventory().getHolder();
+            }else if(event.getView().getTitle().equals(ChatColor.AQUA + "Vragen Menu")){
+                
                 if(event.getCurrentItem() != null){
                     if(event.getCurrentItem().getType() == Material.BOOK){
                         if(!team.isBeantwoordenVragenN()){
@@ -141,7 +145,7 @@ public class EventListener implements Listener {
                     }
                     event.setCancelled(true);
                 }
-            }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Kit Menu")){
+            }else if(event.getView().getTitle().equals(ChatColor.RED + "Kit Menu")){
                 if(GameState.getCurrentGamestate() == GameState.WAITING){
                     if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.STONE_SWORD){
                         plugin.getKitManager().addPlayerWithKit(player, KitTypes.WARRIOR);
@@ -152,6 +156,8 @@ public class EventListener implements Listener {
                     }
                     event.setCancelled(true);
                 }
+            }else if(event.getView().getTitle().equals(ChatColor.GREEN + "Verlaat Lokaal")){
+
             }
         }
     }
@@ -164,9 +170,17 @@ public class EventListener implements Listener {
                 if(event.getItem() != null){
                     if(Objects.requireNonNull(event.getItem()).getType() == Material.BOW && event.getItem().getItemMeta().getDisplayName().equals(KITSELECTOR)){
                         KitGUI kitGUI = new KitGUI(player);
-                        Inventory inventory = kitGUI.getGui();
+                        Inventory inventory = kitGUI.getInventory();
                         player.openInventory(inventory);
                     }
+                }
+            }
+        }else{
+            if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK )|| event.getAction().equals(Action.LEFT_CLICK_BLOCK)){
+                if(event.getClickedBlock() != null && event.getClickedBlock().equals(Material.STONE_BUTTON) && event.getClickedBlock().getLocation().equals(new Location(Bukkit.getWorld("world"), 431d, 32d, -103d))){
+                    LeaveUi leaveUi = new LeaveUi(event.getPlayer());
+                    Inventory inventory = leaveUi.getInventory();
+                    player.openInventory(inventory);
                 }
             }
         }

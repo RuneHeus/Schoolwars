@@ -26,13 +26,13 @@ public class KlasLokaal {
         this.vragenManager = vragenManager;
         this.locatieBlauwSpeler = new Location(Bukkit.getServer().getWorld("world"), 10.5, 42.0, -98.5, 90.0f, 0.0f);
         this.locatieRoodSpeler = new Location(Bukkit.getServer().getWorld("world"), 431.5, 31.0, -104.5, 90.0f, 0.0f);
-        this.locatieBlauwNpc = new Location(Bukkit.getServer().getWorld("world"), 0.5, 42.0, -97.5, -80.0f, 0.0f);
-        this.locatieRoodNpc = new Location(Bukkit.getServer().getWorld("world"), 421.5, 31.0, -103.5, -80.0f, 0.0f);
+        this.locatieBlauwNpc = new Location(Bukkit.getServer().getWorld("world"), 421.5, 31.0, -103.5, -80.0f, 0.0f);
+        this.locatieRoodNpc = new Location(Bukkit.getServer().getWorld("world"), 0.5, 42.0, -97.5, -80.0f, 0.0f);
         this.playersInClassRoom = new HashMap<>();
     }
 
     public void teleportToMainGame(Player player, CustomNPC npc){
-        player.teleport(this.getPlayersInClassRoom().get(player));
+        player.teleport(getPlayersInClassRoom().get(player));
         removePlayerInClassRoom(player);
         assert npc != null;
         if(npc.getTeam() == this.plugin.getTeamManager().getBLUE()){
