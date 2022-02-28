@@ -115,7 +115,7 @@ public class EventListener implements Listener {
                                 plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
                                 plugin.getVragenManager().startVraag(player);
                             }else{
-                                player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale bazcraft.schoolwars.vragen zijn al opgelost!");
+                                player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
                             }
                         } else {
                             player.sendMessage(Schoolwars.prefix + " §cJe team heeft niet genoeg minionpoints");
@@ -136,12 +136,12 @@ public class EventListener implements Listener {
                                 plugin.getKlasLokaal().teleportToClassRoom(player);
                             }
                         }else{
-                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle bazcraft.schoolwars.vragen zijn al opgelost!");
+                            player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle vragen zijn al opgelost!");
                         }
                     }
                     event.setCancelled(true);
                 }
-            }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "bazcraft.schoolwars.Kit Menu")){
+            }else if(event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Kit Menu")){
                 if(GameState.getCurrentGamestate() == GameState.WAITING){
                     if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.STONE_SWORD){
                         plugin.getKitManager().addPlayerWithKit(player, KitTypes.WARRIOR);

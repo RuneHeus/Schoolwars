@@ -1,4 +1,4 @@
-package bazcraft.schoolwars.events;
+package bazcraft.schoolwars.gameevents;
 
 import bazcraft.schoolwars.Schoolwars;
 import org.bukkit.Bukkit;

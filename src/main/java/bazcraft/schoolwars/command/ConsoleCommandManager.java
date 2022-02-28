@@ -19,7 +19,7 @@ public class ConsoleCommandManager implements CommandExecutor {
         if (sender instanceof ConsoleCommandSender) {
 
         } else {
-            sender.sendMessage(Schoolwars.prefix + " §cEnkel de console kan deze bazcraft.schoolwars.command uitvoeren!");
+            sender.sendMessage(Schoolwars.prefix + " §cEnkel de console kan deze command uitvoeren!");
         }
         return false;
     }

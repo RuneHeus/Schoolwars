@@ -21,8 +21,8 @@ public class Team {
     private final Location spawn;
     private int minionPoints;
     private final Path path;
-    private boolean beantwoordenVragenN; //N = normale bazcraft.schoolwars.vragen
-    private boolean beantwoordenVragenS; //S = speciale bazcraft.schoolwars.vragen
+    private boolean beantwoordenVragenN; //N = normale vragen
+    private boolean beantwoordenVragenS; //S = speciale vragen
 
     public Team(String naam, Location spawn, ChatColor color, Path path) {
 

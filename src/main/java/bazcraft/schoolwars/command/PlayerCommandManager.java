@@ -108,7 +108,7 @@ public class PlayerCommandManager implements CommandExecutor {
                     }
             }
         } else {
-            sender.sendMessage(Schoolwars.prefix + " Enkel spelers kunnen deze bazcraft.schoolwars.command uitvoeren!");
+            sender.sendMessage(Schoolwars.prefix + " Enkel spelers kunnen deze command uitvoeren!");
         }
         return false;
     }

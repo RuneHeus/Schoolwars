@@ -1,6 +1,6 @@
 package bazcraft.schoolwars;
 
-import bazcraft.schoolwars.events.SpecialEvent;
+import bazcraft.schoolwars.gameevents.SpecialEvent;
 import bazcraft.schoolwars.teams.Team;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import net.citizensnpcs.api.CitizensAPI;
