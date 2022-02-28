@@ -1,8 +1,8 @@
 name: Schoolwars
 version: '${project.version}'
-main: main.bazcraft.schoolwars.Schoolwars
-api-version: 1.17
-authors: [ RuneHeus, NoahUyttebroeck ]
+main: bazcraft.schoolwars.Schoolwars
+api-version: 1.18
+authors: [RuneHeus, NoahUyttebroeck]
 depend: [Citizens]
 commands:
   despawnnpc:
