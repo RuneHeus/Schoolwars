@@ -1,6 +1,7 @@
 package bazcraft.schoolwars.teams;
 
 import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.gui.Scoreboard;
 import bazcraft.schoolwars.minions.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,6 +45,8 @@ public class Team {
     public void addSpeler(Player speler) {
         scoreboard.addEntry(speler.getName());
         teamHealthBar.addPlayer(speler);
+        speler.setPlayerListName(scoreboard.getColor() + speler.getName() + "§r");
+        speler.setDisplayName(scoreboard.getColor() + speler.getName() + "§r");
     }
 
     public void removeSpeler(Player speler) {
@@ -106,6 +109,18 @@ public class Team {
 
     public void addMinionPoints(int amount) {
         minionPoints += amount;
+        for (String n : scoreboard.getEntries()) {
+            Player p = Bukkit.getPlayer(n);
+            new Scoreboard(Schoolwars.getPlugin(Schoolwars.class), p).createBoard();
+        }
+    }
+
+    public void removeMinionPoints(int amount) {
+        minionPoints -= amount;
+        for (String n : scoreboard.getEntries()) {
+            Player p = Bukkit.getPlayer(n);
+            new Scoreboard(Schoolwars.getPlugin(Schoolwars.class), p).createBoard();
+        }
     }
 
     public Path getPath() {
