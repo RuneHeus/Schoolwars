@@ -1,6 +1,6 @@
-name: Schoolwars
+name: bazcraft.schoolwars.Schoolwars
 version: '${project.version}'
-main: main.bazcraft.schoolwars.Schoolwars
+main: main.bazcraft.schoolwars.bazcraft.schoolwars.Schoolwars
 api-version: 1.17
 authors: [ RuneHeus, NoahUyttebroeck ]
 depend: [Citizens]
@@ -9,11 +9,11 @@ commands:
     aliases:
       - removenpc
       - deletenpc
-    usage: /<command>
+    usage: /<bazcraft.schoolwars.command>
   spawnnpc:
-    usage: /<command>
+    usage: /<bazcraft.schoolwars.command>
     aliases:
-      - npc
+      - bazcraft.schoolwars.npc
       - getnpc
   spelers:
     usage: print een lijst van alle spelers die zich momenteel in de server bevinden
@@ -24,4 +24,4 @@ commands:
   endgame:
     usage: stopt het spel direct
   antwoord:
-    usage: /<command> <antwoord>
+    usage: /<bazcraft.schoolwars.command> <antwoord>
