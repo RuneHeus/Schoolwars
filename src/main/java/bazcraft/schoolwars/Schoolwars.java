@@ -4,6 +4,7 @@ import bazcraft.schoolwars.Kit.KitManager;
 import bazcraft.schoolwars.command.CommandManager;
 import bazcraft.schoolwars.command.ConsoleCommandManager;
 import bazcraft.schoolwars.command.PlayerCommandManager;
+import bazcraft.schoolwars.firebase.Firebase;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.npc.NPCManager;
 import bazcraft.schoolwars.teams.Team;
@@ -33,6 +34,7 @@ public final class Schoolwars extends JavaPlugin {
     private final MinionManager minionManager;
     private NPCManager npcManager;
     private final KitManager kitManager;
+    private final Firebase firebase;
 
     public static final String prefix = "§0[§2Schoolwars§0]§r";
 	
@@ -44,6 +46,7 @@ public final class Schoolwars extends JavaPlugin {
         playerCommandManager = new PlayerCommandManager(this);
         consoleCommandManager = new ConsoleCommandManager(this);
         kitManager = new KitManager(this);
+        firebase = new Firebase(this);
         //MINIONS
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(
@@ -170,4 +173,6 @@ public final class Schoolwars extends JavaPlugin {
     public KitManager getKitManager(){
         return this.kitManager;
     }
+
+    public Firebase getFirebase(){return this.firebase;}
 }
