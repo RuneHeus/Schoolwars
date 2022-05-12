@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
-public class MinionManager implements Listener {
+public final class MinionManager implements Listener {
 
     private final Schoolwars plugin;
     private final Path[] paths;
@@ -27,7 +27,7 @@ public class MinionManager implements Listener {
     public void addMinion(Path path) {
         Minion minion = new Minion(path, plugin);
         path.getMinions().add(minion);
-        moveMinion(minion, 0);
+        moveMinion(minion, 1);
     }
 
     public void removeMinion(Minion minion) {
@@ -77,28 +77,30 @@ public class MinionManager implements Listener {
                 break;
             }
         }
-        Wall wall = minion.getPath().getWall(event.getNavigator().getTargetAsLocation());
-        if (wall != null) {
-            if (wall.isActivated()) {
-                int count = 0;
-                for (int i = minionIndex-1; i >= 0; i--) {
-                    if (minions[i].getPath().equals(minion.getPath()) && minions[i].getTarget() == minion.getTarget()) {
-                        count++;
-                    }
-                }
-                int finalCount = count;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (event.getNPC().getNavigator().getPathStrategy().getPath() != null) {
-                            Iterable<Vector> iterable = event.getNPC().getNavigator().getPathStrategy().getPath();
-                            Vector vector = Iterables.get(iterable, ((Iterables.size(iterable)-1) - finalCount));
-                            event.getNavigator().cancelNavigation();
-                            event.getNavigator().setTarget(new Location(Bukkit.getWorld("world"), vector.getX(), vector.getY(), vector.getZ()));
-                            cancel();
+        if (minion != null) {
+            Wall wall = minion.getPath().getWall(event.getNavigator().getTargetAsLocation());
+            if (wall != null) {
+                if (wall.isActivated()) {
+                    int count = 0;
+                    for (int i = minionIndex-1; i >= 0; i--) {
+                        if (minions[i].getPath().equals(minion.getPath()) && minions[i].getTarget() == minion.getTarget()) {
+                            count++;
                         }
                     }
-                }.runTaskTimer(plugin, 0, 1);
+                    int finalCount = count;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (event.getNPC().getNavigator().getPathStrategy().getPath() != null) {
+                                Iterable<Vector> iterable = event.getNPC().getNavigator().getPathStrategy().getPath();
+                                Vector vector = Iterables.get(iterable, ((Iterables.size(iterable)-1) - finalCount));
+                                event.getNavigator().cancelNavigation();
+                                event.getNavigator().setTarget(new Location(Bukkit.getWorld("world"), vector.getX(), vector.getY(), vector.getZ()));
+                                cancel();
+                            }
+                        }
+                    }.runTaskTimer(plugin, 0, 1);
+                }
             }
         }
     }

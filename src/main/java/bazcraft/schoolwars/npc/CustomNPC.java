@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class CustomNPC {
-    private Schoolwars plugin;
+    private final Schoolwars plugin;
     private NPC npc;
-    private VraagType type;
-    private Team team;
-    private String name;
+    private final VraagType type;
+    private final Team team;
+    private final String name;
     private Vraag actieveVraag;
 
     public CustomNPC(String npcName, VraagType type, Team team, Schoolwars plugin){

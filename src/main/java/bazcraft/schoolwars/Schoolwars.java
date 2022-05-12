@@ -28,10 +28,10 @@ public final class Schoolwars extends JavaPlugin {
     private final CommandManager commandManager;
     private final PlayerCommandManager playerCommandManager;
     private final ConsoleCommandManager consoleCommandManager;
-    private final TeamManager teamManager;
-    private final VragenManager vragenManager;
-    private final KlasLokaal klasLokaal;
-    private final MinionManager minionManager;
+    private TeamManager teamManager;
+    private VragenManager vragenManager;
+    private KlasLokaal klasLokaal;
+    private MinionManager minionManager;
     private NPCManager npcManager;
     private final KitManager kitManager;
     private final Firebase firebase;
@@ -39,7 +39,6 @@ public final class Schoolwars extends JavaPlugin {
     public static final String prefix = "§0[§2Schoolwars§0]§r";
 	
     public Schoolwars() {
-        TeamManager teamManager1;
         eventListener = new EventListener(this);
         gameManager = new GameManager(this, 8, new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5));
         commandManager = new CommandManager(this);
@@ -47,28 +46,35 @@ public final class Schoolwars extends JavaPlugin {
         consoleCommandManager = new ConsoleCommandManager(this);
         kitManager = new KitManager(this);
         firebase = new Firebase(this);
+    }
+
+    @Override
+    public void onEnable() {
+
+        GameState.setGamestate(GameState.WAITING);
+
         //MINIONS
         World world = Bukkit.getWorld("world");
         Path redPath = new Path(
-            new Wall[]{
-                    new Wall(new Location(world, 32.5, 34, -92.5)),
-                    new Wall(new Location(world, 58.5, 31, -91.5)),
-                    new Wall(new Location(world, 84.5, 28, -89.5)),
-                    new Wall(new Location(world, 100.5, 28, -96.5)),
-                    new Wall(new Location(world, 111.5, 28, -108.5)),
-                    new Wall(new Location(world, 130.5, 28, -101.5)),
-                    new Wall(new Location(world, 149.5, 28, -102.5)),
-                    new Wall(new Location(world, 164.5, 28, -112.5)),
-                    new Wall(new Location(world, 195.5, 28, -112.5)),
-                    new Wall(new Location(world, 232.5, 28, -89.5)),
-                    new Wall(new Location(world, 262.5, 28, -90.5)),
-                    new Wall(new Location(world, 278.5, 28, -99.5)),
-                    new Wall(new Location(world, 297.5, 28, -100.5)),
-                    new Wall(new Location(world, 316.5, 28, -93.5)),
-                    new Wall(new Location(world, 343.5, 28, -112.5)),
-                    new Wall(new Location(world, 370.5, 31, -110.5)),
-                    new Wall(new Location(world, 395.5, 34, -109.5)),
-            }
+                new Wall[]{
+                        new Wall(new Location(world, 32.5, 34, -92.5)),
+                        new Wall(new Location(world, 58.5, 31, -91.5)),
+                        new Wall(new Location(world, 84.5, 28, -89.5)),
+                        new Wall(new Location(world, 100.5, 28, -96.5)),
+                        new Wall(new Location(world, 111.5, 28, -108.5)),
+                        new Wall(new Location(world, 130.5, 28, -101.5)),
+                        new Wall(new Location(world, 149.5, 28, -102.5)),
+                        new Wall(new Location(world, 164.5, 28, -112.5)),
+                        new Wall(new Location(world, 195.5, 28, -112.5)),
+                        new Wall(new Location(world, 232.5, 28, -89.5)),
+                        new Wall(new Location(world, 262.5, 28, -90.5)),
+                        new Wall(new Location(world, 278.5, 28, -99.5)),
+                        new Wall(new Location(world, 297.5, 28, -100.5)),
+                        new Wall(new Location(world, 316.5, 28, -93.5)),
+                        new Wall(new Location(world, 343.5, 28, -112.5)),
+                        new Wall(new Location(world, 370.5, 31, -110.5)),
+                        new Wall(new Location(world, 395.5, 34, -109.5)),
+                }
         );
         Path bluePath = new Path(
                 new Wall[]{
@@ -91,6 +97,7 @@ public final class Schoolwars extends JavaPlugin {
                         new Wall(new Location(world, 32.5, 34, -92.5))
                 }
         );
+
         minionManager = new MinionManager(
                 new Path[]{
                         redPath,
@@ -98,20 +105,20 @@ public final class Schoolwars extends JavaPlugin {
                 }, this
         );
 
-        teamManager1 = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 37.5, 40.2, -91.5, -90f, 0f), ChatColor.RED,
+        teamManager = new TeamManager(new Team("rood", new Location(Bukkit.getWorld("world"), 37.5, 40.2, -91.5, -90f, 0f), ChatColor.RED,
                 redPath), new Team("blauw", new Location(Bukkit.getWorld("world"), 390.5, 40.2, -110.5, 90f, 0f), ChatColor.BLUE,
                 bluePath), this);
-        teamManager = teamManager1;
 
-        this.vragenManager = new VragenManager(teamManager1, this);
+        this.vragenManager = new VragenManager(teamManager, this);
+
+        npcManager = new NPCManager(this);
+
         this.klasLokaal = new KlasLokaal(this.vragenManager, this);
 
-    }
-
-    @Override
-    public void onEnable() {
         getServer().getPluginManager().registerEvents(eventListener, this);
         getServer().getPluginManager().registerEvents(minionManager, this);
+
+        //COMMANDS
         getCommand("spelers").setExecutor(commandManager);
         getCommand("spawnnpc").setExecutor(commandManager);
         getCommand("despawnnpc").setExecutor(commandManager);
@@ -119,10 +126,6 @@ public final class Schoolwars extends JavaPlugin {
         getCommand("fstart").setExecutor(playerCommandManager);
         getCommand("endgame").setExecutor(playerCommandManager);
         getCommand("antwoord").setExecutor(playerCommandManager);
-
-        GameState.setGamestate(GameState.WAITING);
-
-        npcManager = new NPCManager(this);
 
         //Doe dit altijd als laatste zodat je gemakkelijk in de console kan zien of er een error bij het opstarten is of niet
         getLogger().info(ChatColor.GREEN + getName() + " is enabled!");

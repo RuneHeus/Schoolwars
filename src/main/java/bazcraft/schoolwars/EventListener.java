@@ -41,6 +41,7 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().sendMessage(GameState.getCurrentGamestate().name() + " aeaeraeaeea");
         switch (GameState.getCurrentGamestate()) {
             case WAITING:
                 if (plugin.getGameManager().addSpeler(event.getPlayer())) {

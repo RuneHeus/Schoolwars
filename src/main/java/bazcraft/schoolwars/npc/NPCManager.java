@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class NPCManager {
 
     private ArrayList<CustomNPC> npcList;
-    private HashMap<Player, CustomNPC> geselecteerdeNPC;
+    private final HashMap<Player, CustomNPC> geselecteerdeNPC;
     private final Schoolwars plugin;
 
     public NPCManager(Schoolwars plugin){
