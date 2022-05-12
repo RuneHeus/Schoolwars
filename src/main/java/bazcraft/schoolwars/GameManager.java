@@ -115,8 +115,10 @@ public class GameManager {
     public void removeSpeler(Player speler) {
         ingamePlayers.remove(speler);
         plugin.getTeamManager().removePlayer(plugin.getTeamManager().getTeam(speler), speler);
-        if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
-            countdownRunnable.cancel();
+        if (countdownRunnable != null) {
+            if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
+                countdownRunnable.cancel();
+            }
         }
     }
 

@@ -40,11 +40,13 @@ public class TeamManager {
     }
 
     public void removePlayer(Team team, Player speler) {
-        team.removeSpeler(speler);
-        if (team.equals(RED)) {
-            BLUE.getPublicHealthBar().removePlayer(speler);
-        } else {
-            RED.getPublicHealthBar().removePlayer(speler);
+        if (team != null) {
+            team.removeSpeler(speler);
+            if (team.equals(RED)) {
+                BLUE.getPublicHealthBar().removePlayer(speler);
+            } else {
+                RED.getPublicHealthBar().removePlayer(speler);
+            }
         }
     }
 
