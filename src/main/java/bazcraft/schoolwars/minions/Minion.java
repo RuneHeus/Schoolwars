@@ -1,6 +1,6 @@
 package bazcraft.schoolwars.minions;
 
-import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.teams.TeamManager;
 import com.google.firebase.database.annotations.NotNull;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -15,13 +15,11 @@ public class Minion {
     private final NPC npc;
     private final Path path;
     private int target;
-    private final Schoolwars plugin;
 
-    public Minion(@NotNull Path pad, Schoolwars plugin) {
+    public Minion(@NotNull Path pad) {
         npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, "minion");
 
         this.path = pad;
-        this.plugin = plugin;
         target = 0;
 
         npc.setProtected(true);
@@ -45,12 +43,12 @@ public class Minion {
             Location loc = path.getWalls()[target].getLoc();
             npc.getNavigator().setTarget(loc);
         } else {
-            if(plugin.getTeamManager().getRED() == plugin.getTeamManager().getTeam(path)) {
-                plugin.getTeamManager().getBLUE().removeHealth(20);
+            if(TeamManager.getInstance().getRED() == TeamManager.getInstance().getTeam(path)) {
+                TeamManager.getInstance().getBLUE().removeHealth(20);
             } else {
-                plugin.getTeamManager().getRED().removeHealth(20);
+                TeamManager.getInstance().getRED().removeHealth(20);
             }
-            plugin.getMinionManager().removeMinion(this);
+            MinionManager.getInstance().removeMinion(this);
         }
     }
 

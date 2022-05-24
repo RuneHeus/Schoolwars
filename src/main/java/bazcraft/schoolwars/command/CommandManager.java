@@ -1,6 +1,6 @@
 package bazcraft.schoolwars.command;
 
-import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 
 public class CommandManager implements CommandExecutor {
 
-    private final Schoolwars plugin;
+    private static final CommandManager INSTANCE = new CommandManager();
 
-    public CommandManager(Schoolwars plugin) {
-        this.plugin = plugin;
+    private CommandManager() {
+
     }
 
     @Override
@@ -23,7 +23,7 @@ public class CommandManager implements CommandExecutor {
                 String ingame = "";
                 String spec = "";
                 for (Player n : Bukkit.getOnlinePlayers()) {
-                    if (plugin.getGameManager().getIngamePlayers().contains(n)) {
+                    if (GameManager.getInstance().getIngamePlayers().contains(n)) {
                         ingame += "\n- " + n.getDisplayName();
                     } else {
                         spec += "\n- " + n.getDisplayName();
@@ -33,5 +33,9 @@ public class CommandManager implements CommandExecutor {
                 return true;
         }
         return false;
+    }
+
+    public static CommandManager getInstance() {
+        return INSTANCE;
     }
 }

@@ -1,7 +1,9 @@
 package bazcraft.schoolwars.vragen;
 
+import bazcraft.schoolwars.firebase.Firebase;
 import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.npc.NPCManager;
 import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,30 +13,15 @@ import java.util.ArrayList;
 
 public class VragenManager{
 
-    private Schoolwars plugin;
-    private ArrayList<Vraag> vragenLijst;
-    private TeamManager teamManager;
+    private static final VragenManager INSTANCE = new VragenManager();
+    private final ArrayList<Vraag> vragenLijst;
 
-    public VragenManager(TeamManager teamManager, Schoolwars plugin){
-        this.plugin = plugin;
-        this.vragenLijst = plugin.getFirebase().getAlleVragen();
-        this.teamManager = teamManager;
+    public VragenManager(){
+        this.vragenLijst = Firebase.getInstance().getAlleVragen();
     }
 
     public ArrayList<Vraag> getVragenLijst() {
         return this.vragenLijst;
-    }
-
-    public Schoolwars getPlugin() {
-        return plugin;
-    }
-
-    public void setPlugin(Schoolwars plugin) {
-        this.plugin = plugin;
-    }
-
-    public TeamManager getTeamManager() {
-        return teamManager;
     }
 
     public void startVraag(Player player){
@@ -46,7 +33,11 @@ public class VragenManager{
     }
 
     public ItemStack getVraagBoek(Player player){
-        CustomNPC npc = plugin.getNpcManager().getGeselecteerdeNPC().get(player);
+        CustomNPC npc = NPCManager.getInstance().getGeselecteerdeNPC().get(player);
         return npc.getActieveVraag().getBook();
+    }
+
+    public static VragenManager getInstance() {
+        return INSTANCE;
     }
 }

@@ -1,8 +1,8 @@
 package bazcraft.schoolwars.npc;
 
 import bazcraft.schoolwars.teams.Team;
+import bazcraft.schoolwars.teams.TeamManager;
 import bazcraft.schoolwars.vragen.VraagType;
-import bazcraft.schoolwars.Schoolwars;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,19 +14,19 @@ import java.util.HashMap;
 
 public class NPCManager {
 
+    private static final NPCManager INSTANCE = new NPCManager();
+
     private ArrayList<CustomNPC> npcList;
     private final HashMap<Player, CustomNPC> geselecteerdeNPC;
-    private final Schoolwars plugin;
 
-    public NPCManager(Schoolwars plugin){
-        this.plugin = plugin;
+    private NPCManager(){
         this.npcList = new ArrayList<>();
         this.geselecteerdeNPC = new HashMap<>();
         //Hard Coded NPC
-        npcList.add(new CustomNPC(ChatColor.BLUE + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getBLUE(), plugin));
-        npcList.add(new CustomNPC(ChatColor.RED + "Leerkracht", VraagType.NORMAAL, plugin.getTeamManager().getRED(), plugin));
-        npcList.add(new CustomNPC("§cShop", VraagType.SPECIAAL, plugin.getTeamManager().getRED(), plugin));
-        npcList.add(new CustomNPC("§9Shop", VraagType.SPECIAAL, plugin.getTeamManager().getBLUE(), plugin));
+        npcList.add(new CustomNPC(ChatColor.BLUE + "Leerkracht", VraagType.NORMAAL, TeamManager.getInstance().getBLUE()));
+        npcList.add(new CustomNPC(ChatColor.RED + "Leerkracht", VraagType.NORMAAL, TeamManager.getInstance().getRED()));
+        npcList.add(new CustomNPC("§cShop", VraagType.SPECIAAL, TeamManager.getInstance().getRED()));
+        npcList.add(new CustomNPC("§9Shop", VraagType.SPECIAAL, TeamManager.getInstance().getBLUE()));
     }
 
     public CustomNPC getCustomNPC(NPC npc) {
@@ -74,8 +74,8 @@ public class NPCManager {
        }
     }
 
-    public void spawnAllNPC(ArrayList<CustomNPC> customNPC){
-        for(CustomNPC npc: customNPC){
+    public void spawnAllNPC(){
+        for(CustomNPC npc: npcList){
             this.spawnNPC(npc);
         }
     }
@@ -111,10 +111,14 @@ public class NPCManager {
     }
 
     public CustomNPC getLeerkrachtNpc(Team team){
-        if(team == plugin.getTeamManager().getBLUE()){
+        if(team == TeamManager.getInstance().getBLUE()){
             return npcList.get(0);
         }else{
             return npcList.get(1);
         }
+    }
+
+    public static NPCManager getInstance() {
+        return INSTANCE;
     }
 }

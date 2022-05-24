@@ -1,22 +1,26 @@
 package bazcraft.schoolwars.teams;
 
-import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.GameManager;
 import bazcraft.schoolwars.minions.Path;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TeamManager {
 
-    private final Schoolwars plugin;
+    private static final TeamManager INSTANCE = new TeamManager();
 
     private final int MAXHEALTH;
     private final Team RED;
     private final Team BLUE;
 
-    public TeamManager(Team red, Team blue, Schoolwars plugin) {
-        this.plugin = plugin;
+    private TeamManager() {
         MAXHEALTH = 100;
-        RED = red;
-        BLUE = blue;
+
+        RED = new Team("rood", new Location(Bukkit.getWorld("world"), 37.5, 40.2, -91.5, -90f, 0f), ChatColor.RED, GameManager.getInstance().getPaths()[0]);
+        BLUE = new Team("blauw", new Location(Bukkit.getWorld("world"), 390.5, 40.2, -110.5, 90f, 0f), ChatColor.BLUE, GameManager.getInstance().getPaths()[1]);
+
         RED.setHealth(MAXHEALTH);
         BLUE.setHealth(MAXHEALTH);
     }
@@ -50,7 +54,7 @@ public class TeamManager {
         }
     }
 
-    public int getMAXHEALTH() {
+    public int getMaxHealth() {
         return MAXHEALTH;
     }
 
@@ -70,4 +74,19 @@ public class TeamManager {
         }
         return null;
     }
+
+    public void clearTeams() {
+        org.bukkit.scoreboard.Team temp = BLUE.getScoreboard();
+        for (int i = 0; i < 2; i++) {
+            for (String n : temp.getEntries()) {
+                temp.removeEntry(n);
+            }
+            temp = RED.getScoreboard();
+        }
+    }
+
+    public static TeamManager getInstance() {
+        return INSTANCE;
+    }
+
 }

@@ -1,15 +1,20 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.Kit.KitManager;
 import bazcraft.schoolwars.Kit.KitTypes;
 import bazcraft.schoolwars.gui.KitGUI;
 import bazcraft.schoolwars.gui.Scoreboard;
 import bazcraft.schoolwars.gui.VragenGUI;
 import bazcraft.schoolwars.npc.CustomNPC;
+import bazcraft.schoolwars.npc.NPCManager;
 import bazcraft.schoolwars.teams.Team;
+import bazcraft.schoolwars.teams.TeamManager;
 import bazcraft.schoolwars.tools.ItemUtils;
+import bazcraft.schoolwars.vragen.KlasLokaal;
 import bazcraft.schoolwars.vragen.VraagType;
 import bazcraft.schoolwars.gui.LeaveUi;
 import bazcraft.schoolwars.gui.shop.MainPage;
+import bazcraft.schoolwars.vragen.VragenManager;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -31,12 +36,12 @@ import java.util.Objects;
 
 public class EventListener implements Listener {
 
-    private final Schoolwars plugin;
+    private static final EventListener INSTANCE = new EventListener();
 
     private final String KITSELECTOR = "§d§lkitselector";
 
-    public EventListener(Schoolwars plugin) {
-        this.plugin = plugin;
+    private EventListener() {
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -44,26 +49,26 @@ public class EventListener implements Listener {
         event.getPlayer().sendMessage(GameState.getCurrentGamestate().name() + " aeaeraeaeea");
         switch (GameState.getCurrentGamestate()) {
             case WAITING:
-                if (plugin.getGameManager().addSpeler(event.getPlayer())) {
+                if (GameManager.getInstance().addSpeler(event.getPlayer())) {
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
                     event.getPlayer().getInventory().addItem(ItemUtils.createItem(KITSELECTOR, Material.BOW));
 
-                    new Scoreboard(plugin, event.getPlayer()).createBoard();
+                    new Scoreboard(event.getPlayer()).createBoard();
                     break;
                 }
             case INGAME, ENDGAME:
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
                 break;
         }
-        event.getPlayer().teleport(plugin.getGameManager().getLobby());
+        event.getPlayer().teleport(GameManager.getInstance().getLobby());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event){
         event.getPlayer().getInventory().remove(Material.BOW);
-        plugin.getKitManager().removeAllItemsFromPlayer(event.getPlayer());
+        KitManager.getInstance().removeAllItemsFromPlayer(event.getPlayer());
         event.getPlayer().sendMessage("Remove all items");
-        plugin.getGameManager().removeSpeler(event.getPlayer());
+        GameManager.getInstance().removeSpeler(event.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -87,9 +92,9 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNPCRightClick(NPCRightClickEvent event){
         Player player = event.getClicker();
-        CustomNPC npc = plugin.getNpcManager().getCustomNPC(event.getNPC());
+        CustomNPC npc = NPCManager.getInstance().getCustomNPC(event.getNPC());
         if (npc != null) {
-            if(plugin.getTeamManager().getTeam(player) == npc.getTeam()){
+            if(TeamManager.getInstance().getTeam(player) == npc.getTeam()){
                 if (npc.getType() == VraagType.SPECIAAL){
                     MainPage mainPage = new MainPage(npc);
                     player.openInventory(mainPage.getInventory());
@@ -106,7 +111,7 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onGuiClick(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
-        Team team = plugin.getTeamManager().getTeam(player);
+        Team team = TeamManager.getInstance().getTeam(player);
         if (event.getClickedInventory() != null) {
             InventoryHolder holder = event.getClickedInventory().getHolder();
             if (holder instanceof MainPage) {
@@ -115,8 +120,8 @@ public class EventListener implements Listener {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
                         if (team.getMinionPoints() > 0) {
                             if(!team.isBeantwoordenVragenS()){
-                                plugin.getNpcManager().addGeselecteerdeNPC(player, gui.getNpc());
-                                plugin.getVragenManager().startVraag(player);
+                                NPCManager.getInstance().addGeselecteerdeNPC(player, gui.getNpc());
+                                VragenManager.getInstance().startVraag(player);
                             }else{
                                 player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
                             }
@@ -130,12 +135,12 @@ public class EventListener implements Listener {
                 if(event.getCurrentItem() != null){
                     if(event.getCurrentItem().getType() == Material.BOOK){
                         if(!team.isBeantwoordenVragenN()){
-                            if(plugin.getKlasLokaal().getPlayersInClassRoom().containsKey(player)){
-                                plugin.getVragenManager().startVraag(player);
+                            if(KlasLokaal.getInstance().getPlayersInClassRoom().containsKey(player)){
+                                VragenManager.getInstance().startVraag(player);
                             }else{
-                                plugin.getNpcManager().addGeselecteerdeNPC(player, plugin.getNpcManager().getLeerkrachtNpc(plugin.getTeamManager().getTeam(player)));
-                                plugin.getKlasLokaal().addPlayersInClassRoom(player);
-                                plugin.getKlasLokaal().teleportToClassRoom(player);
+                                NPCManager.getInstance().addGeselecteerdeNPC(player, NPCManager.getInstance().getLeerkrachtNpc(TeamManager.getInstance().getTeam(player)));
+                                KlasLokaal.getInstance().addPlayersInClassRoom(player);
+                                KlasLokaal.getInstance().teleportToClassRoom(player);
                             }
                         }else{
                             player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle vragen zijn al opgelost!");
@@ -147,10 +152,10 @@ public class EventListener implements Listener {
                 if(event.getCurrentItem() != null){
                     if(GameState.getCurrentGamestate() == GameState.WAITING){
                         if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.STONE_SWORD){
-                            plugin.getKitManager().addPlayerWithKit(player, KitTypes.WARRIOR);
+                            KitManager.getInstance().addPlayerWithKit(player, KitTypes.WARRIOR);
                             player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Je hebt de " + ChatColor.RED + "Warrior" + ChatColor.AQUA + " kit gekozen");
                         }else if(event.getCurrentItem().getType().equals(Material.BOW)){
-                            plugin.getKitManager().addPlayerWithKit(player, KitTypes.ARCHER);
+                            KitManager.getInstance().addPlayerWithKit(player, KitTypes.ARCHER);
                             player.sendMessage(ChatColor.GREEN + "Game: " + ChatColor.AQUA + "Je hebt de " + ChatColor.GREEN + "Archer" + ChatColor.AQUA + " kit gekozen");
                         }
                         event.setCancelled(true);
@@ -159,9 +164,8 @@ public class EventListener implements Listener {
             }else if(event.getView().getTitle().equals(ChatColor.GREEN + "Verlaat Lokaal")){
                 if(event.getCurrentItem() != null){
                     if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.GREEN_CONCRETE){
-                        CustomNPC npc = null;
-                        npc = plugin.getNpcManager().getLeerkrachtNpc(team);
-                        plugin.getKlasLokaal().teleportToMainGame(player, npc);
+                        CustomNPC npc = NPCManager.getInstance().getLeerkrachtNpc(team);
+                        KlasLokaal.getInstance().teleportToMainGame(player, npc);
                     }else if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.RED_CONCRETE){
                         player.closeInventory();
                     }
@@ -197,7 +201,7 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Team team = plugin.getTeamManager().getTeam(event.getPlayer());
+        Team team = TeamManager.getInstance().getTeam(event.getPlayer());
         if (team != null) {
             event.setRespawnLocation(team.getSpawn());
         }
@@ -210,7 +214,7 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCitizensEnable(CitizensEnableEvent event) {
-        for (CustomNPC n : plugin.getNpcManager().getNpcList()){
+        for (CustomNPC n : NPCManager.getInstance().getNpcList()){
 
             for (NPC m : CitizensAPI.getNPCRegistry()) {
                 if (n.getName().equals(m.getName())) {
@@ -223,5 +227,9 @@ public class EventListener implements Listener {
                 n.setNpc(CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, n.getName()));
             }
         }
+    }
+
+    public static EventListener getInstance() {
+        return INSTANCE;
     }
 }

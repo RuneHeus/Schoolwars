@@ -2,6 +2,7 @@ package bazcraft.schoolwars.vragen;
 
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.teams.Team;
+import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -11,22 +12,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Vraag {
-
-    private Schoolwars plugin;
     private ItemStack book;
     private String vraag;
     private String antwoord;
     private VraagType type;
     private final HashMap<Team, Boolean> teamsBeantwoord;
 
-    public Vraag(String vraag, String antwoord, VraagType type, Schoolwars plugin){
+    public Vraag(String vraag, String antwoord, VraagType type){
         this.vraag = vraag;
         this.antwoord = antwoord;
         this.type = type;
-        this.plugin = plugin;
         teamsBeantwoord = new HashMap<>(){{
-            put(plugin.getTeamManager().getBLUE(), false);
-            put(plugin.getTeamManager().getRED(), false);
+            put(TeamManager.getInstance().getBLUE(), false);
+            put(TeamManager.getInstance().getRED(), false);
         }};
 
         //Vraag boek aanmaken

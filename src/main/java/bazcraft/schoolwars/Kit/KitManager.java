@@ -1,20 +1,21 @@
 package bazcraft.schoolwars.Kit;
 
-import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.GameManager;
+import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
 public class KitManager {
 
+    private static final KitManager INSTANCE = new KitManager();
+
     private HashMap<Player, KitTypes> playerKitList;
     private PlayerKit AllkitList;
-    private Schoolwars plugin;
 
-    public KitManager(Schoolwars plugin){
+    private KitManager(){
         this.playerKitList = new HashMap<>();
         this.AllkitList = new PlayerKit();
-        this.plugin = plugin;
     }
 
     public void addPlayerWithKit(Player player, KitTypes type){
@@ -31,20 +32,24 @@ public class KitManager {
     }
 
     public void giveAllPlayerKit(){
-         for(Player n : plugin.getGameManager().getIngamePlayers()){
+         for(Player n : GameManager.getInstance().getIngamePlayers()){
              KitTypes types = playerKitList.get(n);
-             this.AllkitList.givePlayerLeatherArmour(n, plugin.getTeamManager().getTeam(n), plugin.getTeamManager().getBLUE());
+             this.AllkitList.givePlayerLeatherArmour(n, TeamManager.getInstance().getTeam(n), TeamManager.getInstance().getBLUE());
              if(types == KitTypes.WARRIOR){
-                 this.AllkitList.givePlayerWarriorWeapon(n, plugin.getTeamManager().getTeam(n));
+                 this.AllkitList.givePlayerWarriorWeapon(n, TeamManager.getInstance().getTeam(n));
              }else if(types == KitTypes.ARCHER) {
-                 this.AllkitList.givePlayerArcherWeapon(n, plugin.getTeamManager().getTeam(n), plugin.getTeamManager().getBLUE());
+                 this.AllkitList.givePlayerArcherWeapon(n, TeamManager.getInstance().getTeam(n), TeamManager.getInstance().getBLUE());
              } else {
-                 AllkitList.givePlayerWarriorWeapon(n, plugin.getTeamManager().getTeam(n));
+                 AllkitList.givePlayerWarriorWeapon(n, TeamManager.getInstance().getTeam(n));
              }
          }
     }
 
     public void removeAllItemsFromPlayer(Player player){
         player.getInventory().clear();
+    }
+
+    public static KitManager getInstance() {
+        return INSTANCE;
     }
 }

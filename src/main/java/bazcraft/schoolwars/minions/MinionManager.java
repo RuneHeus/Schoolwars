@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.minions;
 
+import bazcraft.schoolwars.GameManager;
 import bazcraft.schoolwars.Schoolwars;
 import com.google.common.collect.Iterables;
 import net.citizensnpcs.api.ai.event.NavigationBeginEvent;
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -15,17 +17,14 @@ import java.util.ArrayList;
 
 public final class MinionManager implements Listener {
 
-    private final Schoolwars plugin;
-    private final Path[] paths;
+    private static final MinionManager INSTANCE = new MinionManager();
 
-    public MinionManager(Path[] paths, Schoolwars plugin) {
-        this.plugin = plugin;
-        this.paths = paths;
+    private MinionManager() {
 
     }
 
     public void addMinion(Path path) {
-        Minion minion = new Minion(path, plugin);
+        Minion minion = new Minion(path);
         path.getMinions().add(minion);
         moveMinion(minion, 1);
     }
@@ -99,7 +98,7 @@ public final class MinionManager implements Listener {
                                 cancel();
                             }
                         }
-                    }.runTaskTimer(plugin, 0, 1);
+                    }.runTaskTimer(JavaPlugin.getPlugin(Schoolwars.class), 0, 1);
                 }
             }
         }
@@ -109,13 +108,13 @@ public final class MinionManager implements Listener {
 
     public Minion[] getMinions() {
         ArrayList<Minion> minions = new ArrayList<>();
-        for (Path n : paths) {
+        for (Path n : GameManager.getInstance().getPaths()) {
             minions.addAll(n.getMinions());
         }
         return minions.toArray(new Minion[0]);
     }
 
-    public Path[] getPaths() {
-        return paths;
+    public static MinionManager getInstance() {
+        return INSTANCE;
     }
 }

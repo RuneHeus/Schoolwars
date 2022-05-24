@@ -1,5 +1,6 @@
 package bazcraft.schoolwars.teams;
 
+import bazcraft.schoolwars.GameManager;
 import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.gui.Scoreboard;
 import bazcraft.schoolwars.minions.Path;
@@ -71,7 +72,7 @@ public class Team {
             publicHealthBar.setProgress(remainingHealth);
         }
         if (teamHealthBar.getProgress() == 0) {
-            Schoolwars.getPlugin(Schoolwars.class).getGameManager().endGame(this);
+            GameManager.getInstance().endGame(this);
         }
     }
 
@@ -111,7 +112,7 @@ public class Team {
         minionPoints += amount;
         for (String n : scoreboard.getEntries()) {
             Player p = Bukkit.getPlayer(n);
-            new Scoreboard(Schoolwars.getPlugin(Schoolwars.class), p).createBoard();
+            new Scoreboard(p).createBoard();
         }
     }
 
@@ -119,7 +120,7 @@ public class Team {
         minionPoints -= amount;
         for (String n : scoreboard.getEntries()) {
             Player p = Bukkit.getPlayer(n);
-            new Scoreboard(Schoolwars.getPlugin(Schoolwars.class), p).createBoard();
+            new Scoreboard(p).createBoard();
         }
     }
 

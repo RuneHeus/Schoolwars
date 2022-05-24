@@ -8,10 +8,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class ConsoleCommandManager implements CommandExecutor {
 
-    private final Schoolwars plugin;
+    private static final ConsoleCommandManager INSTANCE = new ConsoleCommandManager();
 
-    public ConsoleCommandManager(Schoolwars plugin) {
-        this.plugin = plugin;
+    private ConsoleCommandManager() {
+
     }
 
     @Override
@@ -22,5 +22,9 @@ public class ConsoleCommandManager implements CommandExecutor {
             sender.sendMessage(Schoolwars.prefix + " §cEnkel de console kan deze command uitvoeren!");
         }
         return false;
+    }
+
+    public static ConsoleCommandManager getInstance() {
+        return INSTANCE;
     }
 }

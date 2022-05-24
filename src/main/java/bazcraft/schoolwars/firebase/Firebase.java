@@ -19,16 +19,16 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Firebase {
+
+    private static final Firebase INSTANCE = new Firebase();
     private FirebaseApp firebaseApp;
     private Firestore firebaseStore;
-    private Schoolwars plugin;
 
-    public Firebase(Schoolwars plugin) {
+    private Firebase() {
         try{
             FirebaseOptions options = FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(getClass().getClassLoader().getResourceAsStream("ServiceAccountKey.json"))).build();
             this.firebaseApp = FirebaseApp.initializeApp(options);
             this.firebaseStore = FirestoreClient.getFirestore();
-            this.plugin = plugin;
         }catch (IOException error){
             error.printStackTrace();
         }
@@ -48,11 +48,15 @@ public class Firebase {
                 }else{
                     type = VraagType.SPECIAAL;
                 }
-                vragenLijst.add(new Vraag(vraag, antwoord, type, plugin));
+                vragenLijst.add(new Vraag(vraag, antwoord, type));
             }
         }catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return vragenLijst;
+    }
+
+    public static Firebase getInstance() {
+        return INSTANCE;
     }
 }

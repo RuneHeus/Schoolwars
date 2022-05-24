@@ -1,14 +1,22 @@
 package bazcraft.schoolwars;
 
+import bazcraft.schoolwars.Kit.KitManager;
+import bazcraft.schoolwars.minions.Path;
+import bazcraft.schoolwars.minions.Wall;
+import bazcraft.schoolwars.npc.NPCManager;
 import bazcraft.schoolwars.teams.Team;
+import bazcraft.schoolwars.teams.TeamManager;
 import bazcraft.schoolwars.tools.CounterRunnable;
 import bazcraft.schoolwars.gameevents.SpecialEvent;
+import bazcraft.schoolwars.vragen.KlasLokaal;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -16,40 +24,89 @@ import java.util.Random;
 
 public class GameManager {
 
-    private Schoolwars plugin;
+    private static final GameManager INSTANCE = new GameManager();
+
     private ArrayList<Player> ingamePlayers;
-    private int maxAantalSpelers;
+    private final int maxAantalSpelers;
     private final Location lobby;
     private final int PLAYERSNEEDEDTOSTART;
     private CounterRunnable countdownRunnable;
 
-    public GameManager(Schoolwars plugin, int maxAantalSpelers, Location lobby) {
-        this.plugin = plugin;
+    private Path[] paths;
+
+    private GameManager() {
         ingamePlayers = new ArrayList<>();
-        this.maxAantalSpelers = maxAantalSpelers;
-        this.lobby = lobby;
+        this.maxAantalSpelers = 8;
+        this.lobby = new Location(Bukkit.getWorld("world"), 0.5, 200, 0.5);
         PLAYERSNEEDEDTOSTART = 1;
+
+        World world = Bukkit.getWorld("world");
+        Path redPath = new Path(
+                new Wall[]{
+                        new Wall(new Location(world, 32.5, 34, -92.5)),
+                        new Wall(new Location(world, 58.5, 31, -91.5)),
+                        new Wall(new Location(world, 84.5, 28, -89.5)),
+                        new Wall(new Location(world, 100.5, 28, -96.5)),
+                        new Wall(new Location(world, 111.5, 28, -108.5)),
+                        new Wall(new Location(world, 130.5, 28, -101.5)),
+                        new Wall(new Location(world, 149.5, 28, -102.5)),
+                        new Wall(new Location(world, 164.5, 28, -112.5)),
+                        new Wall(new Location(world, 195.5, 28, -112.5)),
+                        new Wall(new Location(world, 232.5, 28, -89.5)),
+                        new Wall(new Location(world, 262.5, 28, -90.5)),
+                        new Wall(new Location(world, 278.5, 28, -99.5)),
+                        new Wall(new Location(world, 297.5, 28, -100.5)),
+                        new Wall(new Location(world, 316.5, 28, -93.5)),
+                        new Wall(new Location(world, 343.5, 28, -112.5)),
+                        new Wall(new Location(world, 370.5, 31, -110.5)),
+                        new Wall(new Location(world, 395.5, 34, -109.5)),
+                }
+        );
+        Path bluePath = new Path(
+                new Wall[]{
+                        new Wall(new Location(world, 395.5, 34, -109.5)),
+                        new Wall(new Location(world, 370.5, 31, -110.5)),
+                        new Wall(new Location(world, 343.5, 28, -112.5)),
+                        new Wall(new Location(world, 316.5, 28, -93.5)),
+                        new Wall(new Location(world, 297.5, 28, -100.5)),
+                        new Wall(new Location(world, 278.5, 28, -99.5)),
+                        new Wall(new Location(world, 262, 28, -90)),
+                        new Wall(new Location(world, 232.5, 28, -89.5)),
+                        new Wall(new Location(world, 195.5, 28, -112.5)),
+                        new Wall(new Location(world, 164.5, 28, -112.5)),
+                        new Wall(new Location(world, 149.5, 28, -102.5)),
+                        new Wall(new Location(world, 130.5, 28, -101.5)),
+                        new Wall(new Location(world, 111.5, 28, -108.5)),
+                        new Wall(new Location(world, 100.5, 28, -96.5)),
+                        new Wall(new Location(world, 84.5, 28, -89.5)),
+                        new Wall(new Location(world, 58.5, 31, -91.5)),
+                        new Wall(new Location(world, 32.5, 34, -92.5))
+                }
+        );
+
+        paths = new Path[] {redPath, bluePath};
+
     }
 
     public void startGame() {
         GameState.setGamestate(GameState.INGAME);
-        plugin.getTeamManager().getRED().teleportSpelers();
-        plugin.getTeamManager().getBLUE().teleportSpelers();
+        TeamManager.getInstance().getRED().teleportSpelers();
+        TeamManager.getInstance().getBLUE().teleportSpelers();
 
         for(Player player: Bukkit.getOnlinePlayers()){
             player.getInventory().clear();
         }
 
-        plugin.getKitManager().giveAllPlayerKit();
+        KitManager.getInstance().giveAllPlayerKit();
 
         //Spawn all bazcraft.schoolwars.npc
-        plugin.getNpcManager().spawnAllNPC(plugin.getNpcManager().getNpcList());
+        NPCManager.getInstance().spawnAllNPC();
         new BukkitRunnable() {
             @Override
             public void run() {
-                new SpecialEvent(plugin).run();
+                new SpecialEvent().run();
             }
-        }.runTaskLater(plugin, 6000);
+        }.runTaskLater(JavaPlugin.getPlugin(Schoolwars.class), 6000);
     }
 
     public boolean addSpeler(Player speler) {
@@ -58,7 +115,7 @@ public class GameManager {
             ingamePlayers.add(speler);
 
             if (ingamePlayers.size() == PLAYERSNEEDEDTOSTART) {
-                countdownRunnable = new CounterRunnable(plugin, 60) {
+                countdownRunnable = new CounterRunnable(JavaPlugin.getPlugin(Schoolwars.class), 60) {
                     @Override
                     public void repeat() {
                         if ((counter > 10 && counter %20==0) || (counter == 10) || counter < 6) {
@@ -77,7 +134,7 @@ public class GameManager {
                         startGame();
                     }
                 };
-                countdownRunnable.runTaskTimer(plugin, 0, 20);
+                countdownRunnable.runTaskTimer(JavaPlugin.getPlugin(Schoolwars.class), 0, 20);
             }
 
             sorteerSpelerInTeam(speler);
@@ -92,29 +149,29 @@ public class GameManager {
     private void sorteerSpelerInTeam(Player speler) {
         Random rand = new Random();
 
-        Team blauw = plugin.getTeamManager().getBLUE();
-        Team rood = plugin.getTeamManager().getRED();
+        Team blauw = TeamManager.getInstance().getBLUE();
+        Team rood = TeamManager.getInstance().getRED();
 
         //Als er meer spelers in rood zijn dan blauw add speler in blauw
         if (rood.getScoreboard().getEntries().size() > blauw.getScoreboard().getEntries().size()) {
-            plugin.getTeamManager().addPlayer(blauw, speler);
+            TeamManager.getInstance().addPlayer(blauw, speler);
         } else if (rood.getScoreboard().getEntries().size() < blauw.getScoreboard().getEntries().size()){
             //Als er meer spelers in blauw zijn dan rood add speler in rood
-            plugin.getTeamManager().addPlayer(rood, speler);
+            TeamManager.getInstance().addPlayer(rood, speler);
         } else {
             //Als er evenveel spelers zijn add speler in random team
             int random = rand.nextInt(2);
             if (random > 0) {
-                plugin.getTeamManager().addPlayer(blauw, speler);
+                TeamManager.getInstance().addPlayer(blauw, speler);
             } else {
-                plugin.getTeamManager().addPlayer(rood, speler);
+                TeamManager.getInstance().addPlayer(rood, speler);
             }
         }
     }
 
     public void removeSpeler(Player speler) {
         ingamePlayers.remove(speler);
-        plugin.getTeamManager().removePlayer(plugin.getTeamManager().getTeam(speler), speler);
+        TeamManager.getInstance().removePlayer(TeamManager.getInstance().getTeam(speler), speler);
         if (countdownRunnable != null) {
             if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
                 countdownRunnable.cancel();
@@ -138,28 +195,36 @@ public class GameManager {
     public void endGame(Team loser) {
         GameState.setGamestate(GameState.ENDGAME);
         CitizensAPI.getNPCRegistry().deregisterAll();
-        Team winner = plugin.getTeamManager().getRED();
+        Team winner = TeamManager.getInstance().getRED();
         if (winner == loser) {
-            winner = plugin.getTeamManager().getBLUE();
+            winner = TeamManager.getInstance().getBLUE();
         }
         Bukkit.broadcastMessage(Schoolwars.prefix + " Team " + winner.getPublicHealthBar().getTitle() + " is gewonnen!");
-        Bukkit.getScheduler().cancelTasks(plugin);
+        Bukkit.getScheduler().cancelTasks(JavaPlugin.getPlugin(Schoolwars.class));
         new BukkitRunnable() {
             @Override
             public void run() {
                 for (Player n : Bukkit.getOnlinePlayers()) {
-                    plugin.getKitManager().removeAllItemsFromPlayer(n);
+                    KitManager.getInstance().removeAllItemsFromPlayer(n);
                     n.kickPlayer("GameOver");
                 }
                 removeAllDroppedArrows();
-                plugin.getServer().reload();
+                Bukkit.getServer().reload();
             }
-        }.runTaskLater(plugin, 200);
+        }.runTaskLater(JavaPlugin.getPlugin(Schoolwars.class), 200);
     }
 
     public void removeAllDroppedArrows(){
         for (Arrow arrow : Bukkit.getWorld("world").getEntitiesByClass(Arrow.class)) {
             arrow.remove();
         }
+    }
+
+    public Path[] getPaths() {
+        return paths.clone();
+    }
+
+    public static GameManager getInstance() {
+        return INSTANCE;
     }
 }

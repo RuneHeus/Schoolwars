@@ -1,6 +1,7 @@
 package bazcraft.schoolwars.gameevents;
 
 import bazcraft.schoolwars.Schoolwars;
+import bazcraft.schoolwars.teams.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,13 +12,11 @@ import java.util.ArrayList;
 
 public class SpecialEvent extends BukkitRunnable{
 
-    private Schoolwars plugin;
     private int puntenBlauw;
     private int puntenRood;
     private ArrayList<Player> playersOnTheHill;
 
-    public SpecialEvent(Schoolwars plugin){
-       this.plugin = plugin;
+    public SpecialEvent(){
        this.playersOnTheHill = new ArrayList<>();
     }
 
@@ -40,7 +39,7 @@ public class SpecialEvent extends BukkitRunnable{
                     if (isTwoTeamOnHill()){
                         Bukkit.broadcastMessage("Er staan 2 team op de hill");
                     }else{
-                        if (plugin.getTeamManager().getTeam(playersOnTheHill.get(0)) == plugin.getTeamManager().getBLUE()){
+                        if (TeamManager.getInstance().getTeam(playersOnTheHill.get(0)) == TeamManager.getInstance().getBLUE()){
                             puntenBlauw++;
                             Bukkit.broadcastMessage("Blauw heeft " + puntenBlauw + " punten");
                         }else{
@@ -51,11 +50,11 @@ public class SpecialEvent extends BukkitRunnable{
                 }
                 if (puntenBlauw == 100) {
                     Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
-                    plugin.getTeamManager().getBLUE().addMinionPoints(1);
+                    TeamManager.getInstance().getBLUE().addMinionPoints(1);
                     this.cancel();
                 } else if (puntenRood == 100) {
                     Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
-                    plugin.getTeamManager().getRED().addMinionPoints(1);
+                    TeamManager.getInstance().getRED().addMinionPoints(1);
                     this.cancel();
                 }
                 counter++;
@@ -87,7 +86,7 @@ public class SpecialEvent extends BukkitRunnable{
         int aantalBlauw = 0;
         int aantalRood = 0;
         for(Player player: playersOnTheHill){
-            if(plugin.getTeamManager().getTeam(player) == plugin.getTeamManager().getBLUE()){
+            if(TeamManager.getInstance().getTeam(player) == TeamManager.getInstance().getBLUE()){
                 aantalBlauw++;
             }else{
                 aantalRood++;
