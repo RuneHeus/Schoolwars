@@ -25,8 +25,7 @@ public class Firebase {
 
     public Firebase(Schoolwars plugin) {
         try{
-            FileInputStream inputStream = new FileInputStream("ServiceAccountKey.json");
-            FirebaseOptions options = FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(inputStream)).build();
+            FirebaseOptions options = FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(getClass().getClassLoader().getResourceAsStream("ServiceAccountKey.json"))).build();
             this.firebaseApp = FirebaseApp.initializeApp(options);
             this.firebaseStore = FirestoreClient.getFirestore();
             this.plugin = plugin;
