@@ -46,10 +46,11 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(GameState.getCurrentGamestate().name() + " aeaeraeaeea");
         switch (GameState.getCurrentGamestate()) {
             case WAITING:
-                if (GameManager.getInstance().addSpeler(event.getPlayer())) {
+                GameManager game = GameManager.getInstance();
+                if (game.addSpeler(event.getPlayer())) {
+                    event.setJoinMessage(event.getPlayer().getDisplayName() + " §ejoined (" + game.getIngamePlayers().size() + "/" + game.getMaxAantalSpelers()+ ")");
                     event.getPlayer().setGameMode(GameMode.ADVENTURE);
                     event.getPlayer().getInventory().addItem(ItemUtils.createItem(KITSELECTOR, Material.BOW));
 
@@ -57,6 +58,7 @@ public class EventListener implements Listener {
                     break;
                 }
             case INGAME, ENDGAME:
+                event.setJoinMessage(null);
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
                 break;
         }
@@ -65,10 +67,20 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event){
-        event.getPlayer().getInventory().remove(Material.BOW);
+
         KitManager.getInstance().removeAllItemsFromPlayer(event.getPlayer());
-        event.getPlayer().sendMessage("Remove all items");
-        GameManager.getInstance().removeSpeler(event.getPlayer());
+
+        GameManager game = GameManager.getInstance();
+        game.removeSpeler(event.getPlayer());
+        if (GameState.getCurrentGamestate() == GameState.WAITING) {
+            event.setQuitMessage(event.getPlayer().getDisplayName() + " §cleft (" + game.getIngamePlayers().size() + "/" + game.getMaxAantalSpelers()+ ")");
+        } else if (GameState.getCurrentGamestate() == GameState.INGAME) {
+            if (game.getIngamePlayers().contains(event.getPlayer())) {
+                event.setQuitMessage(event.getPlayer().getDisplayName() + " §cleft");
+            } else {
+                event.setQuitMessage(null);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

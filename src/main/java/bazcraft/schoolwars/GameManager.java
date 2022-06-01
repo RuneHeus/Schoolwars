@@ -172,7 +172,7 @@ public class GameManager {
     public void removeSpeler(Player speler) {
         ingamePlayers.remove(speler);
         TeamManager.getInstance().removePlayer(TeamManager.getInstance().getTeam(speler), speler);
-        if (countdownRunnable != null) {
+        if (countdownRunnable != null && !countdownRunnable.isCancelled()) {
             if (ingamePlayers.size() < PLAYERSNEEDEDTOSTART) {
                 countdownRunnable.cancel();
             }
@@ -226,5 +226,9 @@ public class GameManager {
 
     public static GameManager getInstance() {
         return INSTANCE;
+    }
+
+    public int getMaxAantalSpelers() {
+        return maxAantalSpelers;
     }
 }
