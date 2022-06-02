@@ -2,7 +2,6 @@ package bazcraft.schoolwars.command;
 
 import bazcraft.schoolwars.GameManager;
 import bazcraft.schoolwars.Schoolwars;
-import bazcraft.schoolwars.minions.Minion;
 import bazcraft.schoolwars.minions.MinionManager;
 import bazcraft.schoolwars.npc.CustomNPC;
 import bazcraft.schoolwars.npc.NPCManager;
@@ -62,11 +61,15 @@ public class PlayerCommandManager implements CommandExecutor {
                     }
                     break;
                 case "fstart":
-                    GameManager.getInstance().forceStart();
-                    return true;
+                    if (p.isOp()) {
+                        GameManager.getInstance().forceStart();
+                        return true;
+                    }
                 case "endgame":
-                    GameManager.getInstance().endGame(TeamManager.getInstance().getBLUE());
-                    return true;
+                    if (p.isOp()) {
+                        GameManager.getInstance().endGame(TeamManager.getInstance().getBLUE());
+                        return true;
+                    }
                 case "antwoord":
                     Team team = TeamManager.getInstance().getTeam(p);
                     CustomNPC npc = NPCManager.getInstance().getGeselecteerdeNPC().get(p);

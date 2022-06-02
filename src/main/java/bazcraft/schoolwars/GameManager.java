@@ -1,6 +1,8 @@
 package bazcraft.schoolwars;
 
 import bazcraft.schoolwars.Kit.KitManager;
+import bazcraft.schoolwars.command.PlayerCommandManager;
+import bazcraft.schoolwars.gui.Scoreboard;
 import bazcraft.schoolwars.minions.Path;
 import bazcraft.schoolwars.minions.Wall;
 import bazcraft.schoolwars.npc.NPCManager;
@@ -18,6 +20,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,13 +29,14 @@ public class GameManager {
 
     private static final GameManager INSTANCE = new GameManager();
 
-    private ArrayList<Player> ingamePlayers;
+    private final ArrayList<Player> ingamePlayers;
     private final int maxAantalSpelers;
     private final Location lobby;
     private final int PLAYERSNEEDEDTOSTART;
     private CounterRunnable countdownRunnable;
+    private CounterRunnable specialEventTimer;
 
-    private Path[] paths;
+    private final Path[] paths;
 
     private GameManager() {
         ingamePlayers = new ArrayList<>();
@@ -101,12 +105,23 @@ public class GameManager {
 
         //Spawn all bazcraft.schoolwars.npc
         NPCManager.getInstance().spawnAllNPC();
-        new BukkitRunnable() {
+        specialEventTimer = new CounterRunnable(JavaPlugin.getPlugin(Schoolwars.class), 300) { //300 sec = 5 min
             @Override
-            public void run() {
+            public void repeat() {
+                for (Player p : getIngamePlayers()) {
+                    new Scoreboard(p).createBoard();
+                }
+            }
+
+            @Override
+            public void finish() {
+                for (Player p : getIngamePlayers()) {
+                    new Scoreboard(p).createBoard();
+                }
                 new SpecialEvent().run();
             }
-        }.runTaskLater(JavaPlugin.getPlugin(Schoolwars.class), 6000);
+        };
+        specialEventTimer.runTaskTimer(JavaPlugin.getPlugin(Schoolwars.class), 0, 20);
     }
 
     public boolean addSpeler(Player speler) {
@@ -230,5 +245,9 @@ public class GameManager {
 
     public int getMaxAantalSpelers() {
         return maxAantalSpelers;
+    }
+
+    public CounterRunnable getSpecialEventTimer() {
+        return specialEventTimer;
     }
 }

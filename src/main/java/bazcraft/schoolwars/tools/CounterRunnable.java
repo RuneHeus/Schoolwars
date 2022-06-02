@@ -31,4 +31,8 @@ public abstract class CounterRunnable extends BukkitRunnable {
 
     public abstract void repeat();
     public abstract void finish();
+
+    public int getRemaining() {
+        return counter;
+    }
 }
