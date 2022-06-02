@@ -38,6 +38,17 @@ public class Vraag {
         this.book.setItemMeta(meta);
     }
 
+    @Override
+    public String toString() {
+        return "Vraag{" +
+                "book=" + book +
+                ", vraag='" + vraag + '\'' +
+                ", antwoord='" + antwoord + '\'' +
+                ", type=" + type +
+                ", teamsBeantwoord=" + teamsBeantwoord +
+                '}';
+    }
+
     public String getVraag(){
         return this.vraag;
     }

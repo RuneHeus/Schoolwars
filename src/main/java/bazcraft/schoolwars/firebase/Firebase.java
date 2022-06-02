@@ -1,6 +1,5 @@
 package bazcraft.schoolwars.firebase;
 
-import bazcraft.schoolwars.Schoolwars;
 import bazcraft.schoolwars.vragen.Vraag;
 import bazcraft.schoolwars.vragen.VraagType;
 import com.google.api.core.ApiFuture;
@@ -11,11 +10,12 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import org.bukkit.Bukkit;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class Firebase {
@@ -37,13 +37,13 @@ public class Firebase {
     public ArrayList<Vraag> getAlleVragen(){
         ArrayList<Vraag> vragenLijst = new ArrayList<>();
         try{
-            ApiFuture<QuerySnapshot> future = firebaseStore.collection("Vrage").get();
+            ApiFuture<QuerySnapshot> future = firebaseStore.collection("Vragen").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             for (QueryDocumentSnapshot document : documents){
                 String vraag = (String) document.get("Vraag");
                 String antwoord = (String) document.get("Antwoord");
                 VraagType type;
-                if(document.get("Type") == "Normaal"){
+                if(Objects.equals(document.get("Type"), "Normaal")){
                     type = VraagType.NORMAAL;
                 }else{
                     type = VraagType.SPECIAAL;
