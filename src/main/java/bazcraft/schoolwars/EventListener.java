@@ -178,6 +178,7 @@ public class EventListener implements Listener {
                     if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.GREEN_CONCRETE){
                         CustomNPC npc = NPCManager.getInstance().getLeerkrachtNpc(team);
                         KlasLokaal.getInstance().teleportToMainGame(player, npc);
+                        NPCManager.getInstance().removeGeselecteerdeNPC(player);
                     }else if(Objects.requireNonNull(event.getCurrentItem()).getType() == Material.RED_CONCRETE){
                         player.closeInventory();
                     }
