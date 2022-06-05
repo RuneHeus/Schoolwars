@@ -53,7 +53,7 @@ public class PlayerCommandManager implements CommandExecutor {
                                 if (args.length > 1) {
                                     GameManager.getInstance().getPaths()[selectedPathCache.get(p)].getWalls()[Integer.parseInt(args[1])].deactivate(p);
                                     p.sendMessage(Schoolwars.prefix + " Wall deactivated");
-                                    MinionManager.getInstance().moveMinionsFromPath(GameManager.getInstance().getPaths()[selectedPathCache.get(p)]);
+                                    //MinionManager.getInstance().moveMinionsFromPath(GameManager.getInstance().getPaths()[selectedPathCache.get(p)]);
                                 }
                                 return true;
                             }

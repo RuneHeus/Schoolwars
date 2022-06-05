@@ -3,45 +3,35 @@ package bazcraft.schoolwars.minions;
 import bazcraft.schoolwars.teams.TeamManager;
 import com.google.firebase.database.annotations.NotNull;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.npc.CitizensNPC;
+import net.citizensnpcs.npc.EntityControllers;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftVillager;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-public class Minion {
+import java.util.UUID;
 
-    private final NPC npc;
+public class Minion extends CitizensNPC{
     private final Path path;
     private int target;
 
     public Minion(@NotNull Path pad) {
-        npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, "minion");
+        super(UUID.randomUUID(), CitizensAPI.getNPCRegistry().iterator().next().getId()+1, "minion", EntityControllers.createForType(EntityType.VILLAGER), CitizensAPI.getNPCRegistry());
 
         this.path = pad;
         target = 0;
 
-        npc.setProtected(true);
-        npc.getNavigator().getDefaultParameters().useNewPathfinder(true);
-        npc.getNavigator().getDefaultParameters().range(200);
-        npc.getNavigator().getDefaultParameters().distanceMargin(0.01);
-        npc.getNavigator().getDefaultParameters().pathDistanceMargin(0);
-        npc.spawn(pad.getWalls()[0].getLoc());
-        npc.getEntity().setSilent(true);
-
-        npc.getEntity().setPersistent(true);
-
-        ((CraftVillager)npc.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 1, true, false),
-                true);
+        spawn(path.getWalls()[target].getLoc());
     }
 
 
-    public void move(int target) {
-        this.target = target;
+    public void move() {
+        target++;
         if (target < path.getWalls().length) {
             Location loc = path.getWalls()[target].getLoc();
-            npc.getNavigator().setTarget(loc);
+            if (isSpawned())
+                getNavigator().setTarget(getEntity().getLocation().add(10, 0,0));
         } else {
             if(TeamManager.getInstance().getRED() == TeamManager.getInstance().getTeam(path)) {
                 TeamManager.getInstance().getBLUE().removeHealth(20);
@@ -58,10 +48,6 @@ public class Minion {
 
     public Path getPath() {
         return path;
-    }
-
-    public NPC getNpc() {
-        return npc;
     }
 
 

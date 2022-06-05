@@ -1,17 +1,12 @@
 package bazcraft.schoolwars.minions;
 
 import bazcraft.schoolwars.GameManager;
-import bazcraft.schoolwars.Schoolwars;
-import com.google.common.collect.Iterables;
 import net.citizensnpcs.api.ai.event.NavigationBeginEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import net.citizensnpcs.api.event.NPCSpawnEvent;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -26,87 +21,35 @@ public final class MinionManager implements Listener {
     public void addMinion(Path path) {
         Minion minion = new Minion(path);
         path.getMinions().add(minion);
-        moveMinion(minion, 1);
+        minion.move();
     }
 
     public void removeMinion(Minion minion) {
-        minion.getNpc().getEntity().remove();
-        minion.getNpc().destroy();
+        minion.getEntity().remove();
+        minion.destroy();
         minion.getPath().getMinions().remove(minion);
     }
-
-    public void moveMinion(Minion minion, int targetIndex) {
-        minion.move(targetIndex);
-    }
-
-    public void moveMinionsFromPath(Path path) {
-        for (Minion n : path.getMinions()) {
-            moveMinion(n, n.getTarget());
-        }
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onNavigationComplete(NavigationCompleteEvent event) {
-        Minion minion = null;
-        for (Minion m : getMinions()) {
-            if (m.getNpc().equals(event.getNPC())) {
-                minion = m;
-                break;
-            }
-        }
+        Minion minion = getMinion(event.getNPC());
         if (minion != null) {
-            Wall wall = minion.getPath().getWall(event.getNavigator().getTargetAsLocation());
-            if (wall != null) {
-                if (!wall.isActivated()) {
-                    moveMinion(minion, minion.getTarget()+1);
-                }
-            }
+            minion.move();
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onNavigationBegin(NavigationBeginEvent event) {
-        Minion minion = null;
-        int minionIndex = 0;
+    public Minion getMinion(NPC npc) {
         Minion[] minions = getMinions();
-        for (int i = 0; i < minions.length; i++) {
-            if (minions[i].getNpc().equals(event.getNPC())) {
-                minion = minions[i];
-                minionIndex = i;
-                break;
+        for (Minion n : minions) {
+            if (n.equals(npc)) {
+                return n;
             }
         }
-        if (minion != null) {
-            Wall wall = minion.getPath().getWall(event.getNavigator().getTargetAsLocation());
-            if (wall != null) {
-                if (wall.isActivated()) {
-                    int count = 0;
-                    for (int i = minionIndex-1; i >= 0; i--) {
-                        if (minions[i].getPath().equals(minion.getPath()) && minions[i].getTarget() == minion.getTarget()) {
-                            count++;
-                        }
-                    }
-                    int finalCount = count;
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (event.getNPC().getNavigator().getPathStrategy().getPath() != null) {
-                                Iterable<Vector> iterable = event.getNPC().getNavigator().getPathStrategy().getPath();
-                                Vector vector = Iterables.get(iterable, ((Iterables.size(iterable)-1) - finalCount));
-                                event.getNavigator().cancelNavigation();
-                                event.getNavigator().setTarget(new Location(Bukkit.getWorld("world"), vector.getX(), vector.getY(), vector.getZ()));
-                                cancel();
-                            }
-                        }
-                    }.runTaskTimer(JavaPlugin.getPlugin(Schoolwars.class), 0, 1);
-                }
-            }
-        }
+        return null;
     }
 
 
 
-    public Minion[] getMinions() {
+    private Minion[] getMinions() {
         ArrayList<Minion> minions = new ArrayList<>();
         for (Path n : GameManager.getInstance().getPaths()) {
             minions.addAll(n.getMinions());
