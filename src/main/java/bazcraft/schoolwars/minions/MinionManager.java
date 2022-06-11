@@ -5,6 +5,7 @@ import net.citizensnpcs.api.ai.event.NavigationBeginEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -21,33 +22,34 @@ public final class MinionManager implements Listener {
     public void addMinion(Path path) {
         Minion minion = new Minion(path);
         path.getMinions().add(minion);
-        minion.move();
     }
 
     public void removeMinion(Minion minion) {
-        minion.getEntity().remove();
-        minion.destroy();
+        minion.getNpc().getEntity().remove();
+        minion.getNpc().destroy();
         minion.getPath().getMinions().remove(minion);
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onNavigationComplete(NavigationCompleteEvent event) {
-        Minion minion = getMinion(event.getNPC());
-        if (minion != null) {
-            minion.move();
-        }
     }
 
     public Minion getMinion(NPC npc) {
         Minion[] minions = getMinions();
         for (Minion n : minions) {
-            if (n.equals(npc)) {
+            if (n.getNpc().equals(npc)) {
                 return n;
             }
         }
         return null;
     }
 
-
+    @EventHandler(ignoreCancelled = true)
+    public void onNPCSpawn(NPCSpawnEvent event) {
+        if (event.getNPC().getName().equals("minion")) {
+            Minion minion = getMinion(event.getNPC());
+            if (minion != null) {
+                Bukkit.broadcastMessage("move");
+                minion.move();
+            }
+        }
+    }
 
     private Minion[] getMinions() {
         ArrayList<Minion> minions = new ArrayList<>();

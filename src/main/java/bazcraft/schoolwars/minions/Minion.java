@@ -3,26 +3,24 @@ package bazcraft.schoolwars.minions;
 import bazcraft.schoolwars.teams.TeamManager;
 import com.google.firebase.database.annotations.NotNull;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.npc.CitizensNPC;
-import net.citizensnpcs.npc.EntityControllers;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.EntityType;
 
-import java.util.UUID;
-
-public class Minion extends CitizensNPC{
+public class Minion{
     private final Path path;
     private int target;
 
+    private final NPC npc;
+
     public Minion(@NotNull Path pad) {
-        super(UUID.randomUUID(), CitizensAPI.getNPCRegistry().iterator().next().getId()+1, "minion", EntityControllers.createForType(EntityType.VILLAGER), CitizensAPI.getNPCRegistry());
+        npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, "minion");
 
         this.path = pad;
         target = 0;
 
-        spawn(path.getWalls()[target].getLoc());
+        npc.spawn(path.getWalls()[target].getLoc());
     }
 
 
@@ -30,8 +28,8 @@ public class Minion extends CitizensNPC{
         target++;
         if (target < path.getWalls().length) {
             Location loc = path.getWalls()[target].getLoc();
-            if (isSpawned())
-                getNavigator().setTarget(getEntity().getLocation().add(10, 0,0));
+            if (npc.isSpawned())
+                npc.getNavigator().setTarget(loc);
         } else {
             if(TeamManager.getInstance().getRED() == TeamManager.getInstance().getTeam(path)) {
                 TeamManager.getInstance().getBLUE().removeHealth(20);
@@ -50,5 +48,7 @@ public class Minion extends CitizensNPC{
         return path;
     }
 
-
+    public NPC getNpc() {
+        return npc;
+    }
 }
