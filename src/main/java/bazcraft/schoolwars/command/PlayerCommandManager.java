@@ -88,10 +88,22 @@ public class PlayerCommandManager implements CommandExecutor {
 
                                 if(npc.getType() == VraagType.NORMAAL){
                                     KlasLokaal.getInstance().teleportToMainGame(p, npc);
-                                    MinionManager.getInstance().addMinion(team.getPath());
+
+                                    if (team.equals(TeamManager.getInstance().getRED())) {
+                                        TeamManager.getInstance().getBLUE().removeHealth(10);
+                                    } else if (team.equals(TeamManager.getInstance().getBLUE())) {
+                                        TeamManager.getInstance().getRED().removeHealth(10);
+                                    }
+
                                 } else if (npc.getType() == VraagType.SPECIAAL) {
                                     for (int i = 0; i < team.getMinionPoints(); i++) {
-                                        MinionManager.getInstance().addMinion(team.getPath());
+
+                                        if (team.equals(TeamManager.getInstance().getRED())) {
+                                            TeamManager.getInstance().getBLUE().removeHealth(20);
+                                        } else if (team.equals(TeamManager.getInstance().getBLUE())) {
+                                            TeamManager.getInstance().getRED().removeHealth(20);
+                                        }
+
                                     }
                                 }
                                 team.setMinionPoints(0);
