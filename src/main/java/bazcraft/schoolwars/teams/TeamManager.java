@@ -16,13 +16,13 @@ public class TeamManager {
     private final Team BLUE;
 
     private TeamManager() {
-        MAXHEALTH = 100;
+        MAXHEALTH = 200;
 
         RED = new Team("rood", new Location(Bukkit.getWorld("world"), 37.5, 40.2, -91.5, -90f, 0f), ChatColor.RED, GameManager.getInstance().getPaths()[0]);
         BLUE = new Team("blauw", new Location(Bukkit.getWorld("world"), 390.5, 40.2, -110.5, 90f, 0f), ChatColor.BLUE, GameManager.getInstance().getPaths()[1]);
 
-        RED.setHealth(MAXHEALTH);
-        BLUE.setHealth(MAXHEALTH);
+        RED.setHealth(1);
+        BLUE.setHealth(1);
     }
 
     public Team getTeam(Player player) {
@@ -54,7 +54,7 @@ public class TeamManager {
         }
     }
 
-    public int getMaxHealth() {
+    public double getMaxHealth() {
         return MAXHEALTH;
     }
 

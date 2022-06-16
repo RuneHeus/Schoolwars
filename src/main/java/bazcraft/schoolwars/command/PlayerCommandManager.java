@@ -10,6 +10,7 @@ import bazcraft.schoolwars.teams.TeamManager;
 import bazcraft.schoolwars.vragen.KlasLokaal;
 import bazcraft.schoolwars.vragen.VraagType;
 import bazcraft.schoolwars.vragen.VragenManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -89,10 +90,12 @@ public class PlayerCommandManager implements CommandExecutor {
                                 if(npc.getType() == VraagType.NORMAAL){
                                     KlasLokaal.getInstance().teleportToMainGame(p, npc);
 
-                                    if (team.equals(TeamManager.getInstance().getRED())) {
-                                        TeamManager.getInstance().getBLUE().removeHealth(10);
-                                    } else if (team.equals(TeamManager.getInstance().getBLUE())) {
-                                        TeamManager.getInstance().getRED().removeHealth(10);
+                                    team.addMinionPoints(1);
+
+                                    if (TeamManager.getInstance().getRED().equals(team)) {
+                                        Bukkit.broadcastMessage(Schoolwars.prefix + "Team §cROOD§r heeft een vraag opgelost");
+                                    } else {
+                                        Bukkit.broadcastMessage(Schoolwars.prefix + "Team §9BLAUW§r heeft een vraag opgelost");
                                     }
 
                                 } else if (npc.getType() == VraagType.SPECIAAL) {
@@ -106,7 +109,6 @@ public class PlayerCommandManager implements CommandExecutor {
 
                                     }
                                 }
-                                team.setMinionPoints(0);
                                 HashMap<Player, CustomNPC> temp = NPCManager.getInstance().getGeselecteerdeNPC();
                                 try{
                                     for(Player playerInNpc: temp.keySet()){

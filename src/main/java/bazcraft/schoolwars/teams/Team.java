@@ -61,8 +61,8 @@ public class Team {
         }
     }
 
-    public void removeHealth(int damage) {
-        double convertedDamage = (damage*1.0)/100;
+    public void removeHealth(double damage) {
+        double convertedDamage = damage/TeamManager.getInstance().getMaxHealth();
         double remainingHealth = teamHealthBar.getProgress()-convertedDamage;
         if (remainingHealth < 0) {
             teamHealthBar.setProgress(0);
@@ -71,17 +71,23 @@ public class Team {
             teamHealthBar.setProgress(remainingHealth);
             publicHealthBar.setProgress(remainingHealth);
         }
+
+        for (String n : scoreboard.getEntries()) {
+            Player p = Bukkit.getPlayer(n);
+            new Scoreboard(p).createBoard();
+        }
+
         if (teamHealthBar.getProgress() == 0) {
             GameManager.getInstance().endGame(this);
         }
     }
 
-    public void setHealth(int health) {
-        teamHealthBar.setProgress((health*1.0)/100);
+    public void setHealth(double health) {
+        teamHealthBar.setProgress(health);
     }
 
-    public int getHealth() {
-        return ((int) (teamHealthBar.getProgress())*100);
+    public double getHealth() {
+        return (teamHealthBar.getProgress()*TeamManager.getInstance().getMaxHealth());
     }
 
     protected BossBar getTeamHealthBar() {
@@ -106,6 +112,10 @@ public class Team {
 
     public void setMinionPoints(int minionPoints) {
         this.minionPoints = minionPoints;
+        for (String n : scoreboard.getEntries()) {
+            Player p = Bukkit.getPlayer(n);
+            new Scoreboard(p).createBoard();
+        }
     }
 
     public void addMinionPoints(int amount) {

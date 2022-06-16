@@ -50,11 +50,11 @@ public class SpecialEvent extends BukkitRunnable{
                 }
                 if (puntenBlauw == 100) {
                     Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.BLUE + "Blauw " + ChatColor.AQUA + "heeft gewonnen!");
-                    TeamManager.getInstance().getBLUE().addMinionPoints(1);
+                    TeamManager.getInstance().getBLUE().addMinionPoints(5);
                     this.cancel();
                 } else if (puntenRood == 100) {
                     Bukkit.broadcastMessage(Schoolwars.prefix + " " + ChatColor.RED + "Rood " + ChatColor.AQUA + "heeft gewonnen!");
-                    TeamManager.getInstance().getRED().addMinionPoints(1);
+                    TeamManager.getInstance().getRED().addMinionPoints(5);
                     this.cancel();
                 }
                 counter++;

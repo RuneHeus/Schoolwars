@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
@@ -42,6 +43,14 @@ public class EventListener implements Listener {
 
     private EventListener() {
 
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Team t = TeamManager.getInstance().getTeam(event.getEntity());
+        if (t != null) {
+            t.setMinionPoints(0);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -131,12 +140,16 @@ public class EventListener implements Listener {
                 if (event.getCurrentItem() != null) {
                     if (event.getCurrentItem().getType() == Material.PLAYER_HEAD){
                         if (team.getMinionPoints() > 0) {
-                            if(!team.isBeantwoordenVragenS()){
-                                NPCManager.getInstance().addGeselecteerdeNPC(player, gui.getNpc());
-                                VragenManager.getInstance().startVraag(player);
-                            }else{
-                                player.sendMessage(Schoolwars.prefix + " " + ChatColor.RED + "Alle speciale vragen zijn al opgelost!");
+
+                            double damage = team.getMinionPoints() + team.getMinionPoints()*1.0/2;
+                            if (team.equals(TeamManager.getInstance().getRED())) {
+                                TeamManager.getInstance().getBLUE().removeHealth(damage*10);
+                            } else if (team.equals(TeamManager.getInstance().getBLUE())) {
+                                TeamManager.getInstance().getRED().removeHealth(damage*10);
                             }
+
+                            team.setMinionPoints(0);
+
                         } else {
                             player.sendMessage(Schoolwars.prefix + " §cJe team heeft niet genoeg minionpoints");
                         }

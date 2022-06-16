@@ -221,7 +221,7 @@ public class GameManager {
             public void run() {
                 for (Player n : Bukkit.getOnlinePlayers()) {
                     KitManager.getInstance().removeAllItemsFromPlayer(n);
-                    n.kickPlayer("GameOver");
+                    BungeeUtils.getINSTANCE().sendPlayer(n, "lobby");
                 }
                 removeAllDroppedArrows();
                 Bukkit.getServer().reload();

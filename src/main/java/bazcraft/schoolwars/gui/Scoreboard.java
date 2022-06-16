@@ -44,7 +44,7 @@ public class Scoreboard {
         }
 
         obj.getScore(team.getPublicHealthBar().getTitle()).setScore(2);
-        obj.getScore("§a" + team.getHealth() + "§c❤").setScore(1);
+        obj.getScore("§a" + ((int)team.getHealth()) + "§c❤").setScore(1);
         obj.getScore("§eMinionpunten: §l" + team.getMinionPoints()).setScore(0);
 
 
