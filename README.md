@@ -1,6 +1,6 @@
 # bazcraft.Schoolwars
 
-[![BAZCraft](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=GBGEZqXkAUY)
+[![BAZCraft](https://img.youtube.com/vi/GBGEZqXkAUY/0.jpg)](https://www.youtube.com/watch?v=GBGEZqXkAUY)
 
 BAZCRAFT is een educatieve spelserver gemaakt in de alom bekende Minecraft-wereld. De server bevat meerdere educatieve minigames waarbij leerlingen al gamend kennistests kunnen uitvoeren.
 
