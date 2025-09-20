@@ -1,4 +1,4 @@
-# bazcraft.Schoolwars
+#Schoolwars
 
 Check hier onze trailer video!:
 [![BAZCraft](https://img.youtube.com/vi/GBGEZqXkAUY/0.jpg)](https://www.youtube.com/watch?v=GBGEZqXkAUY)
